@@ -1,14 +1,14 @@
 \name{widget-class}
 \docType{class}
 \alias{widget-class}
-\alias{wEnv<-}
-\alias{wEnv}
-\alias{wFuns<-}
-\alias{wFuns}
-\alias{wPostFuns<-}
-\alias{wPostFun}
-\alias{wPreFuns<-}
-\alias{wPreFun}
+\alias{env<-}
+\alias{env}
+\alias{funs<-}
+\alias{funs}
+\alias{postFuns<-}
+\alias{postFun}
+\alias{preFuns<-}
+\alias{preFun}
 \alias{pWidgets<-}
 \alias{pWidgets}
 \alias{updateCheck}
@@ -17,6 +17,22 @@
 \alias{updateText}
 \alias{wTitle<-}
 \alias{wTitle}
+\alias{env<-,widget-method}
+\alias{env,widget-method}
+\alias{funs<-,widget-method}
+\alias{funs,widget-method}
+\alias{postFuns<-,widget-method}
+\alias{postFun,widget-method}
+\alias{preFuns<-,widget-method}
+\alias{preFun,widget-method}
+\alias{pWidgets<-,widget-method}
+\alias{pWidgets,widget-method}
+\alias{updateCheck,widget-method}
+\alias{updateList,widget-method}
+\alias{updateRadio,widget-method}
+\alias{updateText,widget-method}
+\alias{wTitle<-,widget-method}
+\alias{wTitle,widget-method}
 \title{Class "widget" creates a widget with primary widgets contained in
 the list pWidgets rendered}
 \description{This class takes a list of primary widgets and then creates a
@@ -30,35 +46,35 @@ Objects can be created by calls of the form \code{new("widget", ...)}.
       character string for the title of the widget to be created}
     \item{\code{pWidgets}:}{Object of class \code{"list"} - a list of
       "basicPW" objects representing widget elements to be rendered}
-    \item{\code{wEnv}:}{Object of class \code{"environment"} - an R
+    \item{\code{env}:}{Object of class \code{"environment"} - an R
       environment for the object to work within}
-    \item{\code{wFuns}:}{Object of class \code{"list"} - a list of
+    \item{\code{funs}:}{Object of class \code{"list"} - a list of
       functions that will be associated with buttons on the widget to be
       rendered. The name of the function in the list will be the text
       appears on the button and the function will be executed when the
       button is pressed} 
-    \item{\code{wPreFun}:}{Object of class \code{"function"} - a function
+    \item{\code{preFun}:}{Object of class \code{"function"} - a function
       that will be executed before the widget is constructed}
-    \item{\code{wPostFun}:}{Object of class \code{"function"} - a function
+    \item{\code{postFun}:}{Object of class \code{"function"} - a function
       that will be executed before the widget is destroyed}
   }
 }
 
 \section{Methods}{
   \describe{
-    \item{wEnv<-}{\code{signature(object = "widget")}: set the value for wEnv}
-    \item{wEnv}{\code{signature(object = "widget")}: get the value for wEnv}
-    \item{wFuns<-}{\code{signature(object = "widget")}: set the value for
-      wFuns}
-    \item{wFuns}{\code{signature(object = "widget")}: get the value for wFuns}
-    \item{wPostFuns<-}{\code{signature(object = "widget")}: set the value
-      for wPostFuns}
-    \item{wPostFun}{\code{signature(object = "widget")}: get the value
-      for wPostFuns}
-    \item{wPreFuns<-}{\code{signature(object = "widget")}: set the value
-      for wPreFun}
-    \item{wPreFun}{\code{signature(object = "widget")}: get the value for
-      wPreFun}
+    \item{env<-}{\code{signature(object = "widget")}: set the value for env}
+    \item{env}{\code{signature(object = "widget")}: get the value for env}
+    \item{funs<-}{\code{signature(object = "widget")}: set the value for
+      funs}
+    \item{funs}{\code{signature(object = "widget")}: get the value for funs}
+    \item{postFuns<-}{\code{signature(object = "widget")}: set the value
+      for postFuns}
+    \item{postFun}{\code{signature(object = "widget")}: get the value
+      for postFuns}
+    \item{preFuns<-}{\code{signature(object = "widget")}: set the value
+      for preFun}
+    \item{preFun}{\code{signature(object = "widget")}: get the value for
+      preFun}
     \item{pWidgets<-}{\code{signature(object = "widget")}: set the value
       for pWidgets}
     \item{pWidgets}{\code{signature(object = "widget")}: get the value

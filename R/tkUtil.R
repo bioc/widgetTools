@@ -12,12 +12,7 @@ writeList <- function(widget, value, clear = TRUE){
     if(clear){
         tkdelete(widget, 0, "end")
     }
-    # This does not work
-    # do.call("tkinsert", c(list(widget, "insert", "end"), as.list(value))
-    insertOne <- function(insertMe){
-        tkinsert(widget, "end", insertMe)
-    }
-    trash <- sapply(value, insertOne)
+    do.call("tkinsert", c(list(widget, "end"), as.list(value)))
 }
 
 getListValue <- function(which){

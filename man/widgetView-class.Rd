@@ -15,6 +15,20 @@
 \alias{winid}
 \alias{winWait}
 \alias{WVTitle}
+\alias{killWin,widgetView-method}
+\alias{vName<-,widgetView-method}
+\alias{vName,widgetView-method}
+\alias{renderWidgets,widgetView,list-method}
+\alias{renewView,widgetView,list-method}
+\alias{theWidget<-,widgetView-method}
+\alias{theWidget,widgetView-method}
+\alias{updateDisplay,widgetView-method}
+\alias{widgetids<-,widgetView-method}
+\alias{widgetids,widgetView-method}
+\alias{winid<-,widgetView-method}
+\alias{winid,widgetView-method}
+\alias{winWait,widgetView-method}
+\alias{WVTitle,widgetView-method}
 \title{Class "widgetView", a class for a GUI type widget holding widget
   elements}
 \description{"widgetView" renders element widgets}

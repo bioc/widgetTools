@@ -9,12 +9,44 @@
 \alias{wType}
 \alias{wValue<-}
 \alias{wValue}
+\alias{wPostFun}
 \alias{wPostFun<-}
+\alias{wPreFun}
 \alias{wPreFun<-}
 \alias{wView<-}
 \alias{wView}
 \alias{wWidth<-}
 \alias{wWidth}
+\alias{wEnv}
+\alias{wEnv<-}
+\alias{wFuns}
+\alias{wName}
+\alias{wPreFun}
+\alias{wPostFun<-}
+\alias{wFuns<-}
+\alias{wName<-}
+\alias{wHeight<-,basicPW-method}
+\alias{wHeight,basicPW-method}
+\alias{wNotify<-,basicPW-method}
+\alias{wNotify,basicPW-method}
+\alias{wType<-,basicPW-method}
+\alias{wType,basicPW-method}
+\alias{wValue<-,basicPW-method}
+\alias{wValue,basicPW-method}
+\alias{wPostFun,basicPW-method}
+\alias{wPreFun<-,basicPW-method}
+\alias{wView<-,basicPW-method}
+\alias{wView,basicPW-method}
+\alias{wWidth<-,basicPW-method}
+\alias{wWidth,basicPW-method}
+\alias{wEnv,basicPW-method}
+\alias{wFuns,basicPW-method}
+\alias{wName,basicPW-method}
+\alias{wPreFun,basicPW-method}
+\alias{wPostFun<-,basicPW-method}
+\alias{wFuns<-,basicPW-method}
+\alias{wName<-,basicPW-method}
+\alias{wEnv<-,basicPW-method}
 \title{Class "basicPW", a basic class for primary widgets}
 \description{This class defines the behavior shared by primary widget
   object used to build a GUI type interface}
