@@ -10,4 +10,5 @@
     .initTKWidget(where)
     .initNotifier(where)
     .initUpdater(where)
+    .initWidget(where)
 }

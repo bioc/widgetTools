@@ -37,23 +37,23 @@
 # the text of the pWdiget upon existing;
 #
 #
-pWidget <- function(name, type, parent, text, value = "",
-                    variable = tclVar(), width = 20, height = 10,
-                    vScroll = FALSE, hScroll = FALSE, funs = list(),
+pWidget <- function(name, type, text, value = "", variable = tclVar(),
+                    width = 20, height = 10, vScroll = FALSE,
+                    hScroll = FALSE, observers = list(), funs = list(),
                     preFun = function (x) x, postFun = function(x) x){
 
     WHERE <- parent.frame(1)
-    .checkArgs(type, parent, text, variable)
+    .checkArgs(type, text, variable)
 
-    new("pWidget", name = name, type = type, parent = parent,
+    new("pWidget", name = name, type = type,
         text = text, variable = variable, width = width,
         height = height, vScroll = vScroll, hScroll = hScroll,
-        funs = funs, preFun = preFun, postFun = postFun, env = WHERE)
+        observers = observers, funs = funs, preFun = preFun,
+        postFun = postFun, env = WHERE)
 }
 
-.checkArgs <- function(type, parent, text, variable = NULL){
-    if(any(c(is.null(parent), is.null(type)) || any(is.na(parent),
-                              is.na(type), parent == "", type == ""))){
+.checkArgs <- function(type, text, variable = NULL){
+    if(is.null(type) || any(is.na(type), type == "")){
         stop("Invalid argument for \"parent\" and/or \"type\"")
     }
     if(is.null(text) || is.na(text) || text == ""){
@@ -84,15 +84,110 @@ notifier <- function(subNObse = list()){
 #
 
 tkWidget <- function(title){
-    temp <- new("tkWidget", title = title)
+    temp <- new("tkWidget", title = title, cancelled = FALSE)
     base <- tktoplevel()
     tktitle(base) <- title
     temp@name <- base
     return(temp)
 }
 
-# This function constructs an updater objects. An updater object only
-# contains mathods.
-updater <- function(name = "updater"){
-    new("updater", name = name)
+# This function constructs an updater object.
+updater <- function(pWidgets){
+    if(!is.list(pWidgets))
+        stop("Variable pWidgets must be a list!")
+    new("updater", pWidgets = pWidgets)
 }
+
+# This function constructs a widget object with default values if not
+# supplied.
+# pWidgets - a list of lists with each element being a pWidget object;
+# funs - a list of functions that will be associated with buttons on
+# the interface of the tcltk widget to be created. The name of the
+# function will be the text appears on the button and the function
+# will be executed when the button is pressed;
+# preFun - a function that will be executed when the tcltk widget is
+# constructed;
+# postFun - a function that will be executed when the tcltk widget is
+# destroyed.
+widget <- function(title, pWidgets, funs = list(),
+                   preFun = function() "Hello", postFun = function() "Bye"){
+    # Keep a copy of the original data
+    ORIG <- pWidgets
+
+    aWidget <- tkWidget(title = title)
+    notifier <- notifier()
+    updater <- updater(pWidgets)
+
+    # A Clear, Cancel, and Finish are the default buttons
+    cancel <- pWidget(name = "cancel", type = "button", text = "Cancel",
+                      width = 12,  funs = list(sclick = function(){
+                      cancelled(aWidget) <- TRUE; killTK(aWidget)}))
+    finish <- pWidget(name = "finish", type = "button", text = "finish",
+                      width = 12,  funs = list(sclick = function()
+                      killTK(aWidget)))
+    clear <- pWidget(name = "clear", type = "button", text = "Clear",
+                     width = 12, funs = list(sclick = function(){
+                         tkmessageBox(title = "I will be ready soon",
+                                      message = "Do not click me now!")}))
+    defaultFuns <- list(clear = clear, cancel = cancel, finish = finish)
+    # construct a widget object
+#    new("widget", title = title, pWidgets = pWidgets, funs = funs,
+#        preFun = preFun, postFun = postFun)
+
+    .maketkWidget(pWidgets, funs, defaultFuns, aWidget)
+
+
+#    tkwait.window(getName(aWidget))
+}
+
+.maketkWidget <- function(pWidgets, funs, default, aWidget){
+    # Add user defined and default buttons
+    if(length(funs) > 0){
+        pWidgets[["user"]] <- funs
+    }
+    pWidgets[["default"]] <- default
+
+    for(i in 1:length(pWidgets)){
+        if(length(pWidgets[[i]]) > 1){
+            frame1 <- createFrame(aWidget)
+            for(j in names(pWidgets[[i]])){
+                if(any(getType(pWidgets[[i]][[j]]) ==
+                       c("text", "list", "canvas"))){
+                    frame2 <- createFrame(frame1)
+                    pWidgets[[i]][[j]] <- createPWidget(pWidgets[[i]][[j]],
+                                                        frame2)
+                    doPack(frame2, "left")
+                }else{
+                    pWidgets[[i]][[j]] <- createPWidget(pWidgets[[i]][[j]],
+                                                        frame1)
+                    doPack(getWinid(pWidgets[[i]][[j]]), "left")
+                    doPack(frame1, "top")
+                }
+            }
+        }else{
+            if(any(getType(pWidgets[[i]]) == c("text", "list", "canvas"))){
+                frame2 <- createFrame(aWidget)
+                pWidgets[[i]] <- createPWidget(pWidgets[[i]], frame2)
+                doPack(frame2, "top")
+            }else{
+                pWidgets[[i]] <- createPWidget(pWidgets[[i]], aWidget)
+                doPack(aWidget, "top")
+            }
+        }
+    }
+}
+
+.modList <- function(pWidgets, PWName, value){
+    if(!is.null(pWidgets[[PWName]])){
+        value(pWidgets[[PWName]]) <- value
+        return(pWidgets)
+    }else{
+        for(i in 1:length(pWidgets)){
+            if(any(PWName ==  names(pWidgets[[i]]))){
+                value(pWidgets[[i]][[PWName]]) <- value
+                return(pWidgets)
+            }
+        }
+    }
+}
+
