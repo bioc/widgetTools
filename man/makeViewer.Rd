@@ -7,7 +7,7 @@
 }
 \usage{
 makeViewer(target, vWidth = "", vHeight = "", hScroll = FALSE,
-vScroll = TRUE, what = "list", side = "left")
+vScroll = TRUE, what = "list", side = "left", text = "")
 }
 
 \arguments{
@@ -21,6 +21,7 @@ vScroll = TRUE, what = "list", side = "left")
   \item{side}{A character string for the geomitry management of the
     viewer on the widget. Valid values include "left", "right", "top",
     and "bottom"}
+  \item{text}{A character string to be displayed}
 }
 \details{
   Tk list boxes (or canvas, text box) and scroll bars are separate

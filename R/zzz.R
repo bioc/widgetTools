@@ -5,7 +5,9 @@
                                  stop("Package methods unavailable!")
     capable <- capabilities()
     if(!capable["tcltk"]){
-        warning("The tcl/tk library is not available")
+        stop(paste("The tcl/tk library is not available in your system.",
+                   "Download/install the tcltk library from",
+                   "www.tcl.tk/software/tcltk/"))
     }else{
         if(interactive()){
             out <- paste("Package tcltk not able to be loaded!")
@@ -21,12 +23,8 @@
         }
     }
 
-    if(require(Biobase)){
-        if(interactive()){
-            if(require(tcltk, quietly = TRUE)){
-                addVig2Menu("widgetTools")
-            }
-        }
+    if(.Platform$OS.type == "windows" && require(Biobase) && intractive()){
+        addPDF2Vig("widgetTools")
     }
 
     where <- match(paste("package:", pkgname, sep=""), search())

@@ -1,6 +1,22 @@
 \name{widget-class}
 \docType{class}
 \alias{widget-class}
+\alias{env<-}
+\alias{env}
+\alias{funs<-}
+\alias{funs}
+\alias{postFuns<-}
+\alias{postFun}
+\alias{preFuns<-}
+\alias{preFun}
+\alias{pWidgets<-}
+\alias{pWidgets}
+\alias{updateCheck}
+\alias{updateList}
+\alias{updateRadio}
+\alias{updateText}
+\alias{wTitle<-}
+\alias{wTitle}
 \title{Class "widget" creates a widget with primary widgets contained in
 the list pWidgets rendered}
 \description{This class takes a list of primary widgets and then creates a

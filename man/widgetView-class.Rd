@@ -1,6 +1,20 @@
 \name{widgetView-class}
 \docType{class}
 \alias{widgetView-class}
+\alias{killWin}
+\alias{name<-}
+\alias{name}
+\alias{renderWidgets}
+\alias{renewView}
+\alias{theWidget<-}
+\alias{theWidget}
+\alias{updateDisplay}
+\alias{widgetids<-}
+\alias{widgetids}
+\alias{winid<-}
+\alias{winid}
+\alias{winWait}
+\alias{WVTitle}
 \title{Class "widgetView", a class for a GUI type widget holding widget
   elements}
 \description{"widgetView" renders element widgets}
@@ -65,9 +79,7 @@
 \author{Jianhua Zhang}
 \note{This class is part of the Bioconductor project at Dana-Farber
   Cancer Institute to provide Bioinformatics functionalities through R}
-
-\seealso{\code{\link{basicPW-class}},\code{\link{widget-class}}}
-
+\seealso{\code{\link{widget-class}},\code{\link{basicPW-class}} }
 \examples{
 if(interactive()){
 	widgetView <- widgetView(WVTitle = "demo", name = "widget1")

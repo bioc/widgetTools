@@ -152,7 +152,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
         renderWidgets(widgetView, localPWs)
     # Keep a copy of pWidgets and the widgetView in a specified
     # environment
-    putPW2Env(localPWs, widgetView)
+    .putPW2Env(localPWs, widgetView)
 
     winWait(widgetView)
     # Execute the function to be run at the end
@@ -160,14 +160,14 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # Act accordingly based on either the Cancel or Finish botton was
     # clicked
     if(END){
-        pWidgets(temp) <- getChanges(pWidgets)
+        pWidgets(temp) <- .getChanges(pWidgets)
     }else{
         pWidgets(temp) <- pWidgets
     }
     return(temp)
 }
-
-putPW2Env <- function(pWidgets, widgetView){
+# Write the value of the primary widgets to the enviroment
+.putPW2Env <- function(pWidgets, widgetView){
     putOne <- function(pWidget){
         if(!is.null(widgetView)){
             view(pWidget) <- widgetView
@@ -183,8 +183,10 @@ putPW2Env <- function(pWidgets, widgetView){
         }
     }
 }
-
-getChanges <- function(pWidgets){
+# Gets the values for each primary widget object stored in the
+# environment and uses the values to update the values of the a list
+# primary widgets passed as an argument.
+.getChanges <- function(pWidgets){
     for(i in names(pWidgets)){
         if(length(pWidgets[[i]]) > 0){
             for(j in names(pWidgets[[i]])){
