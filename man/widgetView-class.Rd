@@ -69,6 +69,8 @@
 \seealso{\code{\link{basicPW-class}},\code{\link{widget-class}}}
 
 \examples{
-widgetView <- widgetView(WVTitle = "demo", name = "widget1")
+if(interactive()){
+	widgetView <- widgetView(WVTitle = "demo", name = "widget1")
+}
 }
 \keyword{classes}
