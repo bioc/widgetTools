@@ -25,7 +25,7 @@ safeFileOpen(fileName)
   "connection" if the file exists and is opend. Otherwise, the string
   "fileName doest not exist"
 }
-\author{Jeff Gentry}
+\author{Jianhua Zhang}
 \note{This function is no placed here to be used by various
   widgets. May be mored to a more suitable place later}
 
