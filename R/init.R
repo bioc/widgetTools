@@ -334,15 +334,20 @@
             tempFrame <- tkframe(parent)
             var <- tclVar(match(TRUE, value(pWidget)))
             for(i in 1:length(value(pWidget))){
+                temp <- .getWidget(pWidget, tempFrame, i, var)
                 fun <- function() {}
                 if(type(pWidget) == "radio"){
                     body <- list(as.name("{"),
+                             substitute(eval(tkfocus(k), env = ENV),
+                                                       list(k = temp)),
                              substitute(eval(updateRadio(
                                     theWidget(tkWidget), name(pWidget),
                                     names(value(pWidget)[z])),
                                     env = ENV), list(z = i)))
                 }else{
                     body <- list(as.name("{"),
+                             substitute(eval(tkfocus(k), env = ENV),
+                                                    list(k = temp)),
                              substitute(eval(updateCheck(
                                     theWidget(tkWidget), name(pWidget),
                                     names(value(pWidget)[z])),
@@ -350,10 +355,8 @@
                 }
                 body(fun) <- as.call(body)
                 assign(paste("cmd", value(pWidget)[i],sep=""), fun)
-                temp <- .getWidget(pWidget, tempFrame, i, var)
-                tkconfigure(temp,
-                            command = get(paste("cmd",
-                       value(pWidget)[i],sep="")))
+                tkconfigure(temp, command = get(paste("cmd",
+                                            value(pWidget)[i],sep="")))
                 tkpack(temp, side = "left", padx = 2, pady = 5)
                 widgetids[[names(value(pWidget)[i])]] <<- temp
             }
@@ -368,13 +371,18 @@
                 tkpack(tempFrame, side = "left", padx = 2, pady = 5)
             }
             widgetids[[name(pWidget)]] <<- temp
-            funlist[[name(pWidget)]] <- function(){
-                .getViewerCmd(tkWidget, pWidget, temp)
-            }
+
             if(type(pWidget) == "list"){
+                funlist[[name(pWidget)]] <- function(){
+                    tkfocus(temp)
+                    .getViewerCmd(tkWidget, pWidget, temp)
+                }
                 tkbind(temp, "<B1-ButtonRelease>", funlist[[name(pWidget)]])
             }else{
-                tkbind(temp, "<Leave>", funlist[[name(pWidget)]])
+                funlist[[name(pWidget)]] <- function(){
+                    .getViewerCmd(tkWidget, pWidget, temp)
+                }
+                tkbind(temp, "<FocusOut>", funlist[[name(pWidget)]])
             }
         }else{
             temp <- .getWidget(pWidget, parent, 1)
@@ -432,6 +440,9 @@
     temp <- makeViewer(tempFrame, text = toShow,
                     vWidth = width(pWidget), vHeight = height(pWidget),
                     hScroll = TRUE, vScroll = TRUE, what = type(pWidget))
+    if(type(pWidget) == "list"){
+        tkconfigure(temp, selectmode = "extended")
+    }
     tkpack(tempFrame)
     return(temp)
 }
@@ -449,11 +460,15 @@
 }
 
 .renderButton <- function(pWidget, parent){
-     fun <- function() {}
-     temp <- tkbutton(parent, text = value(pWidget),
-                      width = width(pWidget),
-                      command = funs(pWidget)[["command"]])
-     return(temp)
+    fun <- list()
+    temp <- tkbutton(parent, text = value(pWidget),
+                     width = width(pWidget))
+    fun[[name(pWidget)]] <- function(){
+        tkfocus(temp)
+        funs(pWidget)[["command"]]()
+    }
+    tkconfigure(temp, command = fun[[name(pWidget)]])
+    return(temp)
  }
 
 .renderCheck <- function(pWidget, parent, index){
@@ -609,8 +624,22 @@
               function(object, PWName, bName) {
                   tempPW <- get(PWName, env = env(object))
                   tempValue <- value(tempPW)
+                  tempValue[1:length(tempValue)] <- FALSE
                   tempValue[bName] <- TRUE
-                  tempValue[names(tempValue) != bName] <- FALSE
+                  value(tempPW) <- tempValue
+                  assign(name(tempPW), tempPW, env = env(tempPW))
+              }, where = where)
+    if(!isGeneric("updateList")){
+        setGeneric("updateList",
+                   function(object, PWName, opts)
+                   standardGeneric("updateList"), where = where)
+    }
+    setMethod("updateList", "widget",
+              function(object, PWName, opts) {
+                  tempPW <- get(PWName, env = env(object))
+                  tempValue <- value(tempPW)
+                  tempValue[1:length(tempValue)] <- FALSE
+                  tempValue[bName] <- TRUE
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
               }, where = where)

@@ -16,7 +16,12 @@ writeList <- function(widget, value, clear = TRUE){
 }
 
 getListValue <- function(which){
-    return(as.character(tkget(which, tkcurselection(which))))
+    listValue <- NULL
+    index <- unlist(strsplit(tkcurselection(which), " "))
+    for(i in index){
+        listValue <- c(listValue, as.character(tkget(which, i)))
+    }
+    return(listValue)
 }
 
 getTextValue <- function(which){

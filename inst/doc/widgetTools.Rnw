@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.20 2002/12/19 16:08:17 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.21 2002/12/20 20:00:42 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -102,7 +102,7 @@ Where
   will be used for updating the data displayed;
 \item env - an R environment object where data updating and reterival
   will take place;
-\itme notify - a list of functions defning the actions to be performed
+\item notify - a list of functions defning the actions to be performed
   when the value of the pWidget changes.
 \end{itemize}
 
@@ -111,11 +111,11 @@ The following code creates several \em{pWidget} objects of different types:
 <<>>=
 label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
 entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
-env = PWEnv)
+                   env = PWEnv)
 browse2Entry1 <- function(){
     tempValue <- fileBrowser()
     temp <- get(name(entry1), env = PWEnv)
-    value(temp) <- tempValue
+    value(temp) <- paste(tempValue, sep = "", collapse = ";")
     assign(name(entry1), temp, env = PWEnv)
 }
 button1 <- button(name = "button1", value = "Browse",
@@ -247,11 +247,13 @@ performaed on the interface we just played wit. The values for
 \em{entry1}, \em{list1}, \em{text1}, \em{radios1}, and {checks1} now become:
 
 <<>>=
+if(interactive()){
 value(pWidgets(aWidget)[["topRow"]][["entry1"]])
 value(pWidgets(aWidget)[["textRow"]][["list1"]])
 value(pWidgets(aWidget)[["textRow"]][["text1"]])
 value(pWidgets(aWidget)[["radGroup"]][["radios1"]])
 value(pWidgets(aWidget)[["chkGroup"]][["checks1"]])
+}
 @
 
 \end{document}
