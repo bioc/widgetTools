@@ -1,8 +1,6 @@
 # This function loads the required libraries and initializes the classes
 
 .First.lib <- function(libname, pkgname, where) {
-    require(methods, quietly=TRUE) ||
-                                 stop("Package methods unavailable!")
     capable <- capabilities()
     if(!capable["tcltk"]){
         stop(paste("The tcl/tk library is not available in your system.",
@@ -28,8 +26,4 @@
         addPDF2Vig("widgetTools")
     }
 
-    where <- match(paste("package:", pkgname, sep=""), search())
-    .initBasicPW(where)
-    .initWidgetView(where)
-    .initWidget(where)
 }

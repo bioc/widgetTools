@@ -32,7 +32,6 @@
 # time the value of the pWidget gets updated.
 #
 
-.initBasicPW <- function(where){
     setClass("basicPW", representation(name = "character",
                                        type = "character",
                                        value = "ANY",
@@ -43,160 +42,148 @@
                                        postFun = "function",
                                        notify = "list",
                                        env = "environment",
-                                       view = "widgetView"),
-                                       where = where)
+                                       view = "widgetView"))
     # Set the get methods
     if(!isGeneric("name")){
         setGeneric("name",
-                   function(object) standardGeneric("name"),
-                   where = where)
+                   function(object) standardGeneric("name"))
     }
+
     setMethod("name", "basicPW",
-              function(object) object@name, where = where)
-    if(!isGeneric("type")){
+              function(object) object@name)
+
+if(!isGeneric("type")){
         setGeneric("type",
-                   function(object) standardGeneric("type"),
-                   where = where)
+                   function(object) standardGeneric("type"))
     }
     setMethod("type", "basicPW",
-              function(object) object@type, where = where)
+              function(object) object@type)
     if(!isGeneric("value")){
         setGeneric("value",
-                   function(object) standardGeneric("value"),
-                   where = where)
+                   function(object) standardGeneric("value"))
     }
     setMethod("value", "basicPW",
-              function(object) postFun(object)(object@value),
-              where = where)
+              function(object) postFun(object)(object@value))
     if(!isGeneric("width")){
         setGeneric("width",
-                   function(object) standardGeneric("width"),
-                   where = where)
+                   function(object) standardGeneric("width"))
     }
     setMethod("width", "basicPW",
-              function(object) object@width, where = where)
+              function(object) object@width)
     if(!isGeneric("height")){
         setGeneric("height",
-                   function(object) standardGeneric("height"),
-                   where = where)
+                   function(object) standardGeneric("height"))
     }
     setMethod("height", "basicPW",
-              function(object) object@height, where = where)
+              function(object) object@height)
     if(!isGeneric("funs")){
         setGeneric("funs",
-                   function(object) standardGeneric("funs"),
-                   where = where)
+                   function(object) standardGeneric("funs"))
     }
     setMethod("funs", "basicPW",
-              function(object) object@funs, where = where)
+              function(object) object@funs)
     if(!isGeneric("notify")){
         setGeneric("notify",
-                   function(object) standardGeneric("notify"),
-                   where = where)
+                   function(object) standardGeneric("notify"))
     }
     setMethod("notify", "basicPW",
-              function(object) object@observers, where = where)
+              function(object) object@observers)
     if(!isGeneric("preFun")){
         setGeneric("preFun",
-                   function(object) standardGeneric("preFun"),
-                   where = where)
+                   function(object) standardGeneric("preFun"))
     }
     setMethod("preFun", "basicPW",
-              function(object) object@preFun, where = where)
+              function(object) object@preFun)
     if(!isGeneric("postFun")){
         setGeneric("postFun",
-                   function(object) standardGeneric("postFun"),
-                   where = where)
+                   function(object) standardGeneric("postFun"))
     }
     setMethod("postFun", "basicPW",
-              function(object) object@postFun, where = where)
+              function(object) object@postFun)
     if(!isGeneric("env")){
         setGeneric("env",
-                   function(object) standardGeneric("env"),
-                   where = where)
+                   function(object) standardGeneric("env"))
     }
     setMethod("env", "basicPW",
-              function(object) object@env, where = where)
+              function(object) object@env)
     if(!isGeneric("view")){
         setGeneric("view",
-                   function(object) standardGeneric("view"),
-                   where = where)
+                   function(object) standardGeneric("view"))
     }
     setMethod("view", "basicPW",
-              function(object) object@view, where = where)
+              function(object) object@view)
     # Define the replace methods
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
-                   standardGeneric("name<-"), where = where)
+                   standardGeneric("name<-"))
     }
     setReplaceMethod("name", "basicPW", function(object, value){
-                  object@name <- value; object}, where = where)
+                  object@name <- value; object})
     if(!isGeneric("type<-")){
         setGeneric("type<-", function(object, value)
-                   standardGeneric("type<-"), where = where)
+                   standardGeneric("type<-"))
     }
     setReplaceMethod("type", "basicPW", function(object, value){
-                  object@type <- value; object}, where = where)
+                  object@type <- value; object})
     if(!isGeneric("value<-")){
         setGeneric("value<-", function(object, value)
-                   standardGeneric("value<-"), where = where)
+                   standardGeneric("value<-"))
     }
     setReplaceMethod("value", "basicPW", function(object, value){
                   object@value <- preFun(object)(value);
                   if(!is.null(view(object))){
                       updateDisplay(view(object), name(object),
                                     type(object), value)};
-                  object}, where = where)
+                  object})
     if(!isGeneric("width<-")){
         setGeneric("width<-", function(object, value)
-                   standardGeneric("width<-"), where = where)
+                   standardGeneric("width<-"))
     }
     setReplaceMethod("width", "basicPW", function(object, value){
-                  object@width <- value; object}, where = where)
+                  object@width <- value; object})
     if(!isGeneric("height<-")){
         setGeneric("height<-", function(object, value)
-                   standardGeneric("height<-"), where = where)
+                   standardGeneric("height<-"))
     }
     setReplaceMethod("height", "basicPW", function(object, value){
-                  object@height <- value; object}, where = where)
+                  object@height <- value; object})
     if(!isGeneric("funs<-")){
         setGeneric("funs<-", function(object, value)
-                   standardGeneric("funs<-"), where = where)
+                   standardGeneric("funs<-"))
     }
     setReplaceMethod("funs", "basicPW", function(object, value){
-                  object@fun <- value; object}, where = where)
+                  object@fun <- value; object})
     if(!isGeneric("notify<-")){
         setGeneric("notify<-", function(object, value)
-                   standardGeneric("notify<-"), where = where)
+                   standardGeneric("notify<-"))
     }
     setReplaceMethod("notify", "basicPW", function(object, value){
-                  object@observers <- value; object}, where = where)
+                  object@observers <- value; object})
     if(!isGeneric("preFun<-")){
         setGeneric("preFun<-", function(object, value)
-                   standardGeneric("preFun<-"), where = where)
+                   standardGeneric("preFun<-"))
     }
     setReplaceMethod("preFun", "basicPW", function(object, value){
-                  object@preFun <- value; object}, where = where)
+                  object@preFun <- value; object})
     if(!isGeneric("postFun<-")){
         setGeneric("postFun<-", function(object, value)
-                   standardGeneric("postFun<-"), where = where)
+                   standardGeneric("postFun<-"))
     }
     setReplaceMethod("postFun", "basicPW", function(object, value){
-                  object@postFun <- value; object}, where = where)
+                  object@postFun <- value; object})
     if(!isGeneric("env<-")){
         setGeneric("env<-", function(object, value)
-                   standardGeneric("env<-"), where = where)
+                   standardGeneric("env<-"))
     }
     setReplaceMethod("env", "basicPW", function(object, value){
-                  object@env <- value; object}, where = where)
+                  object@env <- value; object})
     if(!isGeneric("view<-")){
         setGeneric("view<-", function(object, value)
-                   standardGeneric("view<-"), where = where)
+                   standardGeneric("view<-"))
     }
     setReplaceMethod("view", "basicPW", function(object, value){
-                  object@view <- value; object}, where = where)
-    return("Class basicPW initialized")
-}
+                  object@view <- value; object})
+
 
 # This function initilizes a win class with default functions
 # title - a character string for the text to be displayed as the title
@@ -207,93 +194,86 @@
 # widgetids - a list whose elements are the name and tkwin ids for the
 # widget elements to be created.
 #
-.initWidgetView <- function(where){
     setClass("widgetView", representation(WVTitle = "character",
                                    name = "character",
                                    winid = "tkwin",
                                    widgetids = "list",
-                                   theWidget = "widget"), where = where)
+                                   theWidget = "widget"))
     # Set the get methods
     if(!isGeneric("name")){
         setGeneric("name",
-                   function(object) standardGeneric("name"),
-                   where = where)
+                   function(object) standardGeneric("name"))
     }
     setMethod("name", "widgetView",
-              function(object) object@name, where = where)
+              function(object) object@name)
     if(!isGeneric("winid")){
         setGeneric("winid",
-                   function(object) standardGeneric("winid"),
-                   where = where)
+                   function(object) standardGeneric("winid"))
     }
     setMethod("winid", "widgetView",
-              function(object) object@winid, where = where)
+              function(object) object@winid)
     if(!isGeneric("WVTitle")){
         setGeneric("WVTitle",
-                   function(object) standardGeneric("WVTitle"),
-                   where = where)
+                   function(object) standardGeneric("WVTitle"))
     }
     setMethod("WVTitle", "widgetView",
-              function(object) object@WVTitle, where = where)
+              function(object) object@WVTitle)
     if(!isGeneric("widgetids")){
         setGeneric("widgetids",
-                   function(object) standardGeneric("widgetids"),
-                   where = where)
+                   function(object) standardGeneric("widgetids"))
     }
     setMethod("widgetids", "widgetView",
-              function(object) object@widgetids, where = where)
+              function(object) object@widgetids)
     if(!isGeneric("theWidget")){
         setGeneric("theWidget",
-                   function(object) standardGeneric("theWidget"),
-                   where = where)
+                   function(object) standardGeneric("theWidget"))
     }
     setMethod("theWidget", "widgetView",
-              function(object) object@theWidget, where = where)
+              function(object) object@theWidget)
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
-                   standardGeneric("name<-"), where = where)
+                   standardGeneric("name<-"))
     }
     setReplaceMethod("name", "widgetView", function(object, value){
-                  object@name <- value; object}, where = where)
+                  object@name <- value; object})
     if(!isGeneric("winid<-")){
         setGeneric("winid<-", function(object, value)
-                   standardGeneric("winid<-"), where = where)
+                   standardGeneric("winid<-"))
     }
     setReplaceMethod("winid", "widgetView", function(object, value){
-                  object@winid <- value; object}, where = where)
+                  object@winid <- value; object})
     if(!isGeneric("widgetids<-")){
         setGeneric("widgetids<-", function(object, value)
-                   standardGeneric("widgetids<-"), where = where)
+                   standardGeneric("widgetids<-"))
     }
     setReplaceMethod("widgetids", "widgetView", function(object, value){
-                  object@widgetids <- value; object}, where = where)
+                  object@widgetids <- value; object})
     if(!isGeneric("theWidget<-")){
         setGeneric("theWidget<-", function(object, value)
-                   standardGeneric("theWidget<-"), where = where)
+                   standardGeneric("theWidget<-"))
     }
     setReplaceMethod("theWidget", "widgetView", function(object, value){
-                  object@theWidget <- value; object}, where = where)
+                  object@theWidget <- value; object})
     if(!isGeneric("renderWidgets")){
         setGeneric("renderWidgets",
                    function(widgetView, pWidgets)
-                   standardGeneric("renderWidgets"), where = where)
+                   standardGeneric("renderWidgets"))
     }
     setMethod("renderWidgets", c("widgetView", "list"),
               function(widgetView, pWidgets)
-              return(.doWidgets(widgetView, pWidgets)),
-              where = where)
+              return(.doWidgets(widgetView, pWidgets)))
     if(!isGeneric("renewView")){
         setGeneric("renewView",
                    function(widgetView, pWidgets)
-                   standardGeneric("renewView"), where = where)
+                   standardGeneric("renewView"))
     }
     setMethod("renewView", c("widgetView", "list"),
               function(widgetView, pWidgets)
-                  .renew(widgetView, pWidgets), where = where)
+                  .renew(widgetView, pWidgets))
     if(!isGeneric("updateDisplay")){
         setGeneric("updateDisplay",
                    function(widgetView, PWName, PWType, value)
-                   standardGeneric("updateDisplay"), where = where)
+                   standardGeneric("updateDisplay"))
     }
     setMethod("updateDisplay", "widgetView",
               function(widgetView, PWName, PWType, value){
@@ -305,25 +285,20 @@
                           writeText(widgetids[[PWName]], value)
                       }
                   }
-              }, where = where)
+              })
     if(!isGeneric("killWin")){
         setGeneric("killWin",
-                   function(tkWidget) standardGeneric("killWin"),
-                   where = where)
+                   function(tkWidget) standardGeneric("killWin"))
     }
     setMethod("killWin", "widgetView",
-              function(tkWidget) tkdestroy(winid(tkWidget)), where = where)
+              function(tkWidget) tkdestroy(winid(tkWidget)))
     if(!isGeneric("winWait")){
         setGeneric("winWait",
-                   function(tkWidget) standardGeneric("winWait"),
-                   where = where)
+                   function(tkWidget) standardGeneric("winWait"))
     }
     setMethod("winWait", "widgetView",
-              function(tkWidget) tkwait.window(winid(tkWidget)),
-              where = where)
+              function(tkWidget) tkwait.window(winid(tkWidget)))
 
-    return("Class tkWidget initialized")
-}
 
 .doWidgets<- function(tkWidget, pWidgets){
     ENV <- parent.frame(1)
@@ -526,99 +501,91 @@
 
 # This function initilizes the widget class and the associsted
 # functions.
-.initWidget <- function(where){
     setClass("widget", representation(wTitle = "character",
                                       pWidgets = "list",
                                       env = "environment",
                                       funs = "list",
                                       preFun = "function",
-                                      postFun = "function"),
-             where = where)
+                                      postFun = "function"))
     # Set the get methods
     if(!isGeneric("wTitle")){
         setGeneric("wTitle",
-                   function(object) standardGeneric("wTitle"),
-                   where = where)
+                   function(object) standardGeneric("wTitle"))
     }
     setMethod("wTitle", "widget",
-              function(object) object@wTitle, where = where)
+              function(object) object@wTitle)
     if(!isGeneric("pWidgets")){
         setGeneric("pWidgets",
-                   function(object) standardGeneric("pWidgets"),
-                   where = where)
+                   function(object) standardGeneric("pWidgets"))
     }
     setMethod("pWidgets", "widget",
-              function(object) object@pWidgets, where = where)
+              function(object) object@pWidgets)
      if(!isGeneric("env")){
         setGeneric("env",
-                   function(object) standardGeneric("env"),
-                   where = where)
+                   function(object) standardGeneric("env"))
     }
     setMethod("env", "widget",
-              function(object) object@env, where = where)
+              function(object) object@env)
     if(!isGeneric("funs")){
         setGeneric("funs",
-                   function(object) standardGeneric("funs"),
-                   where = where)
+                   function(object) standardGeneric("funs"))
     }
     setMethod("funs", "widget",
-              function(object) object@funs, where = where)
+              function(object) object@funs)
     if(!isGeneric("preFun")){
         setGeneric("preFun",
-                   function(object) standardGeneric("preFun"),
-                   where = where)
+                   function(object) standardGeneric("preFun"))
     }
     setMethod("preFun", "widget",
-              function(object) object@preFun, where = where)
+              function(object) object@preFun)
     if(!isGeneric("postFun")){
         setGeneric("postFun",
-                   function(object) standardGeneric("postFun"),
-                   where = where)
+                   function(object) standardGeneric("postFun"))
     }
     setMethod("postFun", "widget",
-              function(object) object@postFun, where = where)
+              function(object) object@postFun)
     if(!isGeneric("wTitle<-")){
         setGeneric("wTitle<-", function(object, value)
-                   standardGeneric("wTitle<-"), where = where)
+                   standardGeneric("wTitle<-"))
     }
     setReplaceMethod("wTitle", "widget", function(object, value){
-                  object@wTitle <- value; object}, where = where)
+                  object@wTitle <- value; object})
     if(!isGeneric("pWidgets<-")){
         setGeneric("pWidgets<-", function(object, value)
-                   standardGeneric("pWidgets<-"), where = where)
+                   standardGeneric("pWidgets<-"))
     }
     setReplaceMethod("pWidgets", "widget", function(object, value){
-                  object@pWidgets <- value; object}, where = where)
+                  object@pWidgets <- value; object})
     if(!isGeneric("env<-")){
         setGeneric("env<-", function(object, value)
-                   standardGeneric("env<-"), where = where)
+                   standardGeneric("env<-"))
     }
     setReplaceMethod("env", "widget", function(object, value){
-                  object@env <- value; object}, where = where)
+                  object@env <- value; object})
     if(!isGeneric("funs<-")){
         setGeneric("funs<-", function(object, value)
-                   standardGeneric("funs<-"), where = where)
+                   standardGeneric("funs<-"))
     }
     setReplaceMethod("funs", "widget", function(object, value){
-                  object@funs <- value; object}, where = where)
+                  object@funs <- value; object})
     if(!isGeneric("preFuns<-")){
         setGeneric("preFuns<-", function(object, value)
-                   standardGeneric("preFuns<-"), where = where)
+                   standardGeneric("preFuns<-"))
     }
     setReplaceMethod("preFuns", "widget", function(object, value){
-                  object@preFuns <- value; object}, where = where)
+                  object@preFuns <- value; object})
     if(!isGeneric("postFuns<-")){
         setGeneric("postFuns<-", function(object, value)
-                   standardGeneric("postFuns<-"), where = where)
+                   standardGeneric("postFuns<-"))
     }
     setReplaceMethod("postFuns", "widget", function(object, value){
-                  object@postFuns <- value; object}, where = where)
+                  object@postFuns <- value; object})
 
     # Set the interface methods
     if(!isGeneric("updateRadio")){
         setGeneric("updateRadio",
                    function(object, PWName, bName)
-                   standardGeneric("updateRadio"), where = where)
+                   standardGeneric("updateRadio"))
     }
     setMethod("updateRadio", "widget",
               function(object, PWName, bName) {
@@ -628,11 +595,11 @@
                   tempValue[bName] <- TRUE
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
-              }, where = where)
+              })
     if(!isGeneric("updateList")){
         setGeneric("updateList",
                    function(object, PWName, opts)
-                   standardGeneric("updateList"), where = where)
+                   standardGeneric("updateList"))
     }
     setMethod("updateList", "widget",
               function(object, PWName, opts) {
@@ -642,11 +609,11 @@
                   tempValue[bName] <- TRUE
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
-              }, where = where)
+              })
     if(!isGeneric("updateCheck")){
         setGeneric("updateCheck",
                    function(object, PWName, bName)
-                   standardGeneric("updateCheck"), where = where)
+                   standardGeneric("updateCheck"))
     }
     setMethod("updateCheck", "widget",
               function(object, PWName, bName) {
@@ -659,18 +626,18 @@
                   }
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
-              }, where = where)
+              })
     if(!isGeneric("updateText")){
         setGeneric("updateText",
                    function(object, PWName, value)
-                   standardGeneric("updateText"), where = where)
+                   standardGeneric("updateText"))
     }
     setMethod("updateText", "widget",
               function(object, PWName, value) {
                   tempPW <- get(PWName, env = env(object))
                   value(tempPW) <- value
                   assign(name(tempPW), tempPW, env = env(tempPW))
-              }, where = where)
+              })
 
-    return("Class widget initialized")
-}
+
+
