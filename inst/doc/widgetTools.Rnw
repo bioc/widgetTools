@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.10 2002/12/13 18:37:12 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.11 2002/12/13 22:09:13 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -149,15 +149,11 @@ button1 <- button(name = "button1", text = "Browse",
                           command = browse2Entry1, env = PWEnv)
 list1 <- listBox(name = "list1", value = "Put me in the second row",
                  env = PWEnv)
-option <- function(){
-    temp <- get("radios1", env = PWEnv)
-    value(temp) <- radioOption()
-    assign("radios1", temp, env = PWEnv)
-}
-radios1 <- radioButton(name = c("radio1", "radio2", "radio3"), text =
-     c("Radio1", "Radio2", "Radio3"), command = option, env = PWEnv)
-checks1 <- checkButton(name = c("check11", "check22", "check3"), text =
-     c("Check1", "Check2", "Chjeck3"), default = "check1", env = PWEnv)
+radios1 <- radioButton(name = "radios1", text = c("radio1", "radio2",
+                                        "radio3"), env = PWEnv)
+checks1 <- checkButton(name = "checks1", text = c("check1", "check22",
+                                         "check3"), default =
+                       "check1", env = PWEnv)
 @
 
 Notice that the name and text variables for radios and checks are
@@ -233,7 +229,7 @@ The following code constructs a \em{widget} object:
 <<>>=
 widget <- widget(title = "A test widget", pWidgets, funs = list(),
                  preFun = function() print("Hello"),
-                 postFun = function() print("Bye"))
+                 postFun = function() print("Bye"), env = PWEnv)
 @
 
 If we click the browse button, selecte a file through the interface,
