@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.19 2002/12/18 20:48:28 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.20 2002/12/19 16:08:17 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -228,9 +228,11 @@ where
 The following code constructs a \em{widget} object:
 
 <<>>=
+if(interactive()){
 aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
                  preFun = function() print("Hello"),
                  postFun = function() print("Bye"), env = PWEnv)
+}
 @
 
 Now, we can change the values of the pWidgets we have created through
