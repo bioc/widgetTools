@@ -4,72 +4,72 @@
 
 entryBox <- function(name, env, value = "", width = 50, height = 0,
                      funs = list(), notify = list(), preFun = function (x) x,
-                     postFun = function(x) x){
+                     postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "entry", value = value,
         width = width, height = height, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 textBox <- function(name, env, value = "", width = 25, height = 12,
                      funs = list(), notify = list(), preFun = function (x) x,
-                     postFun = function(x) x){
+                     postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "text", value = value,
         width = width, height = height, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 listBox <- function(name, env, value = "", width = 25, height = 10,
                      funs = list(), notify = list(), preFun = function (x) x,
-                     postFun = function(x) x){
+                     postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "list", value = value,
         width = width, height = height, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 checkButton <- function(name, env, value, width = 50,
                      funs = list(), notify = list(), preFun = function (x) x,
-                     postFun = function(x) x){
+                     postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "check", value = value,
         width = width, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 radioButton <- function(name, env, value, width = 50,
                      funs = list(), notify = list(), preFun = function (x) x,
-                     postFun = function(x) x){
+                     postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "radio", value = value,
         width = width, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 label <- function(name, env, value = "", width = 0, height = 0,
                   funs = list(), notify = list(), preFun = function (x) x,
-                  postFun = function(x) x){
+                  postFun = function(x) x, view = new("widgetView")){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "label", value = value,
         width = width, height = height, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 button <- function(name, env, value = "", width = 12, height = 0,
                    funs = list(), notify = list(), preFun = function (x) x,
-                   postFun = function(x) x){
+                   postFun = function(x) x, view = new("widgetView") ){
 
     .nameGood(name = name)
     new("basicPW", name = name, type = "button", value = value,
         width = width, height = height, funs = funs, notify = notify,
-        preFun = preFun, postFun = postFun, env = env)
+        preFun = preFun, postFun = postFun, env = env, view = view)
 }
 
 .nameGood <- function(name){
@@ -79,9 +79,13 @@ button <- function(name, env, value = "", width = 12, height = 0,
 }
 
 widgetView <- function(WVTitle, name, widgetids = list(),
-                       theWidget = new("widget")){
+                       theWidget = new("widget"), winid = NULL){
+    if(is.null(winid)){
+         winid <- ""
+         class(winid) <- "tkwin"
+    }
     temp <- new("widgetView", WVTitle = WVTitle, name = name,
-                widgetids = widgetids, theWidget = theWidget)
+                widgetids = widgetids, theWidget = theWidget, winid = winid)
     base <- tktoplevel()
     tktitle(base) <- WVTitle
     winid(temp) <- base
