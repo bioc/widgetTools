@@ -167,7 +167,8 @@
                    where = where)
     }
     setMethod("getNotifier", "pWidget",
-              function(object) get("notifier"), where = where)
+              function(object) get("notifier", evn = .GlobalEnv),
+              where = where)
     # Define the replace methods
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
@@ -557,7 +558,7 @@
                    where = where)
     }
     setMethod("TKWait", "tkWidget",
-              function(tkWidget) tkwait.window(getName(tkWidget)), where = where)
+              function(tkWidget) tkwait.window(getWinid(tkWidget)), where = where)
 
     return("Class tkWidget initialized")
 }

@@ -108,8 +108,11 @@ updater <- function(pWidgets = list(), end = list(), views = list()){
 # destroyed.
 widget <- function(title, pWidgets, funs = list(),
                    preFun = function() "Hello", postFun = function() "Bye"){
+    # Execute the function that is supposed to run first
+    preFun()
+
     # Keep a copy of the original data
-    ORIG <- pWidgets
+    ORINGE <- pWidgets
 
     updater <- updater(pWidgets = pWidgets, end = list(aWidget = FALSE))
     aWidget <- tkWidget(title = title, name = "aWidget", updater = updater)
@@ -138,14 +141,20 @@ widget <- function(title, pWidgets, funs = list(),
     widgetids(aWidget) <- .putTKWidgets(pWidgets, funs, defaultFuns, aWidget)
     # Construct a notifier
     notifier <- notifier(aWidget)
+    assign("notifier", notifier, env = .GlobalEnv)
     # Wait until the user clicks the Cancel or Finish button
     TKWait(aWidget)
+    # Execute the function to be run at the end
+    postFun()
     # Act accordingly based on either the Cancel or Finish botton was
     # clicked
-    # construct a widget object
-#    new("widget", title = title, pWidgets = pWidgets, funs = funs,
-#        preFun = preFun, postFun = postFun)
-
+    if(getEnd(updater)){
+        PWList <- getPWidgets(updater)
+    }else{
+        PWList <- ORINGE
+    }
+    new("widget", title = title, pWidgets = PWList,
+            funs = funs, preFun = preFun, postFun = postFun)
 }
 
 .putTKWidgets <- function(pWidgets, funs, default, aWidget){
