@@ -8,3 +8,5 @@ Description: This packages contains tools to support the construction
 Depends: R (>= 1.7.0), tcltk
 Maintainer: Jianhua Zhang <jzhang@jimmy.harvard.edu>
 License: LGPL
+ReleaseLevel: devel
+
