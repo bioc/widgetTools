@@ -1,18 +1,35 @@
-dropdownList <- function(base, options, textvariable, width = 10, default){
+dropdownList <- function(base, options, textvariable, width = 10,
+                         default, editable = FALSE){
 
     upDateEntry <- function(){
-        tkconfigure(entry, state = "normal")
+        if(!editable){
+            tkconfigure(entry, state = "normal")
+        }
         writeList(entry, getListOption(entry, options), clear = TRUE)
-        tkconfigure(entry, state = "disabled")
+        if(!editable){
+            tkconfigure(entry, state = "disabled")
+        }
     }
+
     if(!missing(default)){
+        if(!is.element(default, options)){
+            tkmessageBox(title = "Data error warning",
+                         message = paste("The default value \"",
+                         default, "\" is not an element of ",
+                         "the options \"", paste(options, sep = "",
+                                   collapse = ","), "\"", sep = ""),
+                         icon = "warning", type = "ok")
+        }
         tclvalue(textvariable) <- default
     }else{
         tclvalue(textvariable) <- options[1]
     }
     dropFrame <- tkframe(base, borderwidth = 2, relief = "sunken")
     entry <- tkentry(dropFrame, width = width, textvariable = textvariable,
-                     borderwidth = 1, state = "disabled")
+                     borderwidth = 1)
+    if(!editable){
+        tkconfigure(entry, state = "disabled")
+    }
     tkpack(entry, side = "left", expand = TRUE, fill = "both")
     dropBut <- tkbutton(dropFrame, width = 1, text = "v", font = "bold",
                         command = upDateEntry)
