@@ -92,7 +92,7 @@
                    where = where)
     }
     setMethod("getHeight", "pWidget",
-              function(object) boject@height, where = where)
+              function(object) object@height, where = where)
     if(!isGeneric("getVScroll")){
         setGeneric("getVScroll",
                    function(object) standardGeneric("getVScroll"),
