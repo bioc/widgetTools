@@ -112,7 +112,8 @@ widgetView <- function(WVTitle, vName, widgetids = list(),
 
 widget <- function(wTitle, pWidgets, funs = list(),
                    preFun = function() print("Hello"),
-                   postFun = function() print("Bye"), env){
+                   postFun = function() print("Bye"), env,
+                   defaultNames = c("Finish", "Cancel")){
     # Execute the function that is supposed to run first
     preFun()
     # A variable to keep track of the status
@@ -137,14 +138,13 @@ widget <- function(wTitle, pWidgets, funs = list(),
         renewView(widgetView, pWidgets)
     }
     tkcmd("tk_focusFollowsMouse")
-    cancel <- button(wName = "cancel", wValue = "Cancel", wWidth = 8,
+    finish <- button(wName = "finish", wValue = defaultNames[1], wWidth = 8,
+                     wFuns = list(command = finishBut), wEnv = new.env())
+    cancel <- button(wName = "cancel", wValue = defaultNames[2], wWidth = 8,
         wFuns = list(command = cancelBut), wEnv = new.env())
-    finish <- button(wName = "finish", wValue = "Finish", wWidth = 8,
-        wFuns = list(command = finishBut), wEnv = new.env())
-    clear <- button(wName = "clear", wValue = "Clear", wWidth = 8,
-        wFuns = list(command = clearBut), wEnv = new.env())
-    defaultFuns <- list(clear = clear, cancel = cancel, finish =
-        finish)
+#    clear <- button(wName = "clear", wValue = "Clear", wWidth = 8,
+#        wFuns = list(command = clearBut), wEnv = new.env())
+    defaultFuns <- list(finish = finish, cancel = cancel)
     if(length(funs) > 0){
         userFun
         s <- list()
