@@ -1,6 +1,6 @@
 # This group of functions are constructors of objects of the classes
 # defined by init.R.
-#
+
 
 entryBox <- function(wName, wEnv, wValue = "", wWidth = 50, wHeight = 0,
                      wFuns = list(), wNotify = list(),

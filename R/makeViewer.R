@@ -1,6 +1,5 @@
 # This function makes a viewer that shows the content of an object.
 # A viewer is a list box with a scroll bar attached.
-#
 
 makeViewer <- function (target, vWidth = NULL, vHeight = NULL,
                         hScroll = FALSE, vScroll = TRUE,
