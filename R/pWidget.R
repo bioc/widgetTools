@@ -141,7 +141,7 @@ widget <- function(title, pWidgets, funs = list(),
     widgetids(aWidget) <- .putTKWidgets(pWidgets, funs, defaultFuns, aWidget)
     # Construct a notifier
     notifier <- notifier(aWidget)
-    assign("notifier", notifier, env = .GlobalEnv)
+    assign("theNotifier", notifier, env = .GlobalEnv)
     # Wait until the user clicks the Cancel or Finish button
     TKWait(aWidget)
     # Execute the function to be run at the end

@@ -167,8 +167,8 @@
                    where = where)
     }
     setMethod("getNotifier", "pWidget",
-              function(object) get("notifier", evn = .GlobalEnv),
-              where = where)
+              function(object) return(get("theNotifier", env =.GlobalEnv)),
+                                      where = where)
     # Define the replace methods
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
