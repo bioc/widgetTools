@@ -103,52 +103,14 @@ widget <- function(title, pWidgets, funs = list(),
     localPWs <- pWidgets
     # Construct a widgetView object
     widget1 <- widgetView(title, name = "widget1")
-    # Render the widgets using the local copy
-    widgetids(widget1) <-
-        renderWidgets(widget1, .getAllPW(widget1, localPWs, funs))
-    # Keep a copy of pWidgets and the widgetView in a specified
-    # environment
-    .put2Env(localPWs, widget1)
-
-    winWait(widget1)
-    # Execute the function to be run at the end
-    postFun()
-    # Act accordingly based on either the Cancel or Finish botton was
-    # clicked
-    if(END){
-        return(new("widget", title = title,
-                   pWidgets = .getChange(pWidgets), funs = funs,
-                   preFun = preFun, postFun = postFun))
-    }else{
-        new("widget", title = title, pWidgets = pWidgets,
-            funs = funs, preFun = preFun, postFun = postFun)
-    }
-}
-
-.put2Env <- function(pWidgets, widgetView){
-    putOne <- function(pWidget){
-        view(pWidget) <- widgetView
-        assign(name(pWidget), pWidget, env = env(pWidget))
-    }
-
-    for(i in names(pWidgets)){
-        if(length(pWidgets[[i]]) > 1){
-            lapply(pWidgets[[i]], putOne)
-        }else{
-            putOne(pWidgets[[i]])
-        }
-    }
-}
-
-.getAllPW <- function(widgetView, pWidgets, funs){
-    # A Clear, Cancel, and Finish are the default buttons
+        # A Clear, Cancel, and Finish are the default buttons
     cancelBut <- function(){
-        END <<- FALSE
-        killWin(widgetView)
+        END <<-  FALSE
+        killWin(widget1)
     }
     finishBut <- function(){
-        END <<- TRUE
-        killWin(widgetView)
+        END <<-  TRUE
+        killWin(widget1)
     }
     clearBut <- function(){
         tkmessageBox(title = "I will be ready soon",
@@ -169,10 +131,44 @@ widget <- function(title, pWidgets, funs = list(),
                            command = funs[[i]])
             userFuns[[i]] <- temp
         }
-        pWidgets[["userFuns"]] <- userFuns
+        localPWs[["userFuns"]] <- userFuns
     }
-    pWidgets[["default"]] <- defaultFuns
-    return(pWidgets)
+    localPWs[["default"]] <- defaultFuns
+    # Render the widgets using the local copy
+    widgetids(widget1) <-
+        renderWidgets(widget1, localPWs)
+    # Keep a copy of pWidgets and the widgetView in a specified
+    # environment
+    .put2Env(localPWs, widget1)
+
+    winWait(widget1)
+    # Execute the function to be run at the end
+    postFun()
+    # Act accordingly based on either the Cancel or Finish botton was
+    # clicked
+    if(END){
+        return(new("widget", title = title,
+                   pWidgets = .getChanges(pWidgets), funs = funs,
+                   preFun = preFun, postFun = postFun))
+    }else{
+        new("widget", title = title, pWidgets = pWidgets,
+            funs = funs, preFun = preFun, postFun = postFun)
+    }
+}
+
+.put2Env <- function(pWidgets, widgetView){
+    putOne <- function(pWidget){
+        view(pWidget) <- widgetView
+        assign(name(pWidget), pWidget, env = env(pWidget))
+    }
+
+    for(i in names(pWidgets)){
+        if(length(pWidgets[[i]]) > 1){
+            lapply(pWidgets[[i]], putOne)
+        }else{
+            putOne(pWidgets[[i]])
+        }
+    }
 }
 
 .getChanges <- function(pWidgets){

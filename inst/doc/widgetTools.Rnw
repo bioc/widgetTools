@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.8 2002/12/12 21:42:56 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.9 2002/12/12 22:06:48 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -229,6 +229,15 @@ The following code constructs a \em{widget} object:
 widget <- widget(title = "A test widget", pWidgets, funs = list(),
                  preFun = function() print("Hello"),
                  postFun = function() print("Bye"))
+@
+
+If we click the browse button, selecte a file through the interface,
+and then click finish, the values of the pWidgets corresponding to the
+widget elements on the interface will be changed. For example, the
+value for \em{list1} will be:
+
+<<>>=
+value(pWidgets(widget)[["list1"]])
 @
 
 \end{document}
