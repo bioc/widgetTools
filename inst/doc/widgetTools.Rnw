@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.5 2002/12/05 22:10:05 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.6 2002/12/09 19:51:21 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -137,8 +137,7 @@ anEntry <- pWidget(name = "anEntry", type = "entry", width = 50,
 text = "I am in the first row")
 aButton <- pWidget(name = "aButton", type = "button", text = "Browse",
                    width = 12, observers = list(anEntry),
-                   funs = list(sclick = function(){temp <- fileBrowser();
-                   value(anEntry) <- temp}))
+                   funs = list(command = fileBrowser))
 aList <- pWidget(name = "aList", type = "list",
 text = "I am in the second row", width = 50, height = 20, vScroll = TRUE,
 hScroll = TRUE)
