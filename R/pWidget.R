@@ -165,10 +165,12 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # clicked
     if(END){
         pWidgets(temp) <- .getChanges(pWidgets)
+        return(temp)
     }else{
-        pWidgets(temp) <- pWidgets
+        #pWidgets(temp) <- pWidgets
+        return(NULL)
     }
-    return(temp)
+#    return(temp)
 }
 # Write the value of the primary widgets to the enviroment
 .putPW2Env <- function(pWidgets, widgetView){
