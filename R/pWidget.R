@@ -37,9 +37,9 @@
 # the text of the pWdiget upon existing;
 #
 #
-pWidget <- function(type, parent, text, variable = "",
-                    width = 0, height = 0, vScroll = FALSE,
-                    hScroll = FALSE, preFun = function (x) x,
+pWidget <- function(type, parent, text, value = "", variable = tclVar(),
+                    width = 20, height = 10, vScroll = FALSE,
+                    hScroll = FALSE, funs = list(), preFun = function (x) x,
                     postFun = function(x) x){
 
     .checkArgs(type, parent, text, variable)
@@ -50,7 +50,7 @@ pWidget <- function(type, parent, text, variable = "",
         preFun = preFun, postFun = postFun)
 }
 
-.checkArgs <- function(type, parent, text, variable){
+.checkArgs <- function(type, parent, text, variable = NULL){
     if(any(c(is.null(parent), is.null(type)) || any(is.na(parent),
                               is.na(type), parent == "", type == ""))){
         stop("Invalid argument for \"parent\" and/or \"type\"")

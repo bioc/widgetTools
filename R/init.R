@@ -34,11 +34,13 @@
                                        type = "character",
                                        parent = "character",
                                        text = "character",
-                                       variable = "character",
+                                       value = "character",
+                                       variable = "tclVar",
                                        width = "numeric",
                                        height = "numeric",
                                        vScroll = "logical",
                                        hScroll = "logical",
+                                       funs = "list",
                                        preFun = "function",
                                        postFun = "function"),
                                        where = where)
@@ -70,7 +72,14 @@
                    where = where)
     }
     setMethod("getText", "pWidget",
-              function(object) object@postFun(object@text), where = where)
+              function(object) object@text, where = where)
+    if(!isGeneric("getValue")){
+        setGeneric("getValue",
+                   function(object) standardGeneric("getValue"),
+                   where = where)
+    }
+    setMethod("getValue", "pWidget",
+              function(object) getPostFun(object)(object@value), where = where)
     if(!isGeneric("getVariable")){
         setGeneric("getVariable",
                    function(object) standardGeneric("getVariable"),
@@ -107,6 +116,7 @@
     }
     setMethod("getHScroll", "pWidget",
               function(object) object@hScroll, where = where)
+
     if(!isGeneric("getPreFun")){
         setGeneric("getPreFun",
                    function(object) standardGeneric("getPreFun"),
@@ -114,7 +124,13 @@
     }
     setMethod("getPreFun", "pWidget",
               function(object) object@preFun, where = where)
-
+    if(!isGeneric("getFuns")){
+        setGeneric("getFuns",
+                   function(object) standardGeneric("getFuns"),
+                   where = where)
+    }
+    setMethod("getFuns", "pWidget",
+              function(object) object@funs, where = where)
     if(!isGeneric("getPostFun")){
         setGeneric("getPostFun",
                    function(object) standardGeneric("getPostFun"),
@@ -154,7 +170,15 @@
                    where = where)
     }
     setMethod("setText", "pWidget",
-              function(object, value){object@text <- object@preFun(value);
+              function(object, value){object@text <- value;
+                                      return(object)}, where = where)
+    if(!isGeneric("setValue")){
+        setGeneric("setValue",
+                   function(object, value) standardGeneric("setValue"),
+                   where = where)
+    }
+    setMethod("setValue", "pWidget",
+              function(object, value){object@Value <- getPreFun(object)(value);
                                       return(object)}, where = where)
     if(!isGeneric("setVariable")){
         setGeneric("setVariable",
@@ -195,6 +219,14 @@
     }
     setMethod("setHScroll", "pWidget",
               function(object, value){object@hScroll <- value;
+                                      return(object)}, where = where)
+    if(!isGeneric("setFuns")){
+        setGeneric("setFuns",
+                   function(object, value) standardGeneric("setFuns"),
+                   where = where)
+    }
+    setMethod("setFuns", "pWidget",
+              function(object, value){object@funs <- value;
                                       return(object)}, where = where)
     if(!isGeneric("setPreFun")){
         setGeneric("setPreFun",
@@ -398,9 +430,10 @@
                    function(what, side = "left")
                    standardGeneric("doPack"), where = where)
     }
-    setMethod("doPack", "pWidget",
-              function(what, side = "left")
-              tkpack(getName(what), side = side), where = where)
+#    setMethod("doPack", "pWidget",
+#              function(what, side = "left"){
+#                  if(!any(getType(pWidget) == c("text", "list", "canvas")))
+#              tkpack(getName(what), side = side)}, where = where)
     setMethod("doPack", "ANY",
               function(what, side = "left")
               tkpack(what, side = side), where = where)
@@ -414,15 +447,26 @@
                             width = getWidth(pWidget)),
            "button" = temp <- tkbutton(parent, text = getText(pWidget),
                             width = getWidth(pWidget)),
+           "text" = ,
+           "canvas" = ,
            "list" = temp <- makeViewer(parent, text = getText(pWidget),
-                           vWidth = getWidth(pWidget),
-                           vHeight = getHeight(pWidget),
-                           hScroll = getHScroll(pWidget),
-                           vScroll = getVScroll(pWidget), what = "list"),
+                            vWidth = getWidth(pWidget),
+                            vHeight = getHeight(pWidget),
+                            hScroll = getHScroll(pWidget),
+                            vScroll = getVScroll(pWidget),
+                            what = getType(pWidget)),
            "label" = temp <- tklabel(parent, text = getText(pWidget),
                              width = getWidth(pWidget)),
+           "radio" = temp <- tkradiobutton(parent, text = getText(pWidget),
+                             value = getValue(pWidget),
+                             variable = getVariable(pWidget)),
            stop("Invalid pWidget type"))
-    pWidget <- setName(pWidget, temp)
 
+    for(i in getFuns(pWidget)){
+        tkconfigure(getName(pWidget), command = i)
+    }
+
+    pWidget <- setName(pWidget, temp)
     return(pWidget)
 }
+
