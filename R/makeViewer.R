@@ -58,7 +58,7 @@ makeViewer <- function (target, vWidth = NULL, vHeight = NULL,
 
 .doList <- function(target, text){
     temp <- tklistbox(target, font = "courier 11")
-    trash <- sapply(text, writeList, widget = temp, clear = FALSE)
+    writeList(temp, text, clear = TRUE)
     return(temp)
 }
 
