@@ -13,6 +13,14 @@
         }
     }
 
+    if(require(Biobase)){
+        if(interactive()){
+            if(require(tcltk, quietly = TRUE)){ 
+                addVig2Menu("widgetTools")
+            }
+        }
+    }
+
     where <- match(paste("package:", pkgname, sep=""), search())
     .initBasicPW(where)
     .initWidgetView(where)
