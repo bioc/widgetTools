@@ -1,5 +1,5 @@
 export(button, checkButton, dropdownList, entryBox, "env<-", funs,
-"funs<-", label, listBox, makeViewer, oneVScrList, pWidgets, getListOption,
+"funs<-", label, listBox, makeViewer, oneVScrList, pWidgets,
 "pWidgets<-", postFun, "postFuns<-", preFun, "preFuns<-", radioButton,
 textBox, tooltip, widget, writeList, writeText, vName, "vName<-",
 wEnv, "wEnv<-", wFuns, "wFuns<-", wHeight, "wHeight<-", wName,
