@@ -16,6 +16,6 @@ updateList <- function(widget, value, clear = TRUE){
 }
 
 getListValue <- function(which){
-    return(as.character(tkget(which,(tkcurselection(which)))))
+    return(as.character(tkget(which, tkcurselection(which))))
 }
 
