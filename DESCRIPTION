@@ -1,6 +1,6 @@
 Package: widgetTools
 Title: Creates an interactive tcltk widget
-Version: 0.5
+Version: 0.8
 Author: Jianhua Zhang
 Description: This packages constructs an interface using tcltk widgets
   that performs some simple interactive functions
