@@ -35,8 +35,7 @@ vScroll = TRUE, what = "list", side = "left", text = "")
 \note{This function is part of the Bioconductor project at Dana-Farber
   Cancer Institute to provide Bioinformatics functionalities through \R.}
 
-\seealso{\code{\link{fileBrowser}},
-  \code{\link[tcltk]{tklistbox}} (from the \file{tcltk} package).
+\seealso{\code{\link[tcltk]{tklistbox}} (from the \file{tcltk} package).
 }
 \examples{
 if(interactive()){
