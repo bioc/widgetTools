@@ -186,11 +186,11 @@ widget <- function(wTitle, pWidgets, funs = list(),
     }
 
     for(i in names(pWidgets)){
-        if(length(pWidgets[[i]]) > 1){
+#        if(length(pWidgets[[i]]) > 1){
             lapply(pWidgets[[i]], putOne)
-        }else{
-            putOne(pWidgets[[i]])
-        }
+#        }else{
+#            putOne(pWidgets[[i]])
+#        }
     }
 }
 # Gets the values for each primary widget object stored in the
