@@ -183,48 +183,6 @@
     return("Class basicPW initialized")
 }
 
-# This function initializes select class by containing the basicPW
-# class and defining two more new slots,
-# text - a vector of character string(s) for name(s) of selections
-# that will be available. The length of text should be the same as name;
-# default - a character string for the name of the slections (select
-# box or radio button) that is going to be the default.
-#
-.initSelect <- function(where){
-    setClass("selectBox", representation(text = "vector",
-                                      default = "character"),
-             contains = "basicPW", where = where)
-    # Set the get methods
-    if(!isGeneric("text")){
-        setGeneric("text",
-                   function(object) standardGeneric("text"),
-                   where = where)
-    }
-    setMethod("text", "selectBox",
-              function(object) object@text, where = where)
-    if(!isGeneric("default")){
-        setGeneric("default",
-                   function(object) standardGeneric("default"),
-                   where = where)
-    }
-    setMethod("default", "selectBox",
-              function(object) object@default, where = where)
-    if(!isGeneric("text<-")){
-        setGeneric("text<-", function(object, value)
-                   standardGeneric("text<-"), where = where)
-    }
-    setReplaceMethod("text", "selectBox", function(object, value){
-                  object@text <- value; object}, where = where)
-    if(!isGeneric("default<-")){
-        setGeneric("default<-", function(object, value)
-                   standardGeneric("default<-"), where = where)
-    }
-    setReplaceMethod("default", "selectBox", function(object, value){
-                  object@default <- value; object}, where = where)
-
-    return("Class select initialized")
-}
-
 # This function initializes a radio button class by containing the
 # select class and defining a new slot.
 # var - a tclVar object that is used to group radio buttons together.
@@ -289,6 +247,34 @@
                   object@command <- value; object}, where = where)
 
     return("Class button initialized")
+}
+
+# This function initializes select class by containing the basicPW
+# class and defining two more new slots,
+# text - a vector of character string(s) for name(s) of selections
+# that will be available. The length of text should be the same as name;
+# default - a character string for the name of the slections (select
+# box or radio button) that is going to be the default.
+#
+.initSelect <- function(where){
+    setClass("selectBox", representation(default = "character"),
+             contains = "button", where = where)
+    # Set the get methods
+    if(!isGeneric("default")){
+        setGeneric("default",
+                   function(object) standardGeneric("default"),
+                   where = where)
+    }
+    setMethod("default", "selectBox",
+              function(object) object@default, where = where)
+    if(!isGeneric("default<-")){
+        setGeneric("default<-", function(object, value)
+                   standardGeneric("default<-"), where = where)
+    }
+    setReplaceMethod("default", "selectBox", function(object, value){
+                  object@default <- value; object}, where = where)
+
+    return("Class select initialized")
 }
 
 # This function initializes a textContainer class by containing the
@@ -431,17 +417,18 @@
     doOne <- function(pWidget, parent){
         if(any(type(pWidget) == c("radio", "check"))){
             tempFrame <- tkframe(parent)
-            var <- tclVar()
-            for(i in 1:length(name(pWidget))){
-                if(type(pWidget) == "radio"){
-                    temp <- .getWidget(pWidget, tempFrame, i, var)
+            var <- tclVar(name)
+            for(i in name(pWidget)){
+#                if(type(pWidget) == "radio"){
+                    temp <- .getWidget(pWidget, tempFrame, var)
+#                    tkconfigure(temp, command = radioCommand)
                     tkpack(temp, side = "left")
-                    widgetids[[name(pWidget)[i]]] <<- temp
-                }else{
-                    temp <- .getWidget(pWidget, tempFrame, i, NULL)
-                    tkpack(temp, side = "left")
-                    widgetids[[name(pWidget)[i]]] <<- temp
-                }
+                    widgetids[[i]] <<- temp
+#                }else{
+#                    temp <- .getWidget(pWidget, tempFrame, i, NULL)
+#                    tkpack(temp, side = "left")
+#                    widgetids[[name(pWidget)[i]]] <<- temp
+#                }
             }
             tkpack(tempFrame)
         }else{
@@ -477,9 +464,9 @@
            "text" = ,
            "list" = temp <- .renderViewer(pWidget, parent),
            "label" = temp <- .renderLabel(pWidget, parent),
-           "radio" = temp <- .renderRadio(pWidget, parent, index, var),
+           "radio" = temp <- .renderRadio(pWidget, parent, var),
            "button" = temp <- .renderButton(pWidget, parent),
-           "check" = temp <- .renderCheck(pWidget, parent, index),
+           "check" = temp <- .renderCheck(pWidget, parent, var),
            stop("Invalid pWidget type"))
 
     return(temp)
@@ -503,12 +490,9 @@
     return(temp)
 }
 
-.renderRadio <- function(pWidget, parent, index, var){
-    temp <- tkradiobutton(parent, text = text(pWidget)[index],
-                          value = index, variable = var)
-#    if(default == getName(pWidget)){
-#        tkconfigure(temp, value = 1)
-#    }
+.renderRadio <- function(pWidget, parent, var){
+    temp <- tkradiobutton(parent, text = name(pWidget),
+                          value = name(pWidget), variable = var)
     return(temp)
 }
 
@@ -525,9 +509,9 @@
     return(temp)
 }
 
-.renderCheck <- function(pWidget, parent, index){
-    temp <- tkcheckbutton(parent, text = text(pWidget)[index],
-                          variable = var)
+.renderCheck <- function(pWidget, parent, var){
+    temp <- tkcheckbutton(parent, text = name(pWidget),
+                          value = name(pWidget), variable = var)
     return(temp)
 }
 

@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.9 2002/12/12 22:06:48 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.10 2002/12/13 18:37:12 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -149,8 +149,13 @@ button1 <- button(name = "button1", text = "Browse",
                           command = browse2Entry1, env = PWEnv)
 list1 <- listBox(name = "list1", value = "Put me in the second row",
                  env = PWEnv)
+option <- function(){
+    temp <- get("radios1", env = PWEnv)
+    value(temp) <- radioOption()
+    assign("radios1", temp, env = PWEnv)
+}
 radios1 <- radioButton(name = c("radio1", "radio2", "radio3"), text =
-     c("Radio1", "Radio2", "Radio3"), default = "radio1", env = PWEnv)
+     c("Radio1", "Radio2", "Radio3"), command = option, env = PWEnv)
 checks1 <- checkButton(name = c("check11", "check22", "check3"), text =
      c("Check1", "Check2", "Chjeck3"), default = "check1", env = PWEnv)
 @

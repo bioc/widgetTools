@@ -31,21 +31,25 @@ listBox <- function(name, env, value = "", width = 20, height = 10,
         preFun = preFun, postFun = postFun, env = env)
 }
 
-checkButton <- function(name, text, env, default = name[1], funs = list(),
+checkButton <- function(name, text, env, default = name[1],
+                        command = function(){}, funs = list(),
                         notify = list(), preFun = function(x) x,
                         postFun = function(x) x){
 
     .checkEntry(name = name, text = text)
     new("selectBox", name = name, text = text, type = "check",
         default = default, notify = list(), preFun = function(x) x,
-                        postFun = function(x) x, env = env)
+        command = command, postFun = function(x) x, env = env)
 }
 
-radioButton <- function(name, text, env, default = name[1]){
+radioButton <- function(name, text, env, default = name[1],
+                        command = function() {}, funs = list(),
+                        notify = list(), preFun = function(x) x,
+                        postFun = function(x) x){
     .checkEntry(name = name, text = text)
     new("selectBox", name = name, text = text, type = "radio",
          default = default, notify = list(), preFun = function(x) x,
-                        postFun = function(x) x, env = env)
+         command = command, postFun = function(x) x, env = env)
 }
 
 label <- function(name, value, env, width = 0, notify = list(),
