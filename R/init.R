@@ -379,10 +379,10 @@
               function(widgetView, PWName, PWType, value){
                   widgetids <- widgetids(widgetView)
                   if(PWType == "entry"){
-                      updateList(widgetids[[PWName]], value)
+                      writeList(widgetids[[PWName]], value)
                   }else{
                       if(PWType == "text"){
-                          updateText(widgetids[[PWName]], value)
+                          writeText(widgetids[[PWName]], value)
                       }
                   }
               }, where = where)
@@ -407,7 +407,7 @@
 
 .doWidgets<- function(tkWidget, pWidgets){
     ENV <- parent.frame(1)
-    cmd <- list()
+    funlist <- list()
     widgetids <- list()
     doOne <- function(pWidget, parent){
         if(any(type(pWidget) == c("radio", "check"))){
@@ -438,16 +438,24 @@
                 widgetids[[names(value(pWidget)[i])]] <<- temp
             }
             tkpack(tempFrame)
-        }else if(any(type(pWidget) == c("list", "text"))){
-            tempFrame <- tkframe(parent)
-            temp <- .getWidget(pWidget, tempFrame, 1)
-            tkpack(tempFrame, side = "left")
+        }else if(any(type(pWidget) == c("list", "text", "entry"))){
+            if(type(pWidget) == "entry"){
+                temp <- .getWidget(pWidget, parent, 1)
+                tkpack(temp, side = "left")
+            }else{
+                tempFrame <- tkframe(parent)
+                temp <- .getWidget(pWidget, tempFrame, 1)
+                tkpack(tempFrame, side = "left")
+            }
             widgetids[[name(pWidget)]] <<- temp
-            fun <- function(){
+            funlist[[name(pWidget)]] <- function(){
                 .getViewerCmd(tkWidget, pWidget, temp)
             }
-            assign(paste("cmd", name(pWidget), sep = ""), fun)
-            tkbind(temp, "<B1-ButtonRelease>", fun)
+            if(type(pWidget) == "list"){
+                tkbind(temp, "<B1-ButtonRelease>", funlist[[name(pWidget)]])
+            }else{
+                tkbind(temp, "<Leave>", funlist[[name(pWidget)]])
+            }
         }else{
             temp <- .getWidget(pWidget, parent, 1)
             tkpack(temp, side = "left")
@@ -489,7 +497,7 @@
     temp <- tkentry(parent, width = width(pWidget), font = "courier 11")
     if(value(pWidget) != "" && !is.na(value(pWidget)) &&
        !is.null(value(pWidget))){
-        updateText(temp, value(pWidget), FALSE)
+        writeText(temp, value(pWidget), FALSE)
     }
     return(temp)
 }
@@ -562,10 +570,14 @@
 .getViewerCmd <- function(widgetView, pWidget, widget){
     if(type(pWidget) == "list"){
         tempValue <- getListValue(widget)
-    }else{
+        updateRadio(theWidget(widgetView), name(pWidget), tempValue)
+    }else if(type(pWidget) == "text"){
         tempValue <- getTextValue(widget)
+        updateText(theWidget(widgetView), name(pWidget), tempValue)
+    }else{
+        tempValue <- getEntryValue(widget)
+        updateText(theWidget(widgetView), name(pWidget), tempValue)
     }
-    updateRadio(theWidget(widgetView), name(pWidget), tempValue)
 }
 
 # This function initilizes the widget class and the associsted
@@ -688,6 +700,17 @@
                       tempValue[bName] <- TRUE
                   }
                   value(tempPW) <- tempValue
+                  assign(name(tempPW), tempPW, env = env(tempPW))
+              }, where = where)
+    if(!isGeneric("updateText")){
+        setGeneric("updateText",
+                   function(object, PWName, value)
+                   standardGeneric("updateText"), where = where)
+    }
+    setMethod("updateText", "widget",
+              function(object, PWName, value) {
+                  tempPW <- get(PWName, env = env(object))
+                  value(tempPW) <- value
                   assign(name(tempPW), tempPW, env = env(tempPW))
               }, where = where)
 
