@@ -591,7 +591,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateRadio", "widget",
               function(object, PWName, bName) {
-                  tempPW <- get(PWName, env = env(object))
+                  tempPW <- env(object)[[PWName]]
                   tempValue <- wValue(tempPW)
                   tempValue[1:length(tempValue)] <- FALSE
                   tempValue[bName] <- TRUE
@@ -605,7 +605,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateList", "widget",
               function(object, PWName, opts) {
-                  tempPW <- get(PWName, env = env(object))
+                  tempPW <- env(object)[[PWName]]
                   tempValue <- wValue(tempPW)
                   tempValue[1:length(tempValue)] <- FALSE
                   tempValue[bName] <- TRUE
@@ -619,7 +619,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateCheck", "widget",
               function(object, PWName, bName) {
-                  tempPW <- get(PWName, env = env(object))
+                  tempPW <- env(object)[[PWName]]
                   tempValue <- wValue(tempPW)
                   if(tempValue[bName]){
                       tempValue[bName] <- FALSE
@@ -636,7 +636,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateText", "widget",
               function(object, PWName, value) {
-                  tempPW <- get(PWName, env = env(object))
+                  tempPW <- env(object)[[PWName]]
                   wValue(tempPW) <- value
                   assign(wName(tempPW), tempPW, env = wEnv(tempPW))
               })
