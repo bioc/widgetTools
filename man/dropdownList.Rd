@@ -9,7 +9,7 @@
 \usage{
 dropdownList(base, options, textvariable, width = 10, default, editable
 = FALSE)
-getListOption(targetWidget, options)
+getListOption(targetWidget, options, height, vScroll = FALSE)
 }
 \arguments{
   \item{base}{\code{base} a tkwin object that is the parent frame of the
@@ -28,6 +28,11 @@ getListOption(targetWidget, options)
     dropdown list}
   \item{editable}{\code{editable} a boolean indicating whether the
     dropdown list will be editable or not}
+  \item{height}{\code{height} an integer for the height of the dropdown
+    list box. If missing, height will be assigned the length of the
+    options to be shown in the list box}
+  \item{vScroll}{\code{vScroll} a boolean indicating whether a vertical
+    scroll bar will be associated with the dropdown list box}
 }
 \details{
   \code{base} can be a top window or a frame.

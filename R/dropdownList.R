@@ -44,13 +44,16 @@ dropdownList <- function(base, options, textvariable, width = 10,
     return(invisible())
 }
 
-getListOption <- function(targetWidget, options){
+getListOption <- function(targetWidget, options, height, vScroll = FALSE){
     newEntry <- NULL
     end <- function(){
         newEntry <<- as.character(tclObj(selection))[as.integer(
                                                  tkcurselection(list)) + 1]
         tkgrab.release(base)
         tkdestroy(base)
+    }
+    if(missing(height)){
+        height <- length(options)
     }
     selection <- tclVar()
     tclObj(selection) <- options
@@ -62,9 +65,15 @@ getListOption <- function(targetWidget, options){
     on.exit(tkdestroy(base))
     # Put the TW in the right place
     tkwm.geometry(base, paste("+", tipX, "+", tipY, sep = ""))
-    list <- tklistbox(base, listvariable = selection,
-                      height = length(options),
+    list <- tklistbox(base, listvariable = selection, height = height,
                       width = max(unlist(sapply(options, nchar))))
+    if(vScroll){
+        vScr <- tkscrollbar(base, orient = "vertical",
+                    command = function(...) tkyview(list,...))
+        tkconfigure(list,
+                yscrollcommand = function(...) tkset(vScr, ...))
+        tkpack(vScr, side = "right", fill = "y")
+    }
     tkbind(list, "<Double-Button-1>", end)
     tkpack(list, expand = FALSE)
 

@@ -6,7 +6,7 @@
   included. The function tooltip is implemented as an alternative. 
 }
 \usage{
-tooltip(text, targetWidget, width = 500)
+tooltip(text, targetWidget, width = 350)
 }
 \arguments{
   \item{text}{\code{text} a character string for the content of the tooltip}
