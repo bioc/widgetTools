@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.24 2003/05/05 16:12:51 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.25 2003/05/06 17:25:34 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -41,7 +41,7 @@ rendered, a {\texttt{widget}} object (controller) that contains a list of
 (view) that provides the interface to actually render widget elements.
 
 The system is designed in such a way that users only have to deal with
-{\texttt{pWidget}} and {\texttt{widget}} objects. {\text{widgetView}}
+{\texttt{pWidget}} and {\texttt{widget}} objects. {\texttt{widgetView}}
 will be managed by {\texttt{widget}}.
 
 \section{Build a widget}
