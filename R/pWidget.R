@@ -130,11 +130,11 @@ widget <- function(wTitle, pWidgets, funs = list(),
         putPW2Env(localPWs, widgetView)
         renewView(widgetView, pWidgets)
     }
-    cancel <- button(name = "cancel", value = "Cancel", width = 12,
+    cancel <- button(name = "cancel", value = "Cancel", width = 8,
         funs = list(command = cancelBut), env = new.env())
-    finish <- button(name = "finish", value = "Finish", width = 12,
+    finish <- button(name = "finish", value = "Finish", width = 8,
         funs = list(command = finishBut), env = new.env())
-    clear <- button(name = "clear", value = "Clear", width = 12,
+    clear <- button(name = "clear", value = "Clear", width = 8,
         funs = list(command = clearBut), env = new.env())
     defaultFuns <- list(clear = clear, cancel = cancel, finish =
         finish)
