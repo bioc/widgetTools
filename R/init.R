@@ -529,7 +529,9 @@
 
 .renderCheck <- function(pWidget, parent, index){
     temp <- tkcheckbutton(parent, text = names(value(pWidget)[index]))
-
+    if(value(pWidget)[index]){
+        tkselect(temp)
+    }
     return(temp)
 }
 
