@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.22 2003/01/14 14:05:09 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.23 2003/01/23 17:30:18 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -52,7 +52,6 @@ passes arguments by value, having an environment for data manipulation
 avoids the problems of passing data and then having the data updated.
 
 <<>>=
-library(widgetTools)
 library(tkWidgets)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 @
@@ -191,7 +190,6 @@ pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                  text1 = text1), radGroup = list(label2 = label2,
                  radios1 = radios1), chkGroup = list(label3 = label3,
                                      checks1 = checks1))
-pWidgets
 @
 
 When we have the list of \em{pWidget}s ready, we can proceed to create
