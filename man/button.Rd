@@ -38,7 +38,8 @@ label(wName, wEnv, wValue = "", wWidth = 0, wHeight = 0, wFuns = list(),
 wNotify = list(), wPreFun = function (x) x, wPostFun = function(x) x,
 wView = new("widgetView"))
 widget(wTitle, pWidgets, funs = list(), preFun = function()
-print("Hello"), postFun = function() print("Bye"), env)
+print("Hello"), postFun = function() print("Bye"), env, defaultNames =c(
+"Finish", "Cancel"))
 widgetView(WVTitle, vName, widgetids = list(), theWidget = new("widget"),
 winid)
 }
@@ -79,6 +80,9 @@ winid)
     render the primary widgets}
   \item{wView}{\code{wView} an object of class widgetView}
   \item{winid}{\code{winid} an object of class winid}
+  \item{defaultNames}{\code{defaultName} a vector of character string of
+    length two for the text to be shown on the two default buttons. The
+    first is to end the process and the second to abort the process}
 }
 \details{
   \code{\link{button}} constructs a button widget object.

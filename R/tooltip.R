@@ -2,7 +2,7 @@
 # text - the content of the tool tip
 # targetWidget - the widget to which the tooltip is going to be associated
 
-tootip <- function(text, targetWidget){
+tooltip <- function(text, targetWidget){
 
     end <- function(){
         tkdestroy(base)
@@ -24,4 +24,6 @@ tootip <- function(text, targetWidget){
     tkbind(targetWidget, "<Leave>", end)
 
     tkwait.window(base)
+
+    return(invisible())
 }
