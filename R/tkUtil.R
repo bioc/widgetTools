@@ -19,3 +19,7 @@ getListValue <- function(which){
     return(as.character(tkget(which, tkcurselection(which))))
 }
 
+getTextValue <- function(which){
+    return(tclvalue(tkget(which, "0.0", "end")))
+}
+

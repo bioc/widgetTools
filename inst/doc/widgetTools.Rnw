@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.16 2002/12/17 22:00:30 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.17 2002/12/18 14:34:48 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -144,6 +144,8 @@ button1 <- button(name = "button1", butText = "Browse",
                           command = browse2Entry1, env = PWEnv)
 list1 <- listBox(name = "list1", value = c(Option1 = TRUE, Option2 = FALSE,
                                  Option3 = FALSE), env = PWEnv)
+text1 <- textBox(name = "text1", value = "Feed me from the list box",
+                 env = PWEnv)
 radios1 <- radioButton(name = "radios1", value = c(radio1 = TRUE,
                        radio2 = FALSE, radio3 = FALSE), env = PWEnv)
 checks1 <- checkButton(name = "checks1", value = c(check1 = TRUE,
@@ -181,8 +183,8 @@ in one row further below, we will need to put them in a list like this:
 
 <<>>=
 pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
-                 button1 = button1), list1 = list1, radios1 =
-                 radios1, checks1 = checks1)
+                 button1 = button1), textRow = list(list1 = list1,
+                 text1 = text1), radios1 = radios1, checks1 = checks1)
 pWidgets
 @
 
@@ -235,7 +237,7 @@ values for \em{entry1}, \em{list1}, and \em{radios1} now become:
 
 <<>>=
 value(pWidgets(aWidget)[["topRow"]][["entry1"]])
-value(pWidgets(aWidget)[["list1"]])
+value(pWidgets(aWidget)[["textRow"]][["list1"]])
 value(pWidgets(aWidget)[["radios1"]])
 value(pWidgets(aWidget)[["checks1"]])
 @

@@ -438,22 +438,23 @@
                 widgetids[[names(value(pWidget)[i])]] <<- temp
             }
             tkpack(tempFrame)
+        }else if(any(type(pWidget) == c("list", "text"))){
+            tempFrame <- tkframe(parent)
+            temp <- .getWidget(pWidget, tempFrame, 1)
+            tkpack(tempFrame, side = "left")
+            widgetids[[name(pWidget)]] <<- temp
+            fun <- function(){
+                .getViewerCmd(tkWidget, pWidget, temp)
+            }
+            assign(paste("cmd", name(pWidget), sep = ""), fun)
+            tkbind(temp, "<B1-ButtonRelease>", fun)
         }else{
             temp <- .getWidget(pWidget, parent, 1)
+            tkpack(temp, side = "left")
             widgetids[[name(pWidget)]] <<- temp
-            if(type(pWidget) == "list"){
-                fun <- function(){
-                    getListCmd(tkWidget, name(pWidget), temp)
-                }
-                assign(paste("cmd", name(pWidget), sep = ""), fun)
-                tkbind(temp, "<B1-ButtonRelease>", fun)
-            }else{
-                temp <- .getWidget(pWidget, parent, 1)
-                tkpack(temp, side = "left")
-                widgetids[[name(pWidget)]] <<- temp
-            }
         }
     }
+
 
     doRow <- function(aRow){
         if(length(aRow) > 1){
@@ -546,12 +547,6 @@
                 fun <- function(){
                     getListCmd(widgetView, PWName, winids[[PWName]])
                 }
-#                fun <- function() {}
-#                body <- list(as.name("{"),
-#                             eval(getListCmd(widgetView, PWName,
-#                                                    winids[[PWName]]),
-#                                  env = ENV))
-#                body(fun) <- as.call(body)
                 assign(paste("cmd", PWName, sep = ""), fun)
                 tkbind(winids[[PWName]], "<B1-ButtonRelease>", fun)
             }else if(type(temp) == "text"){
@@ -564,9 +559,13 @@
     lapply(PWNames, bindOne)
 }
 
-getListCmd <- function(widgetView, PWName, widget){
-    tempValue <- getListValue(widget)
-    updateRadio(theWidget(widgetView), PWName, tempValue)
+.getViewerCmd <- function(widgetView, pWidget, widget){
+    if(type(pWidget) == "list"){
+        tempValue <- getListValue(widget)
+    }else{
+        tempValue <- getTextValue(widget)
+    }
+    updateRadio(theWidget(widgetView), name(pWidget), tempValue)
 }
 
 # This function initilizes the widget class and the associsted
