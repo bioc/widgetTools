@@ -21,43 +21,44 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.17 2002/12/18 14:34:48 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.18 2002/12/18 20:43:00 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
 
 \section{Introduction}
 
-The purpose of widgetTools is to provide the functionalities to allow
-users to build a simple widget that contains functional widget
-elements. The underlying implementation  of the widget is done by
-using the R tcltk package but users of widgetTools do not have to know
-tcltk command except for some knowledge of basic geometric management
-for packing the elements of a widget.
+The purpose of widgetTools is to provide a simple interface for users
+to build interactive widgets. Although the underlying implementation
+of any widget built using widgetTools is through the R tcltk package,
+users of widgetTools do not have to know any tcltk command.
 
 The design of widgetTools follows the Model-View-Controller pattern
-with \em{pWidget} objects being the application data, each of which contains
-definitions for a widget element that is going to be rendered, a
-\em{widget} object that contains a list of \em{pWidget}s that will be
-rendered, and a \em{tkWidget}(s) that provides the interface to hold the
-widget elements. \em{pWidget} is the model, tkWidget is the view, and
-widget is the controller component of the MVC pattern.
-
-Detailed description of \em{pWidget} can be found in
-\em{widgetPlans.tex} in the \em{doc} subdirectory of widgetTools and
-documantations regarding Model-View-Controller patterns should be
-available in most designe pattern books.
+with \em{pWidget} (model) objects being the application data, each of
+which contains definitions for a widget element that is going to be
+rendered, a \em{widget} object (controller) that contains a list of
+\em{pWidget}s that will be rendered, and a \em{widgetView} (view) that
+provides the interface to actually render widget elements.
 
 The system is designed in such a way that users only have to deal with
-\em{pWidget} and \em{widget} objects. \em{tkWidget} will be managed by
+\em{pWidget} and \em{widget} objects. \em{widgetView} will be managed by
 \em{widget}.
 
 \section{Build a widget}
 
-The first step involved in building a widget is to crate a list of
-\em{pWidgets} that defines the widget elements that are going to be
-rendered. A pWidget is an object of either the basicPW or a subclass
-of basicPW. basicPW and all the subclasses are S4 classes.
+The first step involved in building a widget is to define the
+environment where manipulations of pWidgets will take place. Since R
+passes arguments by value, having an environment for data manipulation
+avoids the problems of passing data and then having the data updated.
+
+<<>>=
+library(widgetTools)
+PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
+@
+
+Then, we can create the \em{pWidgets} that define the widget elements
+that are going to be rendered. A pWidget is an object of basicPW class
+defined below:
 
 \begin{verbatim}
 
@@ -71,7 +72,8 @@ of basicPW. basicPW and all the subclasses are S4 classes.
              | funs: list            |
              | preFun: function      |
              | postFun: function     |
-             | notify: function      |
+             | view: widgetView      |
+             | env: environment      |
              |-----------------------|
 
 \end{verbatim}
@@ -84,7 +86,7 @@ Where
   given pWidget;
 \item type - type of a tk widget (e. g. "text" for text box, "list"
   for list box, ...;
-\item value: a character string used to strore information that will
+\item value: an undefined data type used to strore information that will
   be displayed on the interface or updated using values obtained from
   the interface;
 \item width - the physical width of the pWidget to be
@@ -96,73 +98,71 @@ Where
   the text of the pWidget before rendering the text;
 \item postFun - the function defining the operations to be performed
   on the text of the pWdiget upon existing;
+\item view - a widgetView object associated with each pWidget that
+  will be used for updating the data displayed;
+\item env - an R environment object where data updating and reterival
+  will take place;
 \itme notify - a list of functions defning the actions to be performed
   when the value of the pWidget changes.
 \end{itemize}
 
-Widget elements text box, list box, and entry box are subjects of
-basicPW class. Subclasses of basicPW include:
-
-\begin{verbatim}
-
-   |-------------------|    |-------------------|    |--------------|
-   |   selectBox       |    |     Button        |    |    label     |
-   |-------------------|    |-------------------|    |--------------|
-   | text: string      |    | text: string      |    | text: string |
-   | default: string   |    | command: function |    |              |
-   | command: function |    |                   |    |              |
-   |-------------------|    |-------------------|    |--------------|
-
-
-\end{verbatim}
-
-Where:
-
-\begin{itemize}
-\item text - a character string for the text to be displayed with or
-  on the widget element;
-\item default - a character string for the name of the pWidget that
-  will be the default selected option;
-\item command - a function that defines the behavor of the pWidget
-  when the widget element corresponding it is clicked.
-
 The following code creates several \em{pWidget} objects of different types:
 
 <<>>=
-library(widgetTools)
-PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
 entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
 env = PWEnv)
 browse2Entry1 <- function(){
-    temp <- get(name(entry1), env = PWEnv)
     tempValue <- fileBrowser()
+    temp <- get(name(entry1), env = PWEnv)
     value(temp) <- tempValue
     assign(name(entry1), temp, env = PWEnv)
 }
-button1 <- button(name = "button1", butText = "Browse",
-                          command = browse2Entry1, env = PWEnv)
+button1 <- button(name = "button1", value = "Browse",
+                     funs = list(command = browse2Entry1), env = PWEnv)
 list1 <- listBox(name = "list1", value = c(Option1 = TRUE, Option2 = FALSE,
                                  Option3 = FALSE), env = PWEnv)
-text1 <- textBox(name = "text1", value = "Feed me from the list box",
+text1 <- textBox(name = "text1", value = "Feed me something",
                  env = PWEnv)
+label2 <- label(name = "label2", value = "Select one:  ", env = PWEnv)
 radios1 <- radioButton(name = "radios1", value = c(radio1 = TRUE,
                        radio2 = FALSE, radio3 = FALSE), env = PWEnv)
+label3 <- label(name = "label3", value = "Select one to many: ", env = PWEnv)
 checks1 <- checkButton(name = "checks1", value = c(check1 = TRUE,
                        check22 = FALSE, check3 = FALSE), env = PWEnv)
 @
 
-Notice that the name and text variables for radios and checks are
-vectors of the same length. That define groups of radio buttons or
-check buttons that appear together and share the state in the case of
-radio buttons. Variable funs of each pWidget should be a list of functions defining
-what to do when the event associated with the function occurs. For
-example, the function for variable funs of \em{aButton} defines that
-when a single click on \em{aButton} occurs, function \em{fileBrowser}
-will be called and the returned value will be used to update the value of
-\em{anEntry}. pWidget objects have set and get functions to  access
-and modify the variables. For example, we can get and set the value
-for the type of a pWidget:
+Notice that the functions defines the behavior of \em{button1} by
+reading a file name using function \em{fileBrowser} and then assigning
+the read in file name to the value of \em{entry1}. All the data
+manipulations will be do within the environment previously defined. At
+this time the environment does not contain the pWidgets. The pWidgets
+will be assigned to the environment by the system later. It is
+important that the name for each widget element be the same as the
+name of the corresponding \em{pWidget} and to be unique. Values for
+\em{list1}, \em{radios1}, and \em{checks1} are named vectors. Names of
+the values will be displayed either as elements (lists) or text
+descriptions (radio and check buttons) of the corresponding widget
+elements to be rendered. Parameter funs of each pWidget should be a
+list of functions defining what to do when the event associated with
+the function occurs. For example, the function for variable funs of
+\em{button1} specifies that the function will be the command to be
+executed when \em{button1} is pressed. Any button defined is assumed
+to have a command element in funs list. List boxes, radio buttons,
+check buttons, and text entries will have default functions defined
+for them to update their values when the corresponding widget element
+is pressed or text is changed. If you what anything additional to
+that, you will have to define a function and list that function in
+funs. Adding functions to funs list is not fully implemented right now
+but will be available later.
+
+Radio buttons and check buttons are defined as groups with the name
+and value of individual radio button or check button defined by the
+vector for value (see radios1 and checks1).
+
+\em{pWidget} objects have set and get functions to  access and modify
+the variables. For example, we can get and set the value for the type
+of a pWidget:
 
 <<>> =
 name(label1)
@@ -171,26 +171,30 @@ name(label1)
 name(label1) <- "label1"
 @
 
-The pWidgets need to be put in a list of lists in such a way the appreance of
-each pWidget in the list will determine the layout of the
-corresponding tcltk widget element on the interface. The order of
-pWidgets in the first level list determines the vertical (row) layout
-and the order in the secondary list determines the horizontal
-layout. For example, if we want to have the first three \em{pWidget}s
-to appear in one row one after the other, the fourth \em{pWidget}
-appears in one row below the top row, and the last two \em{pWidget}s
-in one row further below, we will need to put them in a list like this:
+The pWidgets need to be put in a list of lists in such a way that the
+appreance of each \em{pWidget} in the list will determine the layout of the
+corresponding widget element on the interface. Each element in the
+first level list will be treated as a unit and rendered one after
+another vertically and each element in the nested list will be treated
+as a unit and rendered one after another horizontally. For example, if
+we want to have the first three \em{pWidget}s namely \em{label1},
+\em{entry1}, and \em{button1} to appear in one row on top of the
+screen, \em{list1} and \em{text1} in one row below, and each of the
+radio button and check button groups in a separate row further below,
+we will need to put them in a list like this:
 
 <<>>=
 pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                  button1 = button1), textRow = list(list1 = list1,
-                 text1 = text1), radios1 = radios1, checks1 = checks1)
+                 text1 = text1), radGroup = list(label2 = label2,
+                 radios1 = radios1), chkGroup = list(label3 = label3,
+                                     checks1 = checks1))
 pWidgets
 @
 
-When we have the layout of \em{pWidget}s figured out, we can proceed
-to create a \em{widget} object that will create the actual
-interface. A \em{widget} object is defined as following:
+When we have the list of \em{pWidget}s ready, we can proceed to create
+a \em{widget} object that will construct a \em{widgetView} object to
+render the widget elements. A \em{widget} object is defined as following:
 
 \begin{verbatim}
 
@@ -229,17 +233,22 @@ aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
 @
 
 Now, we can change the values of the pWidgets we have created through
-the interface. Let us click the browse button, selecte a file through
-the interface, and then click finish, the values of the entry box gets
+the interface. Let us click the browse button to selecte a file through
+the interface and then click finish, the values of the entry box gets
 updated by the returned value. Let us also select an item from the
-lsit box and the radio button and then click the finish button, the
-values for \em{entry1}, \em{list1}, and \em{radios1} now become:
+lsit box, the radio button, and the check buttons, type in a few
+words in the text box, and then click the finish button, a \em{widget}
+object will be constructed. The \em{widget} object contains pWidgets
+the vlaue of whose elements will be modified depending what has been
+performaed on the interface we just played wit. The values for
+\em{entry1}, \em{list1}, \em{text1}, \em{radios1}, and {checks1} now become:
 
 <<>>=
 value(pWidgets(aWidget)[["topRow"]][["entry1"]])
 value(pWidgets(aWidget)[["textRow"]][["list1"]])
-value(pWidgets(aWidget)[["radios1"]])
-value(pWidgets(aWidget)[["checks1"]])
+value(pWidgets(aWidget)[["textRow"]][["text1"]])
+value(pWidgets(aWidget)[["radGroup"]][["radios1"]])
+value(pWidgets(aWidget)[["chkGroup"]][["checks1"]])
 @
 
 \end{document}

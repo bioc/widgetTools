@@ -2,73 +2,77 @@
 # defined by init.R.
 #
 
-entryBox <- function(name, env, value = "", width = 50, funs = list(),
-                  notify = list(), preFun = function (x) x,
-                  postFun = function(x) x){
+entryBox <- function(name, env, value = "", width = 50, height = 0,
+                     funs = list(), notify = list(), preFun = function (x) x,
+                     postFun = function(x) x){
 
-    .checkEntry(name = name)
+    .nameGood(name = name)
     new("basicPW", name = name, type = "entry", value = value,
-        width = width, funs = funs, notify = notify, preFun = preFun,
-        postFun = postFun, env = env)
-}
-
-textBox <- function(name, env, value = "", width = 20, height = 10,
-                  funs = list(), notify = list(), preFun = function(x) x,
-                  postFun = function(x) x){
-    .checkEntry(name)
-    new("textContainer", name = name, type = "text", value = value,
         width = width, height = height, funs = funs, notify = notify,
         preFun = preFun, postFun = postFun, env = env)
 }
 
-listBox <- function(name, env, value = "", width = 20, height = 10,
-                  funs = list(), notify = list(), preFun = function(x) x,
-                  postFun = function(x) x){
+textBox <- function(name, env, value = "", width = 25, height = 12,
+                     funs = list(), notify = list(), preFun = function (x) x,
+                     postFun = function(x) x){
 
-    .checkEntry(name = name)
-    new("textContainer", name = name, type = "list", value = value,
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "text", value = value,
         width = width, height = height, funs = funs, notify = notify,
         preFun = preFun, postFun = postFun, env = env)
 }
 
-checkButton <- function(name, value, env,
-                        command = function(){}, funs = list(),
-                        notify = list(), preFun = function(x) x,
-                        postFun = function(x) x){
+listBox <- function(name, env, value = "", width = 25, height = 10,
+                     funs = list(), notify = list(), preFun = function (x) x,
+                     postFun = function(x) x){
 
-    .checkEntry(name = name)
-    new("selectBox", name = name, value = value, type = "check",
-        notify = list(), preFun = function(x) x,
-        command = command, postFun = function(x) x, env = env)
-}
-
-radioButton <- function(name, value, env,
-                        command = function() {}, funs = list(),
-                        notify = list(), preFun = function(x) x,
-                        postFun = function(x) x){
-    .checkEntry(name = name)
-    new("selectBox", name = name, value = value, type = "radio",
-         notify = list(), preFun = function(x) x,
-         command = command, postFun = function(x) x, env = env)
-}
-
-label <- function(name, value, env, width = 0, notify = list(),
-        preFun = function(x) x, postFun = function(x) x){
-    .checkEntry(name)
-    new("basicPW", name = name, value = value, type = "label",
-        width = width, notify = list(), preFun = function(x) x,
-                        postFun = function(x) x, env = env)
-}
-
-button <- function(name, butText, command, env, width = 0, notify = list(),
-        preFun = function(x) x, postFun = function(x) x){
-    .checkEntry(name)
-    new("button", name = name, type = "button", butText = butText,
-        command = command, width = width, notify = notify,
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "list", value = value,
+        width = width, height = height, funs = funs, notify = notify,
         preFun = preFun, postFun = postFun, env = env)
 }
 
-.checkEntry <- function(name){
+checkButton <- function(name, env, value, width = 50,
+                     funs = list(), notify = list(), preFun = function (x) x,
+                     postFun = function(x) x){
+
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "check", value = value,
+        width = width, funs = funs, notify = notify,
+        preFun = preFun, postFun = postFun, env = env)
+}
+
+radioButton <- function(name, env, value, width = 50,
+                     funs = list(), notify = list(), preFun = function (x) x,
+                     postFun = function(x) x){
+
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "radio", value = value,
+        width = width, funs = funs, notify = notify,
+        preFun = preFun, postFun = postFun, env = env)
+}
+
+label <- function(name, env, value = "", width = 0, height = 0,
+                  funs = list(), notify = list(), preFun = function (x) x,
+                  postFun = function(x) x){
+
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "label", value = value,
+        width = width, height = height, funs = funs, notify = notify,
+        preFun = preFun, postFun = postFun, env = env)
+}
+
+button <- function(name, env, value = "", width = 12, height = 0,
+                   funs = list(), notify = list(), preFun = function (x) x,
+                   postFun = function(x) x){
+
+    .nameGood(name = name)
+    new("basicPW", name = name, type = "button", value = value,
+        width = width, height = height, funs = funs, notify = notify,
+        preFun = preFun, postFun = postFun, env = env)
+}
+
+.nameGood <- function(name){
     if(name == "" || is.null(name) || is.na(name)){
         stop("Invalid name!")
     }
@@ -120,15 +124,15 @@ widget <- function(wTitle, pWidgets, funs = list(),
         killWin(widgetView)
     }
     clearBut <- function(){
-        tkmessageBox(title = "I will be ready soon",
-                                      message = "Do not click me now!")
+        putPW2Env(localPWs, widgetView)
+        renewView(widgetView, pWidgets)
     }
-    cancel <- button(name = "cancel", butText = "Cancel", width = 12,
-        command = cancelBut, env = new.env())
-    finish <- button(name = "finish", butText = "Finish", width = 12,
-        command = finishBut, env = new.env())
-    clear <- button(name = "clear", butText = "Clear", width = 12,
-        command = clearBut, env = new.env())
+    cancel <- button(name = "cancel", value = "Cancel", width = 12,
+        funs = list(command = cancelBut), env = new.env())
+    finish <- button(name = "finish", value = "Finish", width = 12,
+        funs = list(command = finishBut), env = new.env())
+    clear <- button(name = "clear", value = "Clear", width = 12,
+        funs = list(command = clearBut), env = new.env())
     defaultFuns <- list(clear = clear, cancel = cancel, finish =
         finish)
     if(length(funs) > 0){
@@ -145,11 +149,9 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # Render the widgets using the local copy
     widgetids(widgetView) <-
         renderWidgets(widgetView, localPWs)
-    # Bind all the text widgets with default behavior
-#    bindTextPW(widgetView, env)
     # Keep a copy of pWidgets and the widgetView in a specified
     # environment
-    .put2Env(localPWs, widgetView)
+    putPW2Env(localPWs, widgetView)
 
     winWait(widgetView)
     # Execute the function to be run at the end
@@ -157,18 +159,18 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # Act accordingly based on either the Cancel or Finish botton was
     # clicked
     if(END){
-        return(new("widget", wTitle = wTitle,
-                   pWidgets = .getChanges(pWidgets), funs = funs,
-                   preFun = preFun, postFun = postFun))
+        pWidgets(temp) <- getChanges(pWidgets)
     }else{
-        new("widget", wTitle = wTitle, pWidgets = pWidgets,
-            funs = funs, preFun = preFun, postFun = postFun)
+        pWidgets(temp) <- pWidgets
     }
+    return(temp)
 }
 
-.put2Env <- function(pWidgets, widgetView){
+putPW2Env <- function(pWidgets, widgetView){
     putOne <- function(pWidget){
-        view(pWidget) <- widgetView
+        if(!is.null(widgetView)){
+            view(pWidget) <- widgetView
+        }
         assign(name(pWidget), pWidget, env = env(pWidget))
     }
 
@@ -181,7 +183,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
     }
 }
 
-.getChanges <- function(pWidgets){
+getChanges <- function(pWidgets){
     for(i in names(pWidgets)){
         if(length(pWidgets[[i]]) > 0){
             for(j in names(pWidgets[[i]])){

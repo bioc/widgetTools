@@ -24,6 +24,6 @@ getTextValue <- function(which){
 }
 
 getEntryValue <- function(which){
-    return(tckvalue(tkget(which)))
+    return(tclvalue(tkget(which)))
 }
 

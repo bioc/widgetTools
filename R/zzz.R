@@ -7,9 +7,6 @@
 
     where <- match(paste("package:", pkgname, sep=""), search())
     .initBasicPW(where)
-    .initButton(where)
-    .initSelect(where)
-    .initTextContainer(where)
     .initWidgetView(where)
     .initWidget(where)
 }

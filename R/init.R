@@ -37,6 +37,7 @@
                                        type = "character",
                                        value = "ANY",
                                        width = "numeric",
+                                       height = "numeric",
                                        funs = "list",
                                        preFun = "function",
                                        postFun = "function",
@@ -74,6 +75,13 @@
     }
     setMethod("width", "basicPW",
               function(object) object@width, where = where)
+    if(!isGeneric("height")){
+        setGeneric("height",
+                   function(object) standardGeneric("height"),
+                   where = where)
+    }
+    setMethod("height", "basicPW",
+              function(object) object@height, where = where)
     if(!isGeneric("funs")){
         setGeneric("funs",
                    function(object) standardGeneric("funs"),
@@ -145,6 +153,12 @@
     }
     setReplaceMethod("width", "basicPW", function(object, value){
                   object@width <- value; object}, where = where)
+    if(!isGeneric("height<-")){
+        setGeneric("height<-", function(object, value)
+                   standardGeneric("height<-"), where = where)
+    }
+    setReplaceMethod("height", "basicPW", function(object, value){
+                  object@height <- value; object}, where = where)
     if(!isGeneric("funs<-")){
         setGeneric("funs<-", function(object, value)
                    standardGeneric("funs<-"), where = where)
@@ -182,100 +196,6 @@
     setReplaceMethod("view", "basicPW", function(object, value){
                   object@view <- value; object}, where = where)
     return("Class basicPW initialized")
-}
-
-# This function initializes a button class by containing the
-# basicPW class and defining a new slot.
-# text - an optional character that is going to be displayed on the button;
-# command - a required function that defines the behavior of the
-# button to be created.
-#
-.initButton <- function(where){
-    setClass("button", representation(butText = "character",
-                                      command = "function"),
-             contains = "basicPW", where = where)
-    # Set the get methods
-    if(!isGeneric("butText")){
-        setGeneric("butText",
-                   function(object) standardGeneric("butText"),
-                   where = where)
-    }
-    setMethod("butText", "button",
-              function(object) object@butText, where = where)
-    if(!isGeneric("command")){
-        setGeneric("command",
-                   function(object) standardGeneric("command"),
-                   where = where)
-    }
-    setMethod("command", "button",
-              function(object) object@command, where = where)
-    if(!isGeneric("butText<-")){
-        setGeneric("butText<-", function(object, value)
-                   standardGeneric("butText<-"), where = where)
-    }
-    setReplaceMethod("butText", "button", function(object, value){
-                  object@butText <- value; object}, where = where)
-    if(!isGeneric("command<-")){
-        setGeneric("command<-", function(object, value)
-                   standardGeneric("command<-"), where = where)
-    }
-    setReplaceMethod("command", "button", function(object, value){
-                  object@command <- value; object}, where = where)
-
-    return("Class button initialized")
-}
-
-# This function initializes select class by containing the basicPW
-# class and defining two more new slots,
-# text - a vector of character string(s) for name(s) of selections
-# that will be available. The length of text should be the same as name;
-# default - a character string for the name of the slections (select
-# box or radio button) that is going to be the default.
-#
-.initSelect <- function(where){
-    setClass("selectBox", representation(command = "function"),
-             contains = "basicPW", where = where)
-    # Set the get methods
-    if(!isGeneric("command")){
-        setGeneric("command",
-                   function(object) standardGeneric("command"),
-                   where = where)
-    }
-    setMethod("command", "selectBox",
-              function(object) object@command, where = where)
-    if(!isGeneric("command<-")){
-        setGeneric("command<-", function(object, value)
-                   standardGeneric("command<-"), where = where)
-    }
-    setReplaceMethod("command", "selectBox", function(object, value){
-                  object@command <- value; object}, where = where)
-    return("Class select initialized")
-}
-
-# This function initializes a textContainer class by containing the
-# basicPW class and defining a new slot.
-# height - an integer for the height (number of lines) of the tk
-# widget element corresponding to the pWidget.
-#
-.initTextContainer <- function(where){
-    setClass("textContainer", representation(height = "numeric"),
-             contains = "basicPW", where = where)
-    # Set the get methods
-    if(!isGeneric("height")){
-        setGeneric("height",
-                   function(object) standardGeneric("height"),
-                   where = where)
-    }
-    setMethod("height", "textContainer",
-              function(object) object@height, where = where)
-    if(!isGeneric("height<-")){
-        setGeneric("height<-", function(object, value)
-                   standardGeneric("height<-"), where = where)
-    }
-    setReplaceMethod("height", "textContainer", function(object, value){
-                  object@height <- value; object}, where = where)
-
-    return("Class textContainer initialized")
 }
 
 # This function initilizes a win class with default functions
@@ -362,14 +282,14 @@
               function(widgetView, pWidgets)
               return(.doWidgets(widgetView, pWidgets)),
               where = where)
-    if(!isGeneric("bindTextPW")){
-        setGeneric("bindTextPW",
-                   function(widgetView, env)
-                   standardGeneric("bindTextPW"), where = where)
+    if(!isGeneric("renewView")){
+        setGeneric("renewView",
+                   function(widgetView, pWidgets)
+                   standardGeneric("renewView"), where = where)
     }
-    setMethod("bindTextPW", c("widgetView", "environment"),
-              function(widgetView, env)
-                  bindDefault(widgetView, env), where = where)
+    setMethod("renewView", c("widgetView", "list"),
+              function(widgetView, pWidgets)
+                  .renew(widgetView, pWidgets), where = where)
     if(!isGeneric("updateDisplay")){
         setGeneric("updateDisplay",
                    function(widgetView, PWName, PWType, value)
@@ -434,18 +354,18 @@
                 tkconfigure(temp,
                             command = get(paste("cmd",
                        value(pWidget)[i],sep="")))
-                tkpack(temp, side = "left")
+                tkpack(temp, side = "left", padx = 2, pady = 5)
                 widgetids[[names(value(pWidget)[i])]] <<- temp
             }
             tkpack(tempFrame)
         }else if(any(type(pWidget) == c("list", "text", "entry"))){
             if(type(pWidget) == "entry"){
                 temp <- .getWidget(pWidget, parent, 1)
-                tkpack(temp, side = "left")
+                tkpack(temp, side = "left", padx = 2, pady = 5)
             }else{
                 tempFrame <- tkframe(parent)
                 temp <- .getWidget(pWidget, tempFrame, 1)
-                tkpack(tempFrame, side = "left")
+                tkpack(tempFrame, side = "left", padx = 2, pady = 5)
             }
             widgetids[[name(pWidget)]] <<- temp
             funlist[[name(pWidget)]] <- function(){
@@ -458,7 +378,7 @@
             }
         }else{
             temp <- .getWidget(pWidget, parent, 1)
-            tkpack(temp, side = "left")
+            tkpack(temp, side = "left", padx = 2, pady = 5)
             widgetids[[name(pWidget)]] <<- temp
         }
     }
@@ -468,7 +388,7 @@
         if(length(aRow) > 1){
             tempFrame <- tkframe(winid(tkWidget))
             lapply(aRow, doOne, tempFrame)
-            tkpack(tempFrame)
+            tkpack(tempFrame, padx = 2, pady = 5)
         }else{
             doOne(aRow,winid(tkWidget))
         }
@@ -530,9 +450,9 @@
 
 .renderButton <- function(pWidget, parent){
      fun <- function() {}
-     temp <- tkbutton(parent, text = butText(pWidget),
+     temp <- tkbutton(parent, text = value(pWidget),
                       width = width(pWidget),
-                      command = command(pWidget))
+                      command = funs(pWidget)[["command"]])
      return(temp)
  }
 
@@ -542,29 +462,6 @@
         tkselect(temp)
     }
     return(temp)
-}
-
-.bindDefault <- function(widgetView, env){
-    ENV <- parent.frame(1)
-    bindOne <- function(PWName){
-        options(show.error.messages = FALSE)
-        temp <- try(get(PWName, env = env))
-        options(show.error.messages = TRUE)
-        if(!inherits(temp, "try-error")){
-            if(type(temp) == "list"){
-                fun <- function(){
-                    getListCmd(widgetView, PWName, winids[[PWName]])
-                }
-                assign(paste("cmd", PWName, sep = ""), fun)
-                tkbind(winids[[PWName]], "<B1-ButtonRelease>", fun)
-            }else if(type(temp) == "text"){
-            }else if(type(temp) == "entry"){
-            }
-        }
-    }
-    winids <- widgetids(widgetView)
-    PWNames <- names(winids)
-    lapply(PWNames, bindOne)
 }
 
 .getViewerCmd <- function(widgetView, pWidget, widget){
@@ -577,6 +474,38 @@
     }else{
         tempValue <- getEntryValue(widget)
         updateText(theWidget(widgetView), name(pWidget), tempValue)
+    }
+}
+
+.renew <- function(widgetView, pWidgets){
+    renewOne <- function(pWidget){
+        if(type(pWidget) == "radio"){
+            tkselect(widgetids(widgetView)
+                         [[names(value(pWidget)[value(pWidget) == TRUE])]])
+        }else if(type(pWidget) == "check"){
+            for(i in names(value(pWidget)[value(pWidget) == TRUE])){
+                tkselect(widgetids(widgetView)[[i]])
+            }
+            for(i in names(value(pWidget)[value(pWidget) != TRUE])){
+                tkdeselect(widgetids(widgetView)[[i]])
+            }
+        }else if(type(pWidget) == "text"){
+            writeText(widgetids(widgetView)[[name(pWidget)]],
+                                                     value(pWidget))
+        }else if(type(pWidget) == "entry"){
+            writeList(widgetids(widgetView)[[name(pWidget)]],
+                                                     value(pWidget))
+        }else if(type(pWidget) == "list"){
+            writeList(widgetids(widgetView)[[name(pWidget)]],
+                                               names(value(pWidget)))
+        }
+    }
+    for(i in pWidgets){
+        if(length(i) > 1){
+            lapply(i, renewOne)
+        }else{
+            renewOne(i)
+        }
     }
 }
 
