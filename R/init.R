@@ -1,764 +1,580 @@
 # This group of functions initialize all the classes needed for
 # widgetTools that renders pWidgets on a widget that hosts several
-# interactive tk widgets. We define a pWidget to be a tk widget such as a
-# button, entry box, ....
-#
-# The first cuntion initilizes a pWidget class with default methods.
-# parent - the window or frame ... where a given pWidget resides;
-# name - a character string for the name of the pWidget;
-# winid - a tcltk widget of class "tkwin" corresponding to the pWidget.
-# type - type of a tk widget (e. g. "text" for text box, "list" for
-# list box, ...;
-# parent - the window or frame ... where a given pWidget resides;
-# text - the text feature of a pWidget whose role varies depending on
-# the type of widget. If pWidget is a text box, text will be shown
-# shown in the text box rendered. If pWidget is a button, text will be
-# the letters that appear on the rendered clikable button ...
-# variable - a variable that will be associated with the given
-# pWidget. Most useable for radio buttons or select boxes.
-# width - the physical width of the pWidget to be rendered. Applicable
-# to certain pWidgets.
-# height - the physical height of the pWidget to be rendered.
-# vSCroll - set to be TRUE if the pWidget will have a vertical scroll
-# bar.
-# hScroll - set to be TRUE if the pWidget will habe a horizontal
-# scroll bar.
-# preFun - the function defining the operations to be performed on the
-# text of the pWidget before rendering the text.
-# postFun - the function defining the operations to be performed on
-# the text of the pWdiget upon existing.
-# where - the environment along the search path where the class lives.
+# interactive tk widget elements. We define a pWidget to be a tk
+# widget element such as a button, entry box, label....
+
+# This cuntion initilizes a basic class that all the pWidgets
+# contains.
+# name - a vector of character string(s) for the names of the tk widget
+# elements corresponding to the pWidgets to be created. The name is
+# required and assumed to be unique and will be used as the identifier
+# for the pWidget. The length of name should be one except for select
+# boxes and radio buttons where more than one names can be given;
+# type - a character string for the type (e. g. button, list, ...) of
+# the pWidget. This slot will be populated automatically by the system;
+# value - an optional character string for the value associated with
+# the pWidget. If the pWidget is an entry box, a list box, or a text
+# box, the value will also be displayed inside the tk widget element
+# corresponding to the pWidget;
+# width - an integer for the width of the tk widget element
+# corresponding to the pWidget to be created;
+# funs - an optional list of functions that are to be executed when a
+# given action is performed on the tk widget element corresponding to
+# the pWidget. The name for the element in the list defines the type
+# of action. Currently, only sClick(a single click), dClick(a double
+# click), and kPress(a key strick) are the valid action types;
+# preFun - an optional function that is to be executed to format the
+# string that will be used to set the value of the pWidget gets updated;
+# postFun - an optional function that is to be executed to format the
+# string stored as the value of the pWidget when it is reterived by
+# any operation;
+# notify - an optional list of functions that will be executed each
+# time the value of the pWidget gets updated.
 #
 
-.initPWidget <- function(where){
-    setClass("pWidget", representation(name = "character",
-                                       winid = "tkwin",
+.initBasicPW <- function(where){
+    setClass("basicPW", representation(name = "character",
                                        type = "character",
-                                       text = "character",
                                        value = "character",
-                                       variable = "tclVar",
                                        width = "numeric",
-                                       height = "numeric",
-                                       vScroll = "logical",
-                                       hScroll = "logical",
-                                       observers = "list",
                                        funs = "list",
                                        preFun = "function",
                                        postFun = "function",
-                                       notifier = "notifier"),
+                                       notify = "list",
+                                       env = "environment",
+                                       view = "widgetView"),
                                        where = where)
     # Set the get methods
-    if(!isGeneric("getName")){
-        setGeneric("getName",
-                   function(object) standardGeneric("getName"),
+    if(!isGeneric("name")){
+        setGeneric("name",
+                   function(object) standardGeneric("name"),
                    where = where)
     }
-    setMethod("getName", "pWidget",
+    setMethod("name", "basicPW",
               function(object) object@name, where = where)
-    if(!isGeneric("getWinid")){
-        setGeneric("getWinid",
-                   function(object) standardGeneric("getWinid"),
+    if(!isGeneric("type")){
+        setGeneric("type",
+                   function(object) standardGeneric("type"),
                    where = where)
     }
-    setMethod("getWinid", "pWidget",
-              function(object) object@winid, where = where)
-    if(!isGeneric("getType")){
-        setGeneric("getType",
-                   function(object) standardGeneric("getType"),
-                   where = where)
-    }
-    setMethod("getType", "pWidget",
+    setMethod("type", "basicPW",
               function(object) object@type, where = where)
-#    if(!isGeneric("getParent")){
-#        setGeneric("getParent",
-#                   function(object) standardGeneric("getParent"),
-#                   where = where)
-#    }
-#    setMethod("getParent", "pWidget",
-#              function(object) object@parent, where = where)
-    if(!isGeneric("getText")){
-        setGeneric("getText",
-                   function(object) standardGeneric("getText"),
+    if(!isGeneric("value")){
+        setGeneric("value",
+                   function(object) standardGeneric("value"),
                    where = where)
     }
-    setMethod("getText", "pWidget",
-              function(object) object@text, where = where)
-    if(!isGeneric("getValue")){
-        setGeneric("getValue",
-                   function(object) standardGeneric("getValue"),
-                   where = where)
-    }
-    setMethod("getValue", "pWidget",
-              function(object) getPostFun(object)(object@value), where = where)
-    if(!isGeneric("getVariable")){
-        setGeneric("getVariable",
-                   function(object) standardGeneric("getVariable"),
-                   where = where)
-    }
-    setMethod("getVariable", "pWidget",
-              function(object) object@variable,
+    setMethod("value", "basicPW",
+              function(object) postFun(object)(object@value),
               where = where)
-    if(!isGeneric("getWidth")){
-        setGeneric("getWidth",
-                   function(object) standardGeneric("getWidth"),
+    if(!isGeneric("width")){
+        setGeneric("width",
+                   function(object) standardGeneric("width"),
                    where = where)
     }
-    setMethod("getWidth", "pWidget",
+    setMethod("width", "basicPW",
               function(object) object@width, where = where)
-    if(!isGeneric("getHeight")){
-        setGeneric("getHeight",
-                   function(object) standardGeneric("getHeight"),
+    if(!isGeneric("funs")){
+        setGeneric("funs",
+                   function(object) standardGeneric("funs"),
                    where = where)
     }
-    setMethod("getHeight", "pWidget",
-              function(object) object@height, where = where)
-    if(!isGeneric("getVScroll")){
-        setGeneric("getVScroll",
-                   function(object) standardGeneric("getVScroll"),
-                   where = where)
-    }
-    setMethod("getVScroll", "pWidget",
-              function(object) object@vScroll, where = where)
-    if(!isGeneric("getHScroll")){
-        setGeneric("getHScroll",
-                   function(object) standardGeneric("getHScroll"),
-                   where = where)
-    }
-    setMethod("getHScroll", "pWidget",
-              function(object) object@hScroll, where = where)
-    if(!isGeneric("getFuns")){
-        setGeneric("getFuns",
-                   function(object) standardGeneric("getFuns"),
-                   where = where)
-    }
-    setMethod("getFuns", "pWidget",
+    setMethod("funs", "basicPW",
               function(object) object@funs, where = where)
-    if(!isGeneric("getObservers")){
-        setGeneric("getObservers",
-                   function(object) standardGeneric("getObservers"),
+    if(!isGeneric("notify")){
+        setGeneric("notify",
+                   function(object) standardGeneric("notify"),
                    where = where)
     }
-    setMethod("getObservers", "pWidget",
+    setMethod("notify", "basicPW",
               function(object) object@observers, where = where)
-    if(!isGeneric("getPreFun")){
-        setGeneric("getPreFun",
-                   function(object) standardGeneric("getPreFun"),
+    if(!isGeneric("preFun")){
+        setGeneric("preFun",
+                   function(object) standardGeneric("preFun"),
                    where = where)
     }
-    setMethod("getPreFun", "pWidget",
+    setMethod("preFun", "basicPW",
               function(object) object@preFun, where = where)
-    if(!isGeneric("getFuns")){
-        setGeneric("getFuns",
-                   function(object) standardGeneric("getFuns"),
+    if(!isGeneric("postFun")){
+        setGeneric("postFun",
+                   function(object) standardGeneric("postFun"),
                    where = where)
     }
-    setMethod("getFuns", "pWidget",
-              function(object) object@funs, where = where)
-    if(!isGeneric("getPostFun")){
-        setGeneric("getPostFun",
-                   function(object) standardGeneric("getPostFun"),
-                   where = where)
-    }
-    setMethod("getPostFun", "pWidget",
+    setMethod("postFun", "basicPW",
               function(object) object@postFun, where = where)
-    if(!isGeneric("getNotifier")){
-        setGeneric("getNotifier",
-                   function(object) standardGeneric("getNotifier"),
+    if(!isGeneric("env")){
+        setGeneric("env",
+                   function(object) standardGeneric("env"),
                    where = where)
     }
-    setMethod("getNotifier", "pWidget",
-              function(object) return(get("theNotifier", env =.GlobalEnv)),
-                                      where = where)
+    setMethod("env", "basicPW",
+              function(object) object@env, where = where)
+    if(!isGeneric("view")){
+        setGeneric("view",
+                   function(object) standardGeneric("view"),
+                   where = where)
+    }
+    setMethod("view", "basicPW",
+              function(object) object@view, where = where)
     # Define the replace methods
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
                    standardGeneric("name<-"), where = where)
     }
-    setReplaceMethod("name", "pWidget", function(object, value){
+    setReplaceMethod("name", "basicPW", function(object, value){
                   object@name <- value; object}, where = where)
-     if(!isGeneric("winid<-")){
-        setGeneric("winid<-", function(object, value)
-                   standardGeneric("winid<-"), where = where)
-    }
-    setReplaceMethod("winid", "pWidget", function(object, value){
-                  object@winid <- value; object}, where = where)
     if(!isGeneric("type<-")){
         setGeneric("type<-", function(object, value)
                    standardGeneric("type<-"), where = where)
     }
-    setReplaceMethod("type", "pWidget", function(object, value){
+    setReplaceMethod("type", "basicPW", function(object, value){
                   object@type <- value; object}, where = where)
-    if(!isGeneric("text<-")){
-        setGeneric("text<-", function(object, value)
-                   standardGeneric("text<-"), where = where)
-    }
-    setReplaceMethod("text", "pWidget", function(object, value){
-                  object@text <- value; object}, where = where)
     if(!isGeneric("value<-")){
         setGeneric("value<-", function(object, value)
                    standardGeneric("value<-"), where = where)
     }
-    setReplaceMethod("value", "pWidget", function(object, value){
-                  object@value <- getPreFun(object)(value);
-                  notify(getNotifier(object), object);
+    setReplaceMethod("value", "basicPW", function(object, value){
+                  object@value <- preFun(object)(value);
+                  updateDisplay(view(object), name(object),
+                                type(object), value);
                   object}, where = where)
-    if(!isGeneric("variable<-")){
-        setGeneric("variable<-", function(object, value)
-                   standardGeneric("variable<-"), where = where)
-    }
-    setReplaceMethod("variable", "pWidget", function(object, value){
-                  object@variable <- value; object}, where = where)
     if(!isGeneric("width<-")){
         setGeneric("width<-", function(object, value)
                    standardGeneric("width<-"), where = where)
     }
-    setReplaceMethod("width", "pWidget", function(object, value){
+    setReplaceMethod("width", "basicPW", function(object, value){
                   object@width <- value; object}, where = where)
-    if(!isGeneric("height<-")){
-        setGeneric("height<-", function(object, value)
-                   standardGeneric("height<-"), where = where)
-    }
-    setReplaceMethod("height", "pWidget", function(object, value){
-                  object@height <- value; object}, where = where)
-    if(!isGeneric("vScroll<-")){
-        setGeneric("vScroll<-", function(object, value)
-                   standardGeneric("vScroll<-"), where = where)
-    }
-    setReplaceMethod("vScroll", "pWidget", function(object, value){
-                  object@vScroll <- value; object}, where = where)
-    if(!isGeneric("hScroll<-")){
-        setGeneric("hScroll<-", function(object, value)
-                   standardGeneric("hScroll<-"), where = where)
-    }
-    setReplaceMethod("hScroll", "pWidget", function(object, value){
-                  object@hScroll <- value; object}, where = where)
     if(!isGeneric("funs<-")){
         setGeneric("funs<-", function(object, value)
                    standardGeneric("funs<-"), where = where)
     }
-    setReplaceMethod("funs", "pWidget", function(object, value){
+    setReplaceMethod("funs", "basicPW", function(object, value){
                   object@fun <- value; object}, where = where)
-    if(!isGeneric("observers<-")){
-        setGeneric("observers<-", function(object, value)
-                   standardGeneric("observers<-"), where = where)
+    if(!isGeneric("notify<-")){
+        setGeneric("notify<-", function(object, value)
+                   standardGeneric("notify<-"), where = where)
     }
-    setReplaceMethod("observers", "pWidget", function(object, value){
+    setReplaceMethod("notify", "basicPW", function(object, value){
                   object@observers <- value; object}, where = where)
     if(!isGeneric("preFun<-")){
         setGeneric("preFun<-", function(object, value)
                    standardGeneric("preFun<-"), where = where)
     }
-    setReplaceMethod("preFun", "pWidget", function(object, value){
+    setReplaceMethod("preFun", "basicPW", function(object, value){
                   object@preFun <- value; object}, where = where)
     if(!isGeneric("postFun<-")){
         setGeneric("postFun<-", function(object, value)
                    standardGeneric("postFun<-"), where = where)
     }
-    setReplaceMethod("postFun", "pWidget", function(object, value){
+    setReplaceMethod("postFun", "basicPW", function(object, value){
                   object@postFun <- value; object}, where = where)
-    if(!isGeneric("notifier<-")){
-        setGeneric("notifier<-", function(object, value)
-                   standardGeneric("notifier<-"), where = where)
+    if(!isGeneric("env<-")){
+        setGeneric("env<-", function(object, value)
+                   standardGeneric("env<-"), where = where)
     }
-    setReplaceMethod("notifier", "pWidget", function(object, value){
-                  object@postFun <- notifier; object}, where = where)
-    # Set the update function
-#    if(!isGeneric("attach")){
-#        setGeneric("attach",
-#                   function(view, subject, observer)
-#                   standardGeneric("attach"), where = where)
-#    }
-#    setMethod("attach", "notifier",
-#              function(notifier, view, subject, observer)
-#              notifier@register(view, subject, observer),
-#              where = where)
-#    if(!isGeneric("detach")){
-#        setGeneric("detach",
-#                   function(view, subject, observer)
-#                   standardGeneric("detach"), where = where)
-#    }
-#    setMethod("attach", "pWidget",
-#              function(view, subject, observer)
-#              notifier@unRegister(view, subject, observer),
-#              where = where)
-#    if(!isGeneric("update")){
-#        setGeneric("update",
-#                   function(object, value)
-#                   standardGeneric("update"), where = where)
-#   }
-#    setMethod("update", "pWidget",
-#             function(object, value) notifyView(object, value),
-#              where = where)
-
-    return("Class pWidget initialized")
-}
-
-# This function initilizes a notifier class with default methods.
-# subNObes - an R environment object that contains R environment
-# objects. The keys for the top level R environment object are the names
-# of view objects the notifier knows and the keys for the second level
-# R environment are names for pWidgets for the view defined by a key
-# of the top level R environment.
-#
-
-.initNotifier <- function(where){
-    setClass("notifier", representation(view = "tkWidget"), where = where)
-    # Set the get method
-    if(!isGeneric("getView")){
-        setGeneric("getView",
-                   function(object) standardGeneric("getView"),
-                   where = where)
-    }
-    setMethod("getView", "notifier",
-              function(object) object@view, where = where)
-#    if(!isGeneric("getSubNObse")){
-#        setGeneric("getSubNObse",
-#                   function(object) standardGeneric("getSubNObse"),
-#                   where = where)
-#    }
-#    setMethod("getSubNObse", "notifier",
-#              function(object) object@subNObse, where = where)
-
-    # Set the set method
+    setReplaceMethod("env", "basicPW", function(object, value){
+                  object@env <- value; object}, where = where)
     if(!isGeneric("view<-")){
         setGeneric("view<-", function(object, value)
                    standardGeneric("view<-"), where = where)
     }
-    setReplaceMethod("view", "notifier", function(object, value){
-                  object@subNObse <- view; object}, where = where)
-#    if(!isGeneric("subNObse<-")){
-#        setGeneric("subNObse<-", function(object, value)
-#                   standardGeneric("subNObse<-"), where = where)
-#    }
-#    setReplaceMethod("subNObse", "notifier", function(object, value){
-#                  object@subNObse <- value; object}, where = where)
-
-    # Set the interface functions
-#    if(!isGeneric("register")){
-#        setGeneric("register",
-#                   function(notifier, subject, observer)
-#                   standardGeneric("register"), where = where)
-#    }
-#    setMethod("register", c("notifier", "character", "pWidget"),
-#              function(notifier, subject, observer) {
-#                  subNObse <- .writeSubNObse(getSubNObse(notifier),
-#                                       subject, observer);
-#                  subNObse(notifier) <- subNObse}, where = where)
-#    if(!isGeneric("unRegister")){
-#        setGeneric("unRegister",
-#                   function(notifier, subject, observer)
-#                   standardGeneric("unRegister"), where = where)
-#    }
-#    setMethod("unRegister", c("notifier", "character", "pWidget"),
-#          function(notifier, subject, observer){
-#           subNObse <- .modSubNObse(getSubNObse(notifier),subject, observer);
-#            subNObse(notifier) <- subNObse}, where = where)
-    if(!isGeneric("notify")){
-        setGeneric("notify",
-                   function(notifier, pWidget)
-                   standardGeneric("notify"), where = where)
-    }
-    setMethod("notify", c("notifier", "pWidget"),
-              function(notifier, pWidget){
-                  if(length(getObservers(pWidget) > 1)){
-                      updateWidget(getView(notifier), pWidget)}},
-              where = where)
-    return("Class notifier initialized")
+    setReplaceMethod("view", "basicPW", function(object, value){
+                  object@view <- value; object}, where = where)
+    return("Class basicPW initialized")
 }
 
-.writeView <- function(observers, value){
-    writeWidget <- function(widget, type, value){
-        switch(tolower(type),
-               "text" = updateText(widget, value),
-               "entry" = ,
-               "list" = updateList(widget, value),
-               stop("Unknow widget type!"))
-    }
-    for(i in names(observers)){
-        writeWidget(getWinid(observers[[i]]), getType(observers[[i]]),
-                    value)
-        updatePWidget(updater, getName(observers[[i]]), value)
-    }
-}
-
-# Called by register of .initNotifier to register views, subjects, and
-# observers
-.writeSubNObse <- function(subNObse, subject, observer){
-    if(is.null(subNObse[[subject]])){
-        subNObse[[subject]][[getName(observer)]] <- observer
-    }else{
-        isNew <- TRUE
-        for(i in names(subNObse[[subject]])){
-            if(i == getName(observer)){
-                isNew <- FALSE
-            }
-        }
-        if(isNew){
-            subNObse[[subject]][[getName(observer)]] <- observer
-        }
-    }
-    return(subNObse)
-}
-
-# Called by unRegister of .initNotifier to unregister views, subjects, and
-# observers
-.modSubNObse <- function(subNObse, subject, observer){
-    if(!is.null(subNObse[[subject]])){
-        for(i in names(subNObse[[subject]])){
-            if(i == getName(observer)){
-                subNObse[[subject]] <-
-                  subNObse[[subject]][names(subNObse[[subject]]) != i]
-            }
-        }
-        if(length(subNObse[[subject]]) < 1){
-            subNObse <- subNObse[names(subNObse) != subject]
-        }
-    }
-    return(subNObse)
-}
-
-# This function initilizes tkWidget class with default functions
-# title - a character string for the text to be displayed as the title
-# of the widget to be created
-# name - a "tkwin" object that is the toplevel of the widget to be created
+# This function initializes select class by containing the basicPW
+# class and defining two more new slots,
+# text - a vector of character string(s) for name(s) of selections
+# that will be available. The length of text should be the same as name;
+# default - a character string for the name of the slections (select
+# box or radio button) that is going to be the default.
 #
-.initTKWidget <- function(where){
-    setClass("tkWidget", representation(title = "character",
-                                        name = "character",
-                                        winid = "tkwin",
-                                        widgetids = "list",
-                                        updater = "updater"), where = where)
+.initSelect <- function(where){
+    setClass("selectBox", representation(text = "vector",
+                                      default = "character"),
+             contains = "basicPW", where = where)
     # Set the get methods
-    if(!isGeneric("getName")){
-        setGeneric("getName",
-                   function(object) standardGeneric("getName"),
+    if(!isGeneric("text")){
+        setGeneric("text",
+                   function(object) standardGeneric("text"),
                    where = where)
     }
-    setMethod("getName", "tkWidget",
-              function(object) object@name, where = where)
-    if(!isGeneric("getWinid")){
-        setGeneric("getWinid",
-                   function(object) standardGeneric("getWinid"),
+    setMethod("text", "selectBox",
+              function(object) object@text, where = where)
+    if(!isGeneric("default")){
+        setGeneric("default",
+                   function(object) standardGeneric("default"),
                    where = where)
     }
-    setMethod("getWinid", "tkWidget",
-              function(object) object@winid, where = where)
-    if(!isGeneric("getTitle")){
-        setGeneric("getTitle",
-                   function(object) standardGeneric("getTitle"),
-                   where = where)
+    setMethod("default", "selectBox",
+              function(object) object@default, where = where)
+    if(!isGeneric("text<-")){
+        setGeneric("text<-", function(object, value)
+                   standardGeneric("text<-"), where = where)
     }
-    setMethod("getTitle", "tkWidget",
-              function(object) object@title, where = where)
-    if(!isGeneric("getWidgetids")){
-        setGeneric("getWidgetids",
-                   function(object) standardGeneric("getWidgetids"),
-                   where = where)
+    setReplaceMethod("text", "selectBox", function(object, value){
+                  object@text <- value; object}, where = where)
+    if(!isGeneric("default<-")){
+        setGeneric("default<-", function(object, value)
+                   standardGeneric("default<-"), where = where)
     }
-    setMethod("getWidgetids", "tkWidget",
-              function(object) object@widgetids, where = where)
-    if(!isGeneric("getUpdater")){
-        setGeneric("getUpdater",
-                   function(object) standardGeneric("getUpdater"),
-                   where = where)
-    }
-    setMethod("getUpdater", "tkWidget",
-              function(object) object@updater, where = where)
-#    if(!isGeneric("getCancelled")){
-#        setGeneric("getCancelled",
-#                   function(object) standardGeneric("getCancelled"),
+    setReplaceMethod("default", "selectBox", function(object, value){
+                  object@default <- value; object}, where = where)
+
+    return("Class select initialized")
+}
+
+# This function initializes a radio button class by containing the
+# select class and defining a new slot.
+# var - a tclVar object that is used to group radio buttons together.
+#
+#.initRadio <- function(where){
+#    setClass("radioButton", representation(var = "tclVar"),
+#             contains = "selectBox", where = where)
+    # Set the get methods
+#    if(!isGeneric("getVar")){
+#        setGeneric("getVar",
+#                   function(object) standardGeneric("getVar"),
 #                   where = where)
 #    }
-#    setMethod("getCancelled", "tkWidget",
-#              function(object) object@cancelled, where = where)
+#    setMethod("getVar", "radioButton",
+#              function(object) object@var, where = where)
+#    if(!isGeneric("var<-")){
+#        setGeneric("var<-", function(object, value)
+#                   standardGeneric("var<-"), where = where)
+#    }
+#    setReplaceMethod("var", "radioButton", function(object, value){
+#                  object@var <- value; object}, where = where)
+
+#    return("Class radio initialized")
+#}
+
+# This function initializes a button class by containing the
+# basicPW class and defining a new slot.
+# text - an optional character that is going to be displayed on the button;
+# command - a required function that defines the behavior of the
+# button to be created.
+#
+.initButton <- function(where){
+    setClass("button", representation(text = "character",
+                                      command = "function"),
+             contains = "basicPW", where = where)
+    # Set the get methods
+    if(!isGeneric("text")){
+        setGeneric("text",
+                   function(object) standardGeneric("text"),
+                   where = where)
+    }
+    setMethod("text", "button",
+              function(object) object@text, where = where)
+    if(!isGeneric("command")){
+        setGeneric("command",
+                   function(object) standardGeneric("command"),
+                   where = where)
+    }
+    setMethod("command", "button",
+              function(object) object@command, where = where)
+    if(!isGeneric("text<-")){
+        setGeneric("text<-", function(object, value)
+                   standardGeneric("text<-"), where = where)
+    }
+    setReplaceMethod("text", "button", function(object, value){
+                  object@text <- value; object}, where = where)
+    if(!isGeneric("command<-")){
+        setGeneric("command<-", function(object, value)
+                   standardGeneric("command<-"), where = where)
+    }
+    setReplaceMethod("command", "button", function(object, value){
+                  object@command <- value; object}, where = where)
+
+    return("Class button initialized")
+}
+
+# This function initializes a textContainer class by containing the
+# basicPW class and defining a new slot.
+# height - an integer for the height (number of lines) of the tk
+# widget element corresponding to the pWidget.
+#
+.initTextContainer <- function(where){
+    setClass("textContainer", representation(height = "numeric"),
+             contains = "basicPW", where = where)
+    # Set the get methods
+    if(!isGeneric("height")){
+        setGeneric("height",
+                   function(object) standardGeneric("height"),
+                   where = where)
+    }
+    setMethod("height", "textContainer",
+              function(object) object@height, where = where)
+    if(!isGeneric("height<-")){
+        setGeneric("height<-", function(object, value)
+                   standardGeneric("height<-"), where = where)
+    }
+    setReplaceMethod("height", "textContainer", function(object, value){
+                  object@height <- value; object}, where = where)
+
+    return("Class textContainer initialized")
+}
+
+# This function initilizes a win class with default functions
+# title - a character string for the text to be displayed as the title
+# of the widget to be created
+# name - a character string for the name of window holding the widget
+# elements;
+# winid - a tkwin object holding the id for the window;
+# widgetids - a list whose elements are the name and tkwin ids for the
+# widget elements to be created.
+#
+.initWidgetView <- function(where){
+    setClass("widgetView", representation(title = "character",
+                                   name = "character",
+                                   winid = "tkwin",
+                                   widgetids = "list"), where = where)
+    # Set the get methods
+    if(!isGeneric("name")){
+        setGeneric("name",
+                   function(object) standardGeneric("name"),
+                   where = where)
+    }
+    setMethod("name", "widgetView",
+              function(object) object@name, where = where)
+    if(!isGeneric("winid")){
+        setGeneric("winid",
+                   function(object) standardGeneric("winid"),
+                   where = where)
+    }
+    setMethod("winid", "widgetView",
+              function(object) object@winid, where = where)
+    if(!isGeneric("title")){
+        setGeneric("title",
+                   function(object) standardGeneric("title"),
+                   where = where)
+    }
+    setMethod("title", "widgetView",
+              function(object) object@title, where = where)
+    if(!isGeneric("widgetids")){
+        setGeneric("widgetids",
+                   function(object) standardGeneric("widgetids"),
+                   where = where)
+    }
+    setMethod("widgetids", "widgetView",
+              function(object) object@widgetids, where = where)
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
                    standardGeneric("name<-"), where = where)
     }
-    setReplaceMethod("name", "tkWidget", function(object, value){
+    setReplaceMethod("name", "widgetView", function(object, value){
                   object@name <- value; object}, where = where)
     if(!isGeneric("winid<-")){
         setGeneric("winid<-", function(object, value)
                    standardGeneric("winid<-"), where = where)
     }
-    setReplaceMethod("winid", "tkWidget", function(object, value){
+    setReplaceMethod("winid", "widgetView", function(object, value){
                   object@winid <- value; object}, where = where)
     if(!isGeneric("widgetids<-")){
         setGeneric("widgetids<-", function(object, value)
                    standardGeneric("widgetids<-"), where = where)
     }
-    setReplaceMethod("widgetids", "tkWidget", function(object, value){
+    setReplaceMethod("widgetids", "widgetView", function(object, value){
                   object@widgetids <- value; object}, where = where)
-    if(!isGeneric("updater<-")){
-        setGeneric("updater<-", function(object, value)
-                   standardGeneric("updater<-"), where = where)
+    if(!isGeneric("renderWidgets")){
+        setGeneric("renderWidgets",
+                   function(tkWidget, pWidgets)
+                   standardGeneric("renderWidgets"), where = where)
     }
-    setReplaceMethod("updater", "tkWidget", function(object, value){
-                  object@updater <- value; object}, where = where)
-    # Create the interface methods
-    if(!isGeneric("createFrame")){
-        setGeneric("createFrame",
-                   function(object)
-                   standardGeneric("createFrame"), where = where)
-    }
-    setMethod("createFrame", "tkWidget",
-              function(object)
-              return(tkframe(getWinid(object))), where = where)
-    if(!isGeneric("createPWidget")){
-        setGeneric("createPWidget",
-                   function(tkWidget, pWidget, parent)
-                   standardGeneric("createPWidget"), where = where)
-    }
-    setMethod("createPWidget", c("tkWidget", "pWidget"),
-              function(tkWidget, pWidget, parent)
-              return(.getAWidget(tkWidget, pWidget, parent)),
+    setMethod("renderWidgets", c("widgetView", "list"),
+              function(tkWidget, pWidgets)
+              return(.doWidgets(tkWidget, pWidgets)),
               where = where)
-    if(!isGeneric("doPack")){
-        setGeneric("doPack",
-                   function(what, side = "left")
-                   standardGeneric("doPack"), where = where)
+    if(!isGeneric("updateDisplay")){
+        setGeneric("updateDisplay",
+                   function(widgetView, PWName, PWType, value)
+                   standardGeneric("updateDisplay"), where = where)
     }
-    setMethod("doPack", "ANY",
-              function(what, side = "left")
-              tkpack(what, side = side), where = where)
-    if(!isGeneric("updateWidget")){
-        setGeneric("updateWidget",
-                   function(tkWidget, pWidget)
-                   standardGeneric("updateWidget"), where = where)
-    }
-    setMethod("updateWidget", c("tkWidget", "pWidget"),
-              function(tkWidget, pWidget){
-                  for(i in getObservers(pWidget)){
-                      if(getType(i) == "text"){
-                          tkdelete(getWidgetids(tkWidget)[[getName(i)]],
-                                   "0.0", "end")
+    setMethod("updateDisplay", "widgetView",
+              function(widgetView, PWName, PWType, value){
+                  widgetids <- widgetids(widgetView)
+                  if(any(PWType == c("list", "entry"))){
+                      updateList(widgetids[[PWName]], value)
+                  }else{
+                      if(PWType == "text"){
+                          updateText(widgetids[[PWName]], value)
                       }else{
-                          tkdelete(getWidgetids(tkWidget)[[getName(i)]],
-                                   0, "end")
+                          if(PWType == "entry"){
+                              updateEntry(widgetids[[PWName]], value)
+                          }
                       }
-                      tkinsert(getWidgetids(tkWidget)[[getName(i)]],
-                               "end", getValue(pWidget))
-                  }}, where = where)
-    if(!isGeneric("killTK")){
-        setGeneric("killTK",
-                   function(tkWidget) standardGeneric("killTK"),
+                  }
+              }, where = where)
+    if(!isGeneric("killWin")){
+        setGeneric("killWin",
+                   function(tkWidget) standardGeneric("killWin"),
                    where = where)
     }
-    setMethod("killTK", "tkWidget",
-              function(tkWidget) tkdestroy(getWinid(tkWidget)), where = where)
-
-#    setMethod("doPack", "pWidget",
-#              function(what, side = "left"){
-#                  if(!any(getType(pWidget) == c("text", "list", "canvas")))
-#              tkpack(getName(what), side = side)}, where = where)
-
-    if(!isGeneric("TKWait")){
-        setGeneric("TKWait",
-                   function(tkWidget) standardGeneric("TKWait"),
+    setMethod("killWin", "widgetView",
+              function(tkWidget) tkdestroy(winid(tkWidget)), where = where)
+    if(!isGeneric("winWait")){
+        setGeneric("winWait",
+                   function(tkWidget) standardGeneric("winWait"),
                    where = where)
     }
-    setMethod("TKWait", "tkWidget",
-              function(tkWidget) tkwait.window(getWinid(tkWidget)), where = where)
+    setMethod("winWait", "widgetView",
+              function(tkWidget) tkwait.window(winid(tkWidget)),
+              where = where)
 
     return("Class tkWidget initialized")
 }
 
-.getAWidget <- function(tkWidget, pWidget, parent){
-
-    switch(tolower(getType(pWidget)),
-           "entry" = temp <- tkentry(parent, text = getText(pWidget),
-                             width = getWidth(pWidget)),
-           "button" = temp <- .doButton(tkWidget, pWidget, parent),
-           "text" = ,
-           "canvas" = ,
-           "list" = temp <- makeViewer(parent, text = getText(pWidget),
-                            vWidth = getWidth(pWidget),
-                            vHeight = getHeight(pWidget),
-                            hScroll = getHScroll(pWidget),
-                            vScroll = getVScroll(pWidget),
-                            what = getType(pWidget)),
-           "label" = temp <- tklabel(parent, text = getText(pWidget),
-                             width = getWidth(pWidget)),
-           "radio" = temp <- tkradiobutton(parent, text = getText(pWidget),
-                             value = as.numeric(getValue(pWidget)),
-                             variable = getVariable(pWidget)),
-           stop("Invalid pWidget type"))
-
-    funs <- getFuns(pWidget)
-    for(i in names(funs)){
-        switch(tolower(i),
-                       "command" = next,
-                       "sclick" = act <- "<B1-ButtonRelease>",
-                       "dclick" = act <- "<Double-Button-1>",
-                       "type" = act <- "<KeyPress>",
-                       stop("Unknow action"))
-
-        tkbind(temp, act, funs[[i]])
-    }
-
-#    obsers <- getObservers(pWidget)
-#    for(i in obsers){
-#        register(notifier, getName(pWidget), i)
-#    }
-
-#    winid(pWidget) <-  temp
-    return(temp)
-}
-
-.doButton <- function(tkWidget, pWidget, parent){
-    funs <- getFuns(pWidget)
-    tempFuns <- function() {
-        temp <- funs[["command"]]()
-        updatePWidget(getUpdater(tkWidget), pWidget, temp)
-    }
-    temp <- tkbutton(parent, text = getText(pWidget),
-                     width = getWidth(pWidget), command = tempFuns)
-    return(temp)
-}
-# This function initializes the updater class
-.initUpdater <- function(where){
-
-    setClass("updater", representation(pWidgets = "list",
-                                       end = "list",
-                                       views = "list"), where = where)
-    if(!isGeneric("getPWidgets")){
-        setGeneric("getPWidgets",
-                   function(object, view) standardGeneric("getPWidgets"),
-                   where = where)
-    }
-    setMethod("getPWidgets", "updater",
-              function(object, view) object@pWidgets, where = where)
-    if(!isGeneric("getEnd")){
-        setGeneric("getEnd",
-                   function(object, view) standardGeneric("getEnd"),
-                   where = where)
-    }
-    setMethod("getEnd", "updater",
-              function(object, view) object@end, where = where)
-    if(!isGeneric("getViews")){
-        setGeneric("getViews",
-                   function(object) standardGeneric("getViews"),
-                   where = where)
-    }
-    setMethod("getViews", "updater",
-              function(object) object@views, where = where)
-    if(!isGeneric("pWidgets<-")){
-        setGeneric("pWidgets<-", function(object, value)
-                   standardGeneric("pWidgets<-"), where = where)
-    }
-    setReplaceMethod("pWidgets", "updater", function(object, value){
-                  object@pWidgets <- value; object}, where = where)
-    if(!isGeneric("end<-")){
-        setGeneric("end<-", function(object, value)
-                   standardGeneric("end<-"), where = where)
-    }
-    setReplaceMethod("end", "updater", function(object, value){
-                  object@end <- value; object}, where = where)
-    if(!isGeneric("views<-")){
-        setGeneric("views<-", function(object, value)
-                   standardGeneric("views<-"), where = where)
-    }
-    setReplaceMethod("views", "updater", function(object, value){
-                  object@views <- value; object}, where = where)
-    # Set the interface methods
-    if(!isGeneric("ended")){
-        setGeneric("ended",
-                   function(view, ended) standardGeneric("ended"),
-                   where = where)
-    }
-    setMethod("ended", c("character", "logical"),
-              function(view, ended) {temp <- getEnd(updater);
-                  temp[[view]] <- ended; end(updater) <- temp;
-                  tkWidgets <- getViews(updater); killTK(tkWidgets[[view]])},
-              where = where)
-    if(!isGeneric("clear")){
-        setGeneric("clear",
-                   function(object) standardGeneric("clear"),
-                   where = where)
-    }
-    setMethod("clear", "updater",
-              function(object) {print("will be working")},
-              where = where)
-    if(!isGeneric("addView")){
-        setGeneric("addView",
-              function(updater, view, tkWidget) standardGeneric("addView"),
-              where = where)
-    }
-    setMethod("addView", c("updater", "character", "tkWidget"),
-              function(updater, view, tkWidget) {temp <- getViews(updater);
-                                         temp[[view]] <- tkWidget;
-                                         views(updater) <- temp},
-              where = where)
-    if(!isGeneric("updatePWidget")){
-        setGeneric("updatePWidget",
-                   function(updater, pWidget, value)
-                   standardGeneric("updatePWidget"), where = where)
-    }
-    setMethod("updatePWidget", "updater",
-              function(updater, pWidget, value) {
-                  .modList(getPWidgets(updater), getName(pWidget), value)
-              }, where = where)
-
-    return("Class updater initialized")
-}
-
-.modList <- function(pWidgets, PWName, value){
-    if(!is.null(pWidgets[[PWName]])){
-        value(pWidgets[[PWName]]) <- value
-        return(pWidgets)
-    }else{
-        for(i in 1:length(pWidgets)){
-            if(any(PWName ==  names(pWidgets[[i]]))){
-                value(pWidgets[[i]][[PWName]]) <- value
-                return(pWidgets)
+.doWidgets<- function(tkWidget, pWidgets){
+    widgetids <- list()
+    doOne <- function(pWidget, parent){
+        if(any(type(pWidget) == c("radio", "check"))){
+            tempFrame <- tkframe(parent)
+            var <- tclVar()
+            for(i in 1:length(name(pWidget))){
+                if(type(pWidget) == "radio"){
+                    temp <- .getWidget(pWidget, tempFrame, i, var)
+                    tkpack(temp, side = "left")
+                    widgetids[[name(pWidget)[i]]] <<- temp
+                }else{
+                    temp <- .getWidget(pWidget, tempFrame, i, NULL)
+                    tkpack(temp, side = "left")
+                    widgetids[[name(pWidget)[i]]] <<- temp
+                }
+            }
+            tkpack(tempFrame)
+        }else{
+            if(any(type(pWidget) == c("list", "text"))){
+                temp <- .getWidget(pWidget, parent)
+                widgetids[[name(pWidget)]] <<- temp
+            }else{
+                temp <- .getWidget(pWidget, parent, 1)
+                tkpack(temp, side = "left")
+                widgetids[[name(pWidget)]] <<- temp
             }
         }
     }
+
+    doRow <- function(aRow){
+        if(length(aRow) > 1){
+            tempFrame <- tkframe(winid(tkWidget))
+            lapply(aRow, doOne, tempFrame)
+            tkpack(tempFrame)
+        }else{
+            doOne(aRow,winid(tkWidget))
+        }
+    }
+
+    lapply(pWidgets, doRow)
+    return(widgetids)
 }
 
+.getWidget <- function(pWidget, parent, index, var = NULL){
+    temp <- NULL
+    switch(tolower(type(pWidget)),
+           "entry" = temp <- .renderEntry(pWidget, parent),
+           "text" = ,
+           "list" = temp <- .renderViewer(pWidget, parent),
+           "label" = temp <- .renderLabel(pWidget, parent),
+           "radio" = temp <- .renderRadio(pWidget, parent, index, var),
+           "button" = temp <- .renderButton(pWidget, parent),
+           "check" = temp <- .renderCheck(pWidget, parent, index),
+           stop("Invalid pWidget type"))
 
-# This function defines the widget class and methods
+    return(temp)
+}
+
+.renderEntry <- function(pWidget, parent){
+    temp <- tkentry(parent, width = width(pWidget), font = "courier 11")
+    if(value(pWidget) != "" && !is.na(value(pWidget)) &&
+       !is.null(value(pWidget))){
+        updateText(temp, value(pWidget), FALSE)
+    }
+    return(temp)
+}
+
+.renderViewer <- function(pWidget, parent){
+    tempFrame <- tkframe(parent)
+    temp <- makeViewer(tempFrame, text = value(pWidget),
+                    vWidth = width(pWidget), vHeight = height(pWidget),
+                    hScroll = TRUE, vScroll = TRUE, what = type(pWidget))
+    tkpack(tempFrame)
+    return(temp)
+}
+
+.renderRadio <- function(pWidget, parent, index, var){
+    temp <- tkradiobutton(parent, text = text(pWidget)[index],
+                          value = index, variable = var)
+#    if(default == getName(pWidget)){
+#        tkconfigure(temp, value = 1)
+#    }
+    return(temp)
+}
+
+.renderLabel <-function(pWidget, parent){
+    temp <- tklabel(parent, text = value(pWidget),
+                    width = width(pWidget))
+    return(temp)
+}
+
+.renderButton <- function(pWidget, parent){
+    temp <- tkbutton(parent, text = text(pWidget),
+                     width = width(pWidget),
+                     command = command(pWidget))
+    return(temp)
+}
+
+.renderCheck <- function(pWidget, parent, index){
+    temp <- tkcheckbutton(parent, text = text(pWidget)[index],
+                          variable = var)
+    return(temp)
+}
+
+# This function initilizes the widget class and the associsted
+# functions.
 .initWidget <- function(where){
     setClass("widget", representation(title = "character",
                                       pWidgets = "list",
                                       funs = "list",
                                       preFun = "function",
-                                      postFun = "function"), where = where)
-    # Set the new methods
-    if(!isGeneric("getTitle")){
-        setGeneric("getTitle",
-                   function(object) standardGeneric("getTitle"),
+                                      postFun = "function"),
+             where = where)
+    # Set the get methods
+    if(!isGeneric("title")){
+        setGeneric("title",
+                   function(object) standardGeneric("title"),
                    where = where)
     }
-    setMethod("getTitle", "widget",
+    setMethod("title", "widget",
+              function(object) object@title, where = where)
+    if(!isGeneric("pWidgets")){
+        setGeneric("pWidgets",
+                   function(object) standardGeneric("pWidgets"),
+                   where = where)
+    }
+    setMethod("pWidgets", "widget",
               function(object) object@pWidgets, where = where)
-    if(!isGeneric("getPWidgets")){
-        setGeneric("getPWidgets",
-                   function(object, view) standardGeneric("getPWidgets"),
+    if(!isGeneric("funs")){
+        setGeneric("funs",
+                   function(object) standardGeneric("funs"),
                    where = where)
     }
-    setMethod("getPWidgets", "widget",
-              function(object, view) object@pWidgets, where = where)
-    if(!isGeneric("getFuns")){
-        setGeneric("getFuns",
-                   function(object) standardGeneric("getFuns"),
-                   where = where)
-    }
-    setMethod("getFuns", "widget",
+    setMethod("funs", "widget",
               function(object) object@funs, where = where)
-    if(!isGeneric("getPreFun")){
-        setGeneric("getPreFun",
-                   function(object) standardGeneric("getPreFun"),
+    if(!isGeneric("preFun")){
+        setGeneric("preFun",
+                   function(object) standardGeneric("preFun"),
                    where = where)
     }
-    setMethod("getPreFun", "widget",
+    setMethod("preFun", "widget",
               function(object) object@preFun, where = where)
-    if(!isGeneric("getPostFun")){
-        setGeneric("getPostFun",
-                   function(object) standardGeneric("getPostFun"),
+    if(!isGeneric("postFun")){
+        setGeneric("postFun",
+                   function(object) standardGeneric("postFun"),
                    where = where)
     }
-    setMethod("getPostFun", "widget",
+    setMethod("postFun", "widget",
               function(object) object@postFun, where = where)
     if(!isGeneric("title<-")){
         setGeneric("title<-", function(object, value)
@@ -778,17 +594,18 @@
     }
     setReplaceMethod("funs", "widget", function(object, value){
                   object@funs <- value; object}, where = where)
-    if(!isGeneric("preFun<-")){
-        setGeneric("preFun<-", function(object, value)
-                   standardGeneric("preFun<-"), where = where)
+    if(!isGeneric("preFuns<-")){
+        setGeneric("preFuns<-", function(object, value)
+                   standardGeneric("preFuns<-"), where = where)
     }
-    setReplaceMethod("preFun", "widget", function(object, value){
-                  object@preFun <- value; object}, where = where)
-    if(!isGeneric("postFun<-")){
-        setGeneric("postFun<-", function(object, value)
-                   standardGeneric("postFun<-"), where = where)
+    setReplaceMethod("preFuns", "widget", function(object, value){
+                  object@preFuns <- value; object}, where = where)
+    if(!isGeneric("postFuns<-")){
+        setGeneric("postFuns<-", function(object, value)
+                   standardGeneric("postFuns<-"), where = where)
     }
-    setReplaceMethod("postFun", "widget", function(object, value){
-                  object@postFun <- value; object}, where = where)
+    setReplaceMethod("postFuns", "widget", function(object, value){
+                  object@postFuns <- value; object}, where = where)
 
+    return("Class widget initialized")
 }

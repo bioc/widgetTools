@@ -6,9 +6,10 @@
     require(tkWidgets, quietly = TRUE)
 
     where <- match(paste("package:", pkgname, sep=""), search())
-    .initPWidget(where)
-    .initTKWidget(where)
-    .initNotifier(where)
-    .initUpdater(where)
+    .initBasicPW(where)
+    .initSelect(where)
+    .initButton(where)
+    .initTextContainer(where)
+    .initWidgetView(where)
     .initWidget(where)
 }
