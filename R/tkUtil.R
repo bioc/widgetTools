@@ -2,6 +2,9 @@
 # tcltk widgets.
 
 writeText <- function(widget, value, clear = TRUE){
+    if(is.list(value) || is.data.frame(value)){
+        value <- capture.output(print(value))
+    }
     if(clear){
         tkdelete(widget, "0.0", "end")
     }
@@ -9,6 +12,9 @@ writeText <- function(widget, value, clear = TRUE){
 }
 
 writeList <- function(widget, value, clear = TRUE){
+    if(is.list(value) || is.data.frame(value)){
+        value <- capture.output(print(value))
+    }
     if(clear){
         tkdelete(widget, 0, "end")
     }
