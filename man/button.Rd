@@ -17,22 +17,30 @@
 }
 \usage{
 button(name, env, value = "", width = 12, height = 0, funs = list(),
-notify = list(), preFun = function(x) x, postFun = function(x) x)
+notify = list(), preFun = function(x) x, postFun = function(x) x,
+view = new("widgetView") )
 entryBox(name, env, value = "", width = 50, height = 0, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x)
+notify = list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 textBox(name, env, value = "", width = 25, height = 12, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x)
+notify = list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 listBox(name, env, value = "", width = 25, height = 10, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x)
+notify = list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 checkButton(name, env, value, width = 50, funs = list(), notify =
-list(), preFun = function (x) x, postFun = function(x) x)
+list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 radioButton(name, env, value, width = 50, funs = list(), notify =
-list(), preFun = function (x) x, postFun = function(x) x)
+list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 label(name, env, value = "", width = 0, height = 0, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x)
+notify = list(), preFun = function (x) x, postFun = function(x) x,
+view = new("widgetView"))
 widget(wTitle, pWidgets, funs = list(), preFun = function()
 print("Hello"), postFun = function() print("Bye"), env)
-widgetView(WVTitle, name, widgetids = list(), theWidget = new("widget"))
+widgetView(WVTitle, name, widgetids = list(), theWidget = new("widget"),
+winid)
 }
 \arguments{
   \item{name}{\code{name} a character string for the name to be
@@ -64,6 +72,8 @@ widgetView(WVTitle, name, widgetids = list(), theWidget = new("widget"))
     widgets to be rendered}
   \item{theWidget}{\code{theWidget} a \code{\link{widget}} object to
     render the primary widgets}
+  \item{view}{\code{view} an object of class widgetView}
+  \item{winid}{\code{winid} an object of class winid}
 }
 \details{
   \code{\link{button}} constructs a button widget object.
