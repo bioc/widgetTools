@@ -1,6 +1,6 @@
 # This function loads the required libraries and initializes the classes
 
-.First.lib <- function(libname, pkgname, where) {
+.onLoad <- function(libname, pkgname, where) {
     capable <- capabilities()
     if(!capable["tcltk"]){
         stop(paste("The tcl/tk library is not available in your system.",
@@ -20,11 +20,13 @@
         }
     }
 
+    require("methods", character.only = TRUE, quietly = TRUE) ||
+    stop("Package methods not available")
+    require("tcltk", quietly = TRUE) || stop("Package tcltk unavailalbe!")
+
  if((.Platform$OS.type == "windows") && ("Biobase" %in% installed.packages()[,"Package"])
     && (interactive()) && (.Platform$GUI ==  "Rgui")){
      if (require("Biobase"))
          addVigs2WinMenu("widgetTools")
  }
-
-
 }

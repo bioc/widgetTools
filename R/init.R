@@ -1,3 +1,259 @@
+# This function initilizes the widget class and the associsted
+# functions.
+    setClass("widget", representation(wTitle = "character",
+                                      pWidgets = "list",
+                                      env = "environment",
+                                      funs = "list",
+                                      preFun = "function",
+                                      postFun = "function"))
+    # Set the get methods
+    if(!isGeneric("wTitle")){
+        setGeneric("wTitle",
+                   function(object) standardGeneric("wTitle"))
+    }
+    setMethod("wTitle", "widget",
+              function(object) object@wTitle)
+    if(!isGeneric("pWidgets")){
+        setGeneric("pWidgets",
+                   function(object) standardGeneric("pWidgets"))
+    }
+    setMethod("pWidgets", "widget",
+              function(object) object@pWidgets)
+     if(!isGeneric("wEnv")){
+        setGeneric("wEnv",
+                   function(object) standardGeneric("wEnv"))
+    }
+    setMethod("wEnv", "widget",
+              function(object) object@env)
+    if(!isGeneric("funs")){
+        setGeneric("funs",
+                   function(object) standardGeneric("funs"))
+    }
+    setMethod("funs", "widget",
+              function(object) object@funs)
+    if(!isGeneric("preFun")){
+        setGeneric("preFun",
+                   function(object) standardGeneric("preFun"))
+    }
+    setMethod("preFun", "widget",
+              function(object) object@preFun)
+    if(!isGeneric("postFun")){
+        setGeneric("postFun",
+                   function(object) standardGeneric("postFun"))
+    }
+    setMethod("postFun", "widget",
+              function(object) object@postFun)
+    if(!isGeneric("wTitle<-")){
+        setGeneric("wTitle<-", function(object, value)
+                   standardGeneric("wTitle<-"))
+    }
+    setReplaceMethod("wTitle", "widget", function(object, value){
+                  object@wTitle <- value; object})
+    if(!isGeneric("pWidgets<-")){
+        setGeneric("pWidgets<-", function(object, value)
+                   standardGeneric("pWidgets<-"))
+    }
+    setReplaceMethod("pWidgets", "widget", function(object, value){
+                  object@pWidgets <- value; object})
+    if(!isGeneric("env<-")){
+        setGeneric("env<-", function(object, value)
+                   standardGeneric("env<-"))
+    }
+    setReplaceMethod("env", "widget", function(object, value){
+                  object@env <- value; object})
+    if(!isGeneric("funs<-")){
+        setGeneric("funs<-", function(object, value)
+                   standardGeneric("funs<-"))
+    }
+    setReplaceMethod("funs", "widget", function(object, value){
+                  object@funs <- value; object})
+    if(!isGeneric("preFuns<-")){
+        setGeneric("preFuns<-", function(object, value)
+                   standardGeneric("preFuns<-"))
+    }
+    setReplaceMethod("preFuns", "widget", function(object, value){
+                  object@preFuns <- value; object})
+    if(!isGeneric("postFuns<-")){
+        setGeneric("postFuns<-", function(object, value)
+                   standardGeneric("postFuns<-"))
+    }
+    setReplaceMethod("postFuns", "widget", function(object, value){
+                  object@postFuns <- value; object})
+
+    # Set the interface methods
+    if(!isGeneric("updateRadio")){
+        setGeneric("updateRadio",
+                   function(object, PWName, bName)
+                   standardGeneric("updateRadio"))
+    }
+    setMethod("updateRadio", "widget",
+              function(object, PWName, bName) {
+                  tempPW <- get(PWName, env = wEnv(object))
+                  tempValue <- wValue(tempPW)
+                  tempValue[1:length(tempValue)] <- FALSE
+                  tempValue[bName] <- TRUE
+                  wValue(tempPW) <- tempValue
+                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
+              })
+    if(!isGeneric("updateList")){
+        setGeneric("updateList",
+                   function(object, PWName, opts)
+                   standardGeneric("updateList"))
+    }
+    setMethod("updateList", "widget",
+              function(object, PWName, opts) {
+                  tempPW <- get(PWName, env = wEnv(object))
+                  tempValue <- wValue(tempPW)
+                  tempValue[1:length(tempValue)] <- FALSE
+                  tempValue[bName] <- TRUE
+                  wValue(tempPW) <- tempValue
+                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
+              })
+    if(!isGeneric("updateCheck")){
+        setGeneric("updateCheck",
+                   function(object, PWName, bName)
+                   standardGeneric("updateCheck"))
+    }
+    setMethod("updateCheck", "widget",
+              function(object, PWName, bName) {
+                  tempPW <- get(PWName, env = wEnv(object))
+                  tempValue <- wValue(tempPW)
+                  if(tempValue[bName]){
+                      tempValue[bName] <- FALSE
+                  }else{
+                      tempValue[bName] <- TRUE
+                  }
+                  wValue(tempPW) <- tempValue
+                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
+              })
+    if(!isGeneric("updateText")){
+        setGeneric("updateText",
+                   function(object, PWName, value)
+                   standardGeneric("updateText"))
+    }
+    setMethod("updateText", "widget",
+              function(object, PWName, value) {
+                  tempPW <- get(PWName, env = wEnv(object))
+                  wValue(tempPW) <- value
+                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
+              })
+
+
+# This function initilizes a win class with default functions
+# title - a character string for the text to be displayed as the title
+# of the widget to be created
+# name - a character string for the name of window holding the widget
+# elements;
+# winid - a tkwin object holding the id for the window;
+# widgetids - a list whose elements are the name and tkwin ids for the
+# widget elements to be created.
+#
+setClass("widgetView", representation(WVTitle = "character",
+                                      vName = "character",
+                                      winid = "tkwin",
+                                      widgetids = "list",
+                                      theWidget = "widget"))
+## Set the get methods
+if(!isGeneric("vName")){
+    setGeneric("vName",
+               function(object) standardGeneric("vName"))
+}
+setMethod("vName", "widgetView",
+          function(object) object@vName)
+if(!isGeneric("winid")){
+    setGeneric("winid",
+               function(object) standardGeneric("winid"))
+}
+setMethod("winid", "widgetView",
+          function(object) object@winid)
+if(!isGeneric("WVTitle")){
+    setGeneric("WVTitle",
+               function(object) standardGeneric("WVTitle"))
+}
+setMethod("WVTitle", "widgetView",
+          function(object) object@WVTitle)
+if(!isGeneric("widgetids")){
+    setGeneric("widgetids",
+               function(object) standardGeneric("widgetids"))
+}
+setMethod("widgetids", "widgetView",
+          function(object) object@widgetids)
+if(!isGeneric("theWidget")){
+    setGeneric("theWidget",
+               function(object) standardGeneric("theWidget"))
+}
+setMethod("theWidget", "widgetView",
+          function(object) object@theWidget)
+if(!isGeneric("vName<-")){
+    setGeneric("vName<-", function(object, value)
+               standardGeneric("vName<-"))
+}
+setReplaceMethod("vName", "widgetView", function(object, value){
+    object@vName <- value; object})
+if(!isGeneric("winid<-")){
+    setGeneric("winid<-", function(object, value)
+               standardGeneric("winid<-"))
+}
+setReplaceMethod("winid", "widgetView", function(object, value){
+    object@winid <- value; object})
+if(!isGeneric("widgetids<-")){
+    setGeneric("widgetids<-", function(object, value)
+               standardGeneric("widgetids<-"))
+}
+setReplaceMethod("widgetids", "widgetView", function(object, value){
+    object@widgetids <- value; object})
+if(!isGeneric("theWidget<-")){
+    setGeneric("theWidget<-", function(object, value)
+               standardGeneric("theWidget<-"))
+}
+setReplaceMethod("theWidget", "widgetView", function(object, value){
+    object@theWidget <- value; object})
+if(!isGeneric("renderWidgets")){
+    setGeneric("renderWidgets",
+               function(widgetView, pWidgets)
+               standardGeneric("renderWidgets"))
+}
+setMethod("renderWidgets", c("widgetView", "list"),
+          function(widgetView, pWidgets)
+          return(.doWidgets(widgetView, pWidgets)))
+if(!isGeneric("renewView")){
+    setGeneric("renewView",
+               function(widgetView, pWidgets)
+               standardGeneric("renewView"))
+}
+setMethod("renewView", c("widgetView", "list"),
+          function(widgetView, pWidgets)
+          .renew(widgetView, pWidgets))
+if(!isGeneric("updateDisplay")){
+    setGeneric("updateDisplay",
+               function(widgetView, PWName, PWType, value)
+               standardGeneric("updateDisplay"))
+}
+setMethod("updateDisplay", "widgetView",
+          function(widgetView, PWName, PWType, value){
+              widgetids <- widgetids(widgetView)
+              if(PWType == "entry"){
+                  writeList(widgetids[[PWName]], value)
+              }else{
+                  if(PWType == "text"){
+                      writeText(widgetids[[PWName]], value)
+                  }
+              }
+          })
+if(!isGeneric("killWin")){
+    setGeneric("killWin",
+               function(tkWidget) standardGeneric("killWin"))
+}
+setMethod("killWin", "widgetView",
+          function(tkWidget) tkdestroy(winid(tkWidget)))
+if(!isGeneric("winWait")){
+    setGeneric("winWait",
+               function(tkWidget) standardGeneric("winWait"))
+}
+setMethod("winWait", "widgetView",
+          function(tkWidget) tkwait.window(winid(tkWidget)))
+
+
 # This group of functions initialize all the classes needed for
 # widgetTools that renders pWidgets on a widget that hosts several
 # interactive tk widget elements. We define a pWidget to be a tk
@@ -183,121 +439,6 @@ if(!isGeneric("wView<-")){
 }
 setReplaceMethod("wView", "basicPW", function(object, value){
     object@wView <- value; object})
-
-
-# This function initilizes a win class with default functions
-# title - a character string for the text to be displayed as the title
-# of the widget to be created
-# name - a character string for the name of window holding the widget
-# elements;
-# winid - a tkwin object holding the id for the window;
-# widgetids - a list whose elements are the name and tkwin ids for the
-# widget elements to be created.
-#
-setClass("widgetView", representation(WVTitle = "character",
-                                      vName = "character",
-                                      winid = "tkwin",
-                                      widgetids = "list",
-                                      theWidget = "widget"))
-## Set the get methods
-if(!isGeneric("vName")){
-    setGeneric("vName",
-               function(object) standardGeneric("vName"))
-}
-setMethod("vName", "widgetView",
-          function(object) object@vName)
-if(!isGeneric("winid")){
-    setGeneric("winid",
-               function(object) standardGeneric("winid"))
-}
-setMethod("winid", "widgetView",
-          function(object) object@winid)
-if(!isGeneric("WVTitle")){
-    setGeneric("WVTitle",
-               function(object) standardGeneric("WVTitle"))
-}
-setMethod("WVTitle", "widgetView",
-          function(object) object@WVTitle)
-if(!isGeneric("widgetids")){
-    setGeneric("widgetids",
-               function(object) standardGeneric("widgetids"))
-}
-setMethod("widgetids", "widgetView",
-          function(object) object@widgetids)
-if(!isGeneric("theWidget")){
-    setGeneric("theWidget",
-               function(object) standardGeneric("theWidget"))
-}
-setMethod("theWidget", "widgetView",
-          function(object) object@theWidget)
-if(!isGeneric("vName<-")){
-    setGeneric("vName<-", function(object, value)
-               standardGeneric("vName<-"))
-}
-setReplaceMethod("vName", "widgetView", function(object, value){
-    object@vName <- value; object})
-if(!isGeneric("winid<-")){
-    setGeneric("winid<-", function(object, value)
-               standardGeneric("winid<-"))
-}
-setReplaceMethod("winid", "widgetView", function(object, value){
-    object@winid <- value; object})
-if(!isGeneric("widgetids<-")){
-    setGeneric("widgetids<-", function(object, value)
-               standardGeneric("widgetids<-"))
-}
-setReplaceMethod("widgetids", "widgetView", function(object, value){
-    object@widgetids <- value; object})
-if(!isGeneric("theWidget<-")){
-    setGeneric("theWidget<-", function(object, value)
-               standardGeneric("theWidget<-"))
-}
-setReplaceMethod("theWidget", "widgetView", function(object, value){
-    object@theWidget <- value; object})
-if(!isGeneric("renderWidgets")){
-    setGeneric("renderWidgets",
-               function(widgetView, pWidgets)
-               standardGeneric("renderWidgets"))
-}
-setMethod("renderWidgets", c("widgetView", "list"),
-          function(widgetView, pWidgets)
-          return(.doWidgets(widgetView, pWidgets)))
-if(!isGeneric("renewView")){
-    setGeneric("renewView",
-               function(widgetView, pWidgets)
-               standardGeneric("renewView"))
-}
-setMethod("renewView", c("widgetView", "list"),
-          function(widgetView, pWidgets)
-          .renew(widgetView, pWidgets))
-if(!isGeneric("updateDisplay")){
-    setGeneric("updateDisplay",
-               function(widgetView, PWName, PWType, value)
-               standardGeneric("updateDisplay"))
-}
-setMethod("updateDisplay", "widgetView",
-          function(widgetView, PWName, PWType, value){
-              widgetids <- widgetids(widgetView)
-              if(PWType == "entry"){
-                  writeList(widgetids[[PWName]], value)
-              }else{
-                  if(PWType == "text"){
-                      writeText(widgetids[[PWName]], value)
-                  }
-              }
-          })
-if(!isGeneric("killWin")){
-    setGeneric("killWin",
-               function(tkWidget) standardGeneric("killWin"))
-}
-setMethod("killWin", "widgetView",
-          function(tkWidget) tkdestroy(winid(tkWidget)))
-if(!isGeneric("winWait")){
-    setGeneric("winWait",
-               function(tkWidget) standardGeneric("winWait"))
-}
-setMethod("winWait", "widgetView",
-          function(tkWidget) tkwait.window(winid(tkWidget)))
 
 
 .doWidgets<- function(tkWidget, pWidgets){
@@ -500,150 +641,4 @@ setMethod("winWait", "widgetView",
         }
     }
 }
-
-# This function initilizes the widget class and the associsted
-# functions.
-    setClass("widget", representation(wTitle = "character",
-                                      pWidgets = "list",
-                                      env = "environment",
-                                      funs = "list",
-                                      preFun = "function",
-                                      postFun = "function"))
-    # Set the get methods
-    if(!isGeneric("wTitle")){
-        setGeneric("wTitle",
-                   function(object) standardGeneric("wTitle"))
-    }
-    setMethod("wTitle", "widget",
-              function(object) object@wTitle)
-    if(!isGeneric("pWidgets")){
-        setGeneric("pWidgets",
-                   function(object) standardGeneric("pWidgets"))
-    }
-    setMethod("pWidgets", "widget",
-              function(object) object@pWidgets)
-     if(!isGeneric("wEnv")){
-        setGeneric("wEnv",
-                   function(object) standardGeneric("wEnv"))
-    }
-    setMethod("wEnv", "widget",
-              function(object) object@env)
-    if(!isGeneric("funs")){
-        setGeneric("funs",
-                   function(object) standardGeneric("funs"))
-    }
-    setMethod("funs", "widget",
-              function(object) object@funs)
-    if(!isGeneric("preFun")){
-        setGeneric("preFun",
-                   function(object) standardGeneric("preFun"))
-    }
-    setMethod("preFun", "widget",
-              function(object) object@preFun)
-    if(!isGeneric("postFun")){
-        setGeneric("postFun",
-                   function(object) standardGeneric("postFun"))
-    }
-    setMethod("postFun", "widget",
-              function(object) object@postFun)
-    if(!isGeneric("wTitle<-")){
-        setGeneric("wTitle<-", function(object, value)
-                   standardGeneric("wTitle<-"))
-    }
-    setReplaceMethod("wTitle", "widget", function(object, value){
-                  object@wTitle <- value; object})
-    if(!isGeneric("pWidgets<-")){
-        setGeneric("pWidgets<-", function(object, value)
-                   standardGeneric("pWidgets<-"))
-    }
-    setReplaceMethod("pWidgets", "widget", function(object, value){
-                  object@pWidgets <- value; object})
-    if(!isGeneric("env<-")){
-        setGeneric("env<-", function(object, value)
-                   standardGeneric("env<-"))
-    }
-    setReplaceMethod("env", "widget", function(object, value){
-                  object@env <- value; object})
-    if(!isGeneric("funs<-")){
-        setGeneric("funs<-", function(object, value)
-                   standardGeneric("funs<-"))
-    }
-    setReplaceMethod("funs", "widget", function(object, value){
-                  object@funs <- value; object})
-    if(!isGeneric("preFuns<-")){
-        setGeneric("preFuns<-", function(object, value)
-                   standardGeneric("preFuns<-"))
-    }
-    setReplaceMethod("preFuns", "widget", function(object, value){
-                  object@preFuns <- value; object})
-    if(!isGeneric("postFuns<-")){
-        setGeneric("postFuns<-", function(object, value)
-                   standardGeneric("postFuns<-"))
-    }
-    setReplaceMethod("postFuns", "widget", function(object, value){
-                  object@postFuns <- value; object})
-
-    # Set the interface methods
-    if(!isGeneric("updateRadio")){
-        setGeneric("updateRadio",
-                   function(object, PWName, bName)
-                   standardGeneric("updateRadio"))
-    }
-    setMethod("updateRadio", "widget",
-              function(object, PWName, bName) {
-                  tempPW <- get(PWName, env = wEnv(object))
-                  tempValue <- wValue(tempPW)
-                  tempValue[1:length(tempValue)] <- FALSE
-                  tempValue[bName] <- TRUE
-                  wValue(tempPW) <- tempValue
-                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
-              })
-    if(!isGeneric("updateList")){
-        setGeneric("updateList",
-                   function(object, PWName, opts)
-                   standardGeneric("updateList"))
-    }
-    setMethod("updateList", "widget",
-              function(object, PWName, opts) {
-                  tempPW <- get(PWName, env = wEnv(object))
-                  tempValue <- wValue(tempPW)
-                  tempValue[1:length(tempValue)] <- FALSE
-                  tempValue[bName] <- TRUE
-                  wValue(tempPW) <- tempValue
-                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
-              })
-    if(!isGeneric("updateCheck")){
-        setGeneric("updateCheck",
-                   function(object, PWName, bName)
-                   standardGeneric("updateCheck"))
-    }
-    setMethod("updateCheck", "widget",
-              function(object, PWName, bName) {
-                  tempPW <- get(PWName, env = wEnv(object))
-                  tempValue <- wValue(tempPW)
-                  if(tempValue[bName]){
-                      tempValue[bName] <- FALSE
-                  }else{
-                      tempValue[bName] <- TRUE
-                  }
-                  wValue(tempPW) <- tempValue
-                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
-              })
-    if(!isGeneric("updateText")){
-        setGeneric("updateText",
-                   function(object, PWName, value)
-                   standardGeneric("updateText"))
-    }
-    setMethod("updateText", "widget",
-              function(object, PWName, value) {
-                  tempPW <- get(PWName, env = wEnv(object))
-                  wValue(tempPW) <- value
-                  assign(wName(tempPW), tempPW, env = wEnv(tempPW))
-              })
-
-
-
-
-
-
 
