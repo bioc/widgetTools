@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.2 2002/11/27 15:47:13 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.3 2002/12/02 14:15:24 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -51,8 +51,20 @@ patterns should be available in most designe pattern books. \em{Design
 
 \section{Builde a widget}
 
-The first step in building a widget is to crate a pWidget object,
-which contains methods and variables described below:
+The first step in building a widget is to crate a tcltk window object
+(of tkWidget class) to hold the widget elements (of pWidget class) we
+are going to put on (note that a checking was put in to avoid running
+the code other than an active consol).
+
+<<>>=
+library(widgetTools)
+if(interactive()){
+    aWidget <- tkWidget(title = "A Test Widget")
+}
+@
+
+A tkWidget object can hold one to many pWidget objects, which contains
+methods and variables described below:
 
 \begin{verbatim}
 
@@ -110,25 +122,34 @@ Where
 
 \end{itemize}
 
-The following code create a label (testLabel), an entry (testRntry), a
-button (testButton), and a list box (testList) objects of pWidget and
-defines testEntry as the observer of testButton, meaning that the
-former will be notified when the latter is clicked.
+pWidgets may be placed on a tkWidget directly or placed as groups of
+pWidgets for better presentation. In the latter case, grouped pWidgets
+will have to be placed in different frames and the frames are than
+placed on to a tkWidget object. Suppose we would like to create a
+widget that has a label ("File Name"), an entry box for inputing file
+name, and button for browsing files in one row. Below that row, we
+want to have a list box in one row, two radio buttons in another row,
+and two select boxes in yet another row. To do that we will need to
+have four frames for widget elements in each of the four row. Each
+frame has the tkWidget object we created previously as the
+parent. Note that a frame can also be the parent of other frames and
+so on depending on the level of nesting one would like to have. When we
+have the frames ready, we can create the widget elements with their
+parents being the frames they belong to. The following code creates
+the three widget elements in the first row.
 
 <<>>=
-library(widgetTools)
-aLabel <- pWidget(type = "label", parent = "aFrame",
+frame1 <- createFrame(aWidget)
+aLabel <- pWidget(type = "label", parent = "frame1",
 text = "File Name: ")
-anEntry <- pWidget(type = "entry", parent = "aFRame", text = "")
-aButton <- pWidget(type = "button", parent = "aFRame", text =
+anEntry <- pWidget(type = "entry", parent = "frame2", width = 30, text = "")
+aButton <- pWidget(type = "button", parent = "frame3", text =
                    "Browse", width = 12)
-aList <- pWidget(type = "list", parent = "bFrame", text = "I am a list",
-                 width = 20, height = 10, vScroll = TRUE, hScroll = TRUE)
 @
 
-Each object has default functions including the get and set
-functions for each variable. The following code shows how the
-functions are used:
+tkWidget objects have set and get functions to access and modify the
+variables. For example, we can get and set the value for the type of a
+pWidget:
 
 <<>> =
 getType(aLabel)
@@ -137,39 +158,57 @@ getType(aLabel)
 aLabel <- setType(aLabel, "label")
 @
 
-Now, let us try to create a widget containing the above pWidgets. First
-we need to create tkWidget object, which is a tk window object to hold
-the pWidgets we are going to put on (note that a checking was put in to
-avoid running the code other than an active consol.
+Now we have three object of the class pWidget with instructions on how
+the corresponding tcltk widget element should be constructed. The
+follow convert the three objects into tcltk widget elements based on
+the definations and then put the tcltk elements in the frame they belong to.
 
 <<>>=
 if(interactive()){
-    aWidget <- tkWidget(title = "A Test Widget")
+    aLabel <- createPWidget(aLabel, frame1)
+    anEntry <- createPWidget(anEntry, frame1)
+    aButton <- createPWidget(aButton, frame1)
+    doPack(getName(aLabel), "left")
+    doPack(getName(anEntry), "left")
+    doPack(getName(aButton), "left")
+    doPack(frame1, "top")
 }
 @
 
-The name of the tkWidget is a "tkwin" object that will be the parent
-of the frames and/or widgets to be created. Suppose we want to arrange
-the abover four pWidgets in such a way so that \em{aLabel}, \em{anEntry},
-and \em{aButton} will be arranged in a row in order and \em{aList}
-will be arranged below them. To do that, we have to have a frame whoes
-parent is the toplevel \em{tkwin} object to haode the three
-pWidget. The three pWidgets will be packed into the frame side by
-side. The frame and \em{aList} then will be packed into the toplevel
-\em{tkwin} object one on top the other.
+When a pWidget is created and the corresponding tcltk widget element
+is put in place, a "tkwin" object representing the tcltk widget
+element is stored as the name of the pWidget.
+
+Now, we continue to build the list box we want and put it below the
+first we just built.
+
+<<>> =
+frame2 <- createFrame(aWidget)
+aList <- pWidget(type = "list", parent = "frame2",
+text = "I am in the second row", width = 50, height = 20, vScroll = TRUE,
+hScroll = TRUE)
+aList <- createPWidget(aList, frame2)
+doPack(frame2, "top")
+@
+
+A few more variables need to be defined to build radio buttons. One is
+the varaible, which is required to be a tclVar object. Radio buttons
+in the same group (only one of which can be selected) should have the
+same value for their variables. Another is \em(value} that defines who
+is the defult (value = 1).
 
 <<>>=
-aFrame <- createFrame(aWidget)
-aLabel <- createPWidget(aLabel, aFrame)
-anEntry <- createPWidget(anEntry, aFrame)
-aButton <- createPWidget(aButton, aFrame)
-doPack(aLabel, "left")
-doPack(anEntry, "left")
-doPack(aButton, "left")
-doPack(aFrame)
-
-aList <- createPWidget(aWidget, bFrame)
-doPack(bFrame)
+frame3 <- createFrame(aWidget)
+radVar <- tclVar(1)
+radio1 <- pWidget(type = "radio", parent = "frame3", text = "Selecte Me",
+value = 1, variable = radVar)
+radio2 <- pWidget(type = "radio", parent = "frame3", text = "How ABout Me",
+value = 2, variable = radVar)
+radio1 <- createPWidget(radio1, frame3)
+radio2 <- createPWidget(radio2, frame3)
+doPack(getName(radio1), "left")
+doPack(getName(radio2), "left")
+doPack(frame3, "top")
 @
 
 \end{document}
