@@ -307,7 +307,7 @@ setMethod("winWait", "widgetView",
     doOne <- function(pWidget, parent){
         if(any(wType(pWidget) == c("radio", "check"))){
             tempFrame <- tkframe(parent)
-            var <- tclVar(match(TRUE, wValue(pWidget)))
+            tempVar <- tclVar(match(TRUE, wValue(pWidget)))
             for(i in 1:length(wValue(pWidget))){
                 temp <- .getWidget(pWidget, tempFrame, i, tempVar)
                 fun <- function() {}

@@ -1,11 +1,11 @@
 Package: widgetTools
 Title: Creates an interactive tcltk widget
-Version: 1.2.4
-Date: 2004-02-10
+Version: 1.2.5
+Date: 2004-04-12
 Author: Jianhua Zhang
 Description: This packages contains tools to support the construction 
   of tcltk widgets
-Depends: R (>= 1.7.0), tcltk
+Depends: R (>= 1.8.1), tcltk
 Maintainer: Jianhua Zhang <jzhang@jimmy.harvard.edu>
 License: LGPL
 
