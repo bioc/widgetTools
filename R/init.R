@@ -522,11 +522,11 @@ setMethod("winWait", "widgetView",
     }
     setMethod("pWidgets", "widget",
               function(object) object@pWidgets)
-     if(!isGeneric("env")){
-        setGeneric("env",
-                   function(object) standardGeneric("env"))
+     if(!isGeneric("wEnv")){
+        setGeneric("wEnv",
+                   function(object) standardGeneric("wEnv"))
     }
-    setMethod("env", "widget",
+    setMethod("wEnv", "widget",
               function(object) object@env)
     if(!isGeneric("funs")){
         setGeneric("funs",
@@ -591,7 +591,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateRadio", "widget",
               function(object, PWName, bName) {
-                  tempPW <- env(object)[[PWName]]
+                  tempPW <- get(PWName, env = wEnv(object))
                   tempValue <- wValue(tempPW)
                   tempValue[1:length(tempValue)] <- FALSE
                   tempValue[bName] <- TRUE
@@ -605,7 +605,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateList", "widget",
               function(object, PWName, opts) {
-                  tempPW <- env(object)[[PWName]]
+                  tempPW <- get(PWName, env = wEnv(object))
                   tempValue <- wValue(tempPW)
                   tempValue[1:length(tempValue)] <- FALSE
                   tempValue[bName] <- TRUE
@@ -619,7 +619,7 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateCheck", "widget",
               function(object, PWName, bName) {
-                  tempPW <- env(object)[[PWName]]
+                  tempPW <- get(PWName, env = wEnv(object))
                   tempValue <- wValue(tempPW)
                   if(tempValue[bName]){
                       tempValue[bName] <- FALSE
@@ -636,10 +636,14 @@ setMethod("winWait", "widgetView",
     }
     setMethod("updateText", "widget",
               function(object, PWName, value) {
-                  tempPW <- env(object)[[PWName]]
+                  tempPW <- get(PWName, env = wEnv(object))
                   wValue(tempPW) <- value
                   assign(wName(tempPW), tempPW, env = wEnv(tempPW))
               })
+
+
+
+
 
 
 

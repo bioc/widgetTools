@@ -2,7 +2,6 @@
 \docType{class}
 \alias{widget-class}
 \alias{env<-}
-\alias{env}
 \alias{funs<-}
 \alias{funs}
 \alias{postFuns<-}
@@ -18,13 +17,13 @@
 \alias{wTitle<-}
 \alias{wTitle}
 \alias{env<-,widget-method}
-\alias{env,widget-method}
 \alias{funs<-,widget-method}
 \alias{funs,widget-method}
 \alias{postFuns<-,widget-method}
 \alias{postFun,widget-method}
 \alias{preFuns<-,widget-method}
 \alias{preFun,widget-method}
+\alias{wEnv,widget-method}
 \alias{pWidgets<-,widget-method}
 \alias{pWidgets,widget-method}
 \alias{updateCheck,widget-method}
@@ -63,7 +62,7 @@ Objects can be created by calls of the form \code{new("widget", ...)}.
 \section{Methods}{
   \describe{
     \item{env<-}{\code{signature(object = "widget")}: set the value for env}
-    \item{env}{\code{signature(object = "widget")}: get the value for env}
+    \item{wEnv}{\code{signature(object = "widget")}: get the value for env}
     \item{funs<-}{\code{signature(object = "widget")}: set the value for
       funs}
     \item{funs}{\code{signature(object = "widget")}: get the value for funs}
@@ -141,3 +140,7 @@ aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
 }
 }
 \keyword{classes}
+
+
+
+
