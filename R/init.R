@@ -458,7 +458,7 @@
            "label" = temp <- tklabel(parent, text = getText(pWidget),
                              width = getWidth(pWidget)),
            "radio" = temp <- tkradiobutton(parent, text = getText(pWidget),
-                             value = getValue(pWidget),
+                             value = as.numeric(getValue(pWidget)),
                              variable = getVariable(pWidget)),
            stop("Invalid pWidget type"))
 
