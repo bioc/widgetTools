@@ -38,8 +38,8 @@ dropdownList <- function(base, options, textvariable, width = 10,
     tkpack(entry, side = "left", expand = TRUE, fill = "both")
     dropBut <- tkbutton(dropFrame, width = 1, text = "v", font = "bold",
                         command = upDateEntry)
-    tkpack(dropBut, side = "left", expand = FALSE, fill = "both")
-    tkpack(dropFrame)
+    tkpack(dropBut, side = "left", expand = FALSE)
+    tkpack(dropFrame, expand = TRUE, fill = "x")
 
     return(invisible())
 }

@@ -138,9 +138,8 @@ entry1 <- entryBox(wName = "entry1", wValue = "Feed me using browse",
 
 # Create a button that will call the function browse2Entry1 when
 # pressed.
-require(tkWidgets)
 browse2Entry1 <- function(){
-    tempValue <- fileBrowser()
+    tempValue <- tclvalue(tkgetOpenFile())
     temp <- get(wName(entry1), env = PWEnv)
     wValue(temp) <- paste(tempValue, sep = "", collapse = ";")
     assign(wName(entry1), temp, env = PWEnv)
