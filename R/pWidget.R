@@ -198,8 +198,8 @@ widget <- function(wTitle, pWidgets, funs = list(),
     for(i in names(pWidgets)){
         if(length(pWidgets[[i]]) > 0){
             for(j in names(pWidgets[[i]])){
-                pWidgets[[i]][[j]] <- get(wName(pWidgets[[i]][[j]]),
-                                            env = wEnv(pWidgets[[i]][[j]]))
+                pWidgets[[i]][[j]] <-
+                    wEnv(pWidgets[[i]][[j]])[[wName(pWidgets[[i]][[j]])]]
             }
         }else{
             pWidgets[[i]] <- get(wName(pWidgets[[i]]),
