@@ -121,15 +121,13 @@ widget <- function(wTitle, pWidgets, funs = list(),
     }
     finishBut <- function(){
         END <<-  TRUE
-        # Pause to allow for focus change and the associsted functions
-        # to execute before killing the window.
-        Sys.sleep(0.1)
         killWin(widgetView)
     }
     clearBut <- function(){
         putPW2Env(localPWs, widgetView)
         renewView(widgetView, pWidgets)
     }
+    tkcmd("tk_focusFollowsMouse")
     cancel <- button(name = "cancel", value = "Cancel", width = 8,
         funs = list(command = cancelBut), env = new.env())
     finish <- button(name = "finish", value = "Finish", width = 8,
