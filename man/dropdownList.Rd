@@ -19,13 +19,13 @@ getListOption(targetWidget, options)
   \item{textvariable}{\code{textvariable} a tclVar object to be
     associated with the selected item of the dropdown list}
   \item{width}{\code{width} an integer for the width in number of
-    characters of the slection containing part of the dropdown list}
+    characters of the selection containing part of the dropdown list}
   \item{default}{\code{default} a character string for the default
-    seletion that is going to be shown in the selection containing
+    selection that is going to be shown in the selection containing
     window of the dropdown list}
   \item{targetWidget}{\code{targetWidget} a tkwin object for an entry
     box to which a button will be associated to make the look of a
-    drowdown list}
+    dropdown list}
   \item{editable}{\code{editable} a boolean indicating whether the
     dropdown list will be editable or not}
 }
@@ -52,13 +52,17 @@ getListOption(targetWidget, options)
 
 \seealso{\code{\link{tooltip}}}
 \examples{
-if(interactive()){
+\dontrun{
+    ## These cannot be run by examples() but should be OK when pasted
+    ## into an interactive R session with the widgetTools package loaded
+    
     base <- tktoplevel()
     selection <- tclVar()
     dropdownList(base, c("Option 1", "Option 2", "Option 3"),
           selection, 15, "Option 2")
-    tkdestroy(base)
     tclvalue(selection)
+    # Destroy toplevel widget
+    # tkdestroy(base)
 }
 }
 \keyword{misc}

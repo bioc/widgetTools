@@ -47,9 +47,9 @@ winid)
   \item{wName}{\code{wName} a character string for the name to be
     associated with a given primary widget}
   \item{vName}{\code{vName} same as wName but for a widget object}
-  \item{wEnv}{\code{wEnv} an R enviornment object within which the
+  \item{wEnv}{\code{wEnv} an R environment object within which the
     original values for each primary widget will be stored and updating
-    and reterival of the values will take place}
+    and retrieval of the values will take place}
   \item{env}{\code{env} same as wEnv but for a widget object}
   \item{wValue}{\code{wValue} the initial values to be associated with a
     given primary widget}
@@ -58,19 +58,19 @@ winid)
   \item{wHeight}{\code{wHeight} an integer for the height of the primary
     widget (if applicable)}
   \item{wFuns}{\code{wFuns} a list of R functions that will be
-    associated with a pimary widget and invoked when an operation
-    (e.g. click, get focuse, ...) is applied to the primary widget}
+    associated with a primary widget and invoked when an operation
+    (e.g. click, get focus, ...) is applied to the primary widget}
   \item{funs}{\code{funs} same as wFuns but for a widget object}
-  \item{wNotify}{\code{wNotify} a list of functions defning the actions to
+  \item{wNotify}{\code{wNotify} a list of functions defining the actions to
     be performed when the value of the primary widget changes}
   \item{wPreFun}{\code{wPreFun} an R function that should be applied when
     the widget is activated}
   \item{preFun}{\code{preFun} same as wPreFun but for a view}
   \item{wPostFun}{\code{wPostFun} an R function that will be applied when
-    the widget is inactivited}
+    the widget is inactivated}
   \item{postFun}{\code{postFun} same as wPostFun but for a view}
   \item{wTitle}{\code{wTitle} a character string for the title to be
-    displyed when the widget is rendered}
+    displayed when the widget is rendered}
   \item{pWidgets}{\code{pWidget} a list of primary widgets (e.g. button,
     list box, ...) to be rendered}
   \item{WVTitle}{\code{WVTitle} same as wTitle}
@@ -92,7 +92,7 @@ winid)
   \code{\link{textBox}} constructs a text box widget object.
   
   \code{\link{listBox}} constructs a list box widget object. Value for
-  alistbox object should be a named vector with names being the content 
+  a listbox object should be a named vector with names being the content 
   to be shown in the list box and values being TRUE (default value) or
   FALSE.
 
@@ -121,8 +121,8 @@ winid)
 }
 \references{R tcltk}
 \author{Jianhua Zhang}
-\note{The functions are part of the Bioconductor project at Dana-Frber
-  Cancer Institute to provide Bioinformatics funcitonalities through R}
+\note{The functions are part of the Bioconductor project at Dana-Farber
+  Cancer Institute to provide Bioinformatics functionalities through R}
 
 \seealso{\code{\link{widget-class}}, \code{\link{basicPW-class}}}
 \examples{
@@ -138,11 +138,12 @@ entry1 <- entryBox(wName = "entry1", wValue = "Feed me using browse",
 
 # Create a button that will call the function browse2Entry1 when
 # pressed.
+require(tkWidgets)
 browse2Entry1 <- function(){
     tempValue <- fileBrowser()
-    temp <- get(wName(entry1), wEnv = PWEnv)
+    temp <- get(wName(entry1), env = PWEnv)
     wValue(temp) <- paste(tempValue, sep = "", collapse = ";")
-    assign(wName(entry1), temp, wEnv = PWEnv)
+    assign(wName(entry1), temp, env = PWEnv)
 }
 button1 <- button(wName = "button1", wValue = "Browse",
                      wFuns = list(command = browse2Entry1), wEnv = PWEnv)
@@ -178,7 +179,10 @@ pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                  text1 = text1), radGroup = list(label2 = label2,
                  radios1 = radios1), chkGroup = list(label3 = label3,
                                      checks1 = checks1))
-if(interactive()){
+\dontrun{
+## These cannot be run by examples() but should be OK when pasted
+## into an interactive R session with the widgetTools package loaded
+
 aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
                  preFun = function() print("Hello"),
                  postFun = function() print("Bye"), env = PWEnv)

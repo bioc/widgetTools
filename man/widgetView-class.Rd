@@ -42,7 +42,7 @@
 \section{Slots}{
   \describe{
     \item{\code{WVTitle}:}{Object of class \code{"character"} - a
-      character string that will be desplayed as the title of the widget
+      character string that will be displayed as the title of the widget
       to be created}
     \item{\code{vName}:}{Object of class \code{"character"} - a character
       string for the vName of the widget}
@@ -57,7 +57,7 @@
 
 \section{Methods}{
   \describe{
-    \item{killWin}{\code{signature(tkWidget = "widgetView")}: destroies
+    \item{killWin}{\code{signature(tkWidget = "widgetView")}: destroys
       the window representing the widgetView}
     \item{vName<-}{\code{signature(object = "widgetView")}: set the value
       for vName}
@@ -95,7 +95,10 @@
   Cancer Institute to provide Bioinformatics functionalities through R}
 \seealso{\code{\link{widget-class}},\code{\link{basicPW-class}} }
 \examples{
-if(interactive()){
+\dontrun{
+        ## These cannot be run by examples() but should be OK when pasted
+        ## into an interactive R session with the widgetTools package loaded
+        
 	widgetView <- widgetView(WVTitle = "demo", vName = "widget1")
 }
 }

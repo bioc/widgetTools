@@ -11,14 +11,14 @@ vScroll = TRUE, what = "list", side = "left", text = "")
 }
 
 \arguments{
-  \item{target}{tk widget that can accomandate a list box.}
+  \item{target}{tk widget that can accommodate a list box.}
   \item{vWidth, vHeight}{integers giving width and height of the listbox.}
   \item{hScroll, vScroll}{logicals indicating whether a horizontal or
     vertical scroll bar should be associated with the list box.}
   \item{what}{A character string indicating the type of the viewer to be
     put on a widget. Valid types include "list" for list box, "canvas",
     and "text" for text box}
-  \item{side}{A character string for the geomitry management of the
+  \item{side}{A character string for the geometry management of the
     viewer on the widget. Valid values include "left", "right", "top",
     and "bottom"}
   \item{text}{A character string to be displayed}
@@ -38,16 +38,16 @@ vScroll = TRUE, what = "list", side = "left", text = "")
 \seealso{\code{\link[tcltk]{tklistbox}} (from the \file{tcltk} package).
 }
 \examples{
-if(interactive()){
- # Create a top level window and put a list box in it
-    require(tcltk)
+\dontrun{
+    ## These cannot be run by examples() but should be OK when pasted
+    ## into an interactive R session with the widgetTools package loaded
+    
+    # Create a top level window and put a list box in it
     base <- tktoplevel()
     listBox <- makeViewer(base)
 
-    Sys.sleep(1)
-
-    # Clean up
-    tkdestroy(base)
+    # Destroy toplevel widget
+    # tkdestroy(base)
  }
 }
 \keyword{interface}

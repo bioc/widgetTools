@@ -21,7 +21,7 @@ getEntryValue(which)
 \arguments{
   \item{widget}{\code{widget} a tkwin object for the tcltk widget to be
     read or written to}
-  \item{value}{\code{value} the text of numericalvalue to be written to
+  \item{value}{\code{value} the text of numerical value to be written to
     a tcltk widget}
   \item{clear}{\code{clear} a boolean to indicate whether a value will
     append to the existing one (FALSE)}
@@ -31,7 +31,7 @@ getEntryValue(which)
 \details{
   \code{\link{writeText}} writes to a given tcltk text box widget.
 
-  \code{\link{writeList}} writes to a givan tcltk list or entry box
+  \code{\link{writeList}} writes to a given tcltk list or entry box
   widget.
 
   \code{\link{getListValue}} retrieves the selected value in a tcltk
@@ -57,7 +57,10 @@ getEntryValue(which)
 
 \seealso{\code{\link{basicPW-class}}, \code{\link{widget-class}}}
 \examples{
-if(interactive()){
+\dontrun{
+    ## These cannot be run by examples() but should be OK when pasted
+    ## into an interactive R session with the widgetTools package loaded
+
     # Create the widgets
     base <- tktoplevel()
     list <- tklistbox(base, width = 20, height = 5)
@@ -73,7 +76,8 @@ if(interactive()){
     getListValue(list)
     getTextValue(text)
     getEntryValue(entry)
-    tkdestroy(base)
+# Destroy toplevel widget
+#    tkdestroy(base)
 }
 }
 \keyword{interface}

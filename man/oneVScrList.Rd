@@ -5,7 +5,7 @@
 \description{
   This function creates a group of list boxes what share a common
   vertical scroll bar. Values in all the list boxes scroll up or down
-  when the scroll bar is draged
+  when the scroll bar is dragged
 }
 \usage{
 oneVScrList(base, data)
@@ -25,7 +25,7 @@ oneVScrList(base, data)
   list boxes.
 }
 \value{
-  This cunction returns a list containing the tkwin objects of the list
+  This function returns a list containing the tkwin objects of the list
   boxes created.
 }
 \references{tcltk}
@@ -35,12 +35,17 @@ oneVScrList(base, data)
 
 \seealso{\code{\link{dropdownList}}, \code{\link{tooltip}}}
 \examples{
-    if(interactive()){
+    \dontrun{
+        ## These cannot be run by examples() but should be OK when pasted
+        ## into an interactive R session with the widgetTools package loaded
+        
         testData <- matrix(c(1:50, 100:51), ncol = 2)
         colnames(testData) <- c("Column 1", "Column 2")
         base <- tktoplevel()
         tt <- oneVScrList(base, testData)
-        tkdestroy(base)
+
+        # Destroy toplevel widget
+        # tkdestroy(base)
     }
 }
 \keyword{interface}

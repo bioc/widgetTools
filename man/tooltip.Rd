@@ -11,7 +11,7 @@ tooltip(text, targetWidget, width = 500)
 \arguments{
   \item{text}{\code{text} a character string for the content of the tooltip}
   \item{targetWidget}{\code{targetWidget} a tkwin object for the target
-    tclck widget to which a tool tip will be associated}
+    tcltk widget to which a tool tip will be associated}
   \item{width}{\code{width} an integer for the width (in pixels) of the
     tooltip} 
 }
@@ -30,12 +30,17 @@ tooltip(text, targetWidget, width = 500)
 
 \seealso{\code{\link{dropdownList}}}
 \examples{
-if(interactive()){
+\dontrun{
+    ## These cannot be run by examples() but should be OK when pasted
+    ## into an interactive R session with the widgetTools package loaded
+    
     base <- tktoplevel()
     but <- tkbutton(base, text = "Move Mouse Over Me")
     tkpack(but)
     tkbind(but, "<Enter>", expression(tooltip("Move mouse off me", but)))
-    tkdestroy(base)
+
+    # Destroy toplevel widget
+    # tkdestroy(base)
 }
 }
 \keyword{misc}

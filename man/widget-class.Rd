@@ -131,7 +131,10 @@ pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                  radios1 = radios1), chkGroup = list(label3 = label3,
                                      checks1 = checks1))
 
-if(interactive()){
+\dontrun{
+## These cannot be run by examples() but should be OK when pasted
+## into an interactive R session with the widgetTools package loaded
+
 aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
                  preFun = function() print("Hello"),
                  postFun = function() print("Bye"), env = PWEnv)

@@ -68,7 +68,7 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
     \item{\code{wHeight}:}{Object of class \code{"numeric"} - an integer
       for the height of the object to be rendered (if applicable)}
     \item{\code{wFuns}:}{Object of class \code{"list"} - a list of R
-      functions to be executed befer the widget is activated}
+      functions to be executed before the widget is activated}
     \item{\code{wPreFun}:}{Object of class \code{"function"} - a list of
       functions to be executed before the value of the widget to be updated}
     \item{\code{wPostFun}:}{Object of class \code{"function"} - a list of
@@ -90,7 +90,7 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
       wEnv slot }
     \item{wFuns<-}{\code{signature(object = "basicPW")}: Set the value
       for wFuns slot}
-    \item{wRuns}{\code{signature(object = "basicPW")}: Get the value for
+    \item{wFuns}{\code{signature(object = "basicPW")}: Get the value for
       wFuns slot}
     \item{wHeight<-}{\code{signature(object = "basicPW")}: Set the value
       for wHeight slot}
@@ -106,11 +106,11 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
       for wNotify slot}
     \item{wPostFun<-}{\code{signature(object = "basicPW")}: Set the value
       for wPostFun slot} 
-    \item{wPostFun}{\code{signature(object = "basicPW")}: Get the vlaue
+    \item{wPostFun}{\code{signature(object = "basicPW")}: Get the value
       for wPostFun slot}
     \item{wPreFun<-}{\code{signature(object = "basicPW")}: Set the value
       for wPreFun slot}
-    \item{wPreFun}{\code{signature(object = "basicPW")}: Get the vlaue
+    \item{wPreFun}{\code{signature(object = "basicPW")}: Get the value
       for wPreFun slot}
     \item{wType<-}{\code{signature(object = "basicPW")}: Set the value
       for wType slot}
@@ -133,7 +133,7 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
 \references{Programming with data }
 \author{Jianhua Zhang}
 \note{This class is part of the Bioconductor project at Dana-Farber
-  Cancer Institute to provide Bioinformatics funcitonalities through R}
+  Cancer Institute to provide Bioinformatics functionalities through R}
 
 \seealso{\code{\link{widgetView-class}},\code{\link{widget-class}} }
 
