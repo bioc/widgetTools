@@ -85,7 +85,6 @@ Objects can be created by calls of the form \code{new("widget", ...)}.
 \seealso{\code{\link{basicPW-class}}, \code{\link{widgetView-class}} }
 
 \examples{
-library(tkWidgets)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 
 label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
