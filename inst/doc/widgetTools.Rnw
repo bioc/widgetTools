@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.21 2002/12/20 20:00:42 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.22 2003/01/14 14:05:09 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -53,6 +53,7 @@ avoids the problems of passing data and then having the data updated.
 
 <<>>=
 library(widgetTools)
+library(tkWidgets)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 @
 
