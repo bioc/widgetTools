@@ -5,9 +5,14 @@ dropdownList <- function(base, options, textvariable, width = 10,
         if(!editable){
             tkconfigure(entry, state = "normal")
         }
-        writeList(entry, getListOption(entry, options), clear = TRUE)
-        if(!editable){
-            tkconfigure(entry, state = "disabled")
+        options(show.error.messages = FALSE)
+        opt <- try(getListOption(entry, options))
+        options(show.error.messages = TRUE)
+        if(!inherits(opt, "try-error")){
+            writeList(entry, opt, clear = TRUE)
+            if(!editable){
+                tkconfigure(entry, state = "disabled")
+            }
         }
     }
 
@@ -44,6 +49,7 @@ getListOption <- function(targetWidget, options){
     end <- function(){
         newEntry <<- as.character(tclObj(selection))[as.integer(
                                                  tkcurselection(list)) + 1]
+        tkgrab.release(base)
         tkdestroy(base)
     }
     selection <- tclVar()
@@ -51,16 +57,18 @@ getListOption <- function(targetWidget, options){
     tipX <- as.numeric(tkwinfo("rootx", targetWidget))
     tipY <- as.numeric(tkwinfo("rooty", targetWidget)) +
         as.numeric(tkwinfo("height", targetWidget))
-                                        # Takes out the frame and title bar
+    # Takes out the frame and title bar
     tkwm.overrideredirect(base <- tktoplevel(), TRUE)
     on.exit(tkdestroy(base))
-                                        # Put the TW in the right place
+    # Put the TW in the right place
     tkwm.geometry(base, paste("+", tipX, "+", tipY, sep = ""))
     list <- tklistbox(base, listvariable = selection,
                       height = length(options),
                       width = max(unlist(sapply(options, nchar))))
-    tkbind(base, "<B1-ButtonRelease>", end)
+    tkbind(list, "<Double-Button-1>", end)
     tkpack(list, expand = FALSE)
+
+    tkgrab.set(base)
 
     tkwait.window(base)
 
