@@ -357,18 +357,18 @@
                 assign(paste("cmd", value(pWidget)[i],sep=""), fun)
                 tkconfigure(temp, command = get(paste("cmd",
                                             value(pWidget)[i],sep="")))
-                tkpack(temp, side = "left", padx = 2, pady = 5)
+                tkpack(temp, side = "left", padx = 2, pady = 1)
                 widgetids[[names(value(pWidget)[i])]] <<- temp
             }
             tkpack(tempFrame)
         }else if(any(type(pWidget) == c("list", "text", "entry"))){
             if(type(pWidget) == "entry"){
                 temp <- .getWidget(pWidget, parent, 1)
-                tkpack(temp, side = "left", padx = 2, pady = 5)
+                tkpack(temp, side = "left", padx = 2, pady = 1)
             }else{
                 tempFrame <- tkframe(parent)
                 temp <- .getWidget(pWidget, tempFrame, 1)
-                tkpack(tempFrame, side = "left", padx = 2, pady = 5)
+                tkpack(tempFrame, side = "left", padx = 2, pady = 1)
             }
             widgetids[[name(pWidget)]] <<- temp
 
@@ -386,7 +386,7 @@
             }
         }else{
             temp <- .getWidget(pWidget, parent, 1)
-            tkpack(temp, side = "left", padx = 2, pady = 5)
+            tkpack(temp, side = "left", padx = 2, pady = 1)
             widgetids[[name(pWidget)]] <<- temp
         }
     }
@@ -396,7 +396,7 @@
         if(length(aRow) > 1){
             tempFrame <- tkframe(winid(tkWidget))
             lapply(aRow, doOne, tempFrame)
-            tkpack(tempFrame, padx = 2, pady = 5)
+            tkpack(tempFrame, padx = 2, pady = 1)
         }else{
             doOne(aRow,winid(tkWidget))
         }
