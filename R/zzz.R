@@ -16,8 +16,7 @@
                              "Windows FAQ, question 3.6:\n",
                              "http://cran.r-project.org/bin/windows/contrib/rw-FAQ.html#Package%20TclTk%20does%20not%20work.")
 
-            require(tcltk, quietly = TRUE) ||
-                                 stop(out)
+            require(tcltk) || stop(out)
         }
     }
 

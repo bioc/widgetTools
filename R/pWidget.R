@@ -133,10 +133,10 @@ widget <- function(wTitle, pWidgets, funs = list(),
         END <<-  TRUE
         killWin(widgetView)
     }
-    clearBut <- function(){
-        .putPW2Env(localPWs, widgetView)
-        renewView(widgetView, pWidgets)
-    }
+#    clearBut <- function(){
+#        .putPW2Env(localPWs, widgetView)
+#        renewView(widgetView, pWidgets)
+#    }
     tkcmd("tk_focusFollowsMouse")
     finish <- button(wName = "finish", wValue = defaultNames[1], wWidth = 8,
                      wFuns = list(command = finishBut), wEnv = new.env())
@@ -146,11 +146,9 @@ widget <- function(wTitle, pWidgets, funs = list(),
 #        wFuns = list(command = clearBut), wEnv = new.env())
     defaultFuns <- list(finish = finish, cancel = cancel)
     if(length(funs) > 0){
-        userFun
-        s <- list()
-        for(i in names(funs)){
-            temp <- button(name = i, text = i, width = 12,
-                           command = funs[[i]])
+        for(i in names(wFuns)){
+            temp <- button(wName = i, wValue = i, wWidth = 12,
+                           wFuns = wFuns[[i]], wEnv = new.env())
             userFuns[[i]] <- temp
         }
         localPWs[["userFuns"]] <- userFuns

@@ -46,7 +46,6 @@ getListOption <- function(targetWidget, options){
                                                  tkcurselection(list)) + 1]
         tkdestroy(base)
     }
-    listWidth <- max(unlist(sapply(options, nchar)))
     selection <- tclVar()
     tclObj(selection) <- options
     tipX <- as.numeric(tkwinfo("rootx", targetWidget))
