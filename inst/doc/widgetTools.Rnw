@@ -1,0 +1,163 @@
+% \VignetteIndexEntry{widgetTools Introduction}
+% \VignetteDepends{widgetTools}
+% \VignettePackage{widgetTools}
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+
+\begin{document}
+\author{Jianhua Zhang}
+
+\title{Building a widget using widgetTools}
+
+\maketitle
+
+\copyright{2002 Bioconductor}
+
+\begin{verbatim}
+$Id: widgetTools.Rnw,v 1.1 2002/11/25 22:01:41 jhnzhang Exp $
+\end{verbatim}
+
+\tableofcontents
+
+\section{Introduction}
+
+The purpose of widgetTools is to provide the functionalities to allow
+users to build funcitonal simple widget. The underlying implementation
+of the widget is done by using the R tcltk package but users of
+widgetTools do not have to know tcltk command except for some
+knowledge of basic geometric management for packing the elements of a
+widget.
+
+The design of widgetTools follows the Model-View-Controller pattern
+with \em{pWidget} objects as the model, a \em{tkWidget}(s) as the
+view, and a \em{updater} as the controller. The interactions between
+the model and view follows an observer pattern with a object called
+notifier acting as a mediator. Similarly, the interaction between the
+view and model also follows a observer pattern with the controller
+(\em{updater}) itself acting as a mediator.
+
+Detailed description of \em{pWidget} can be found in
+\em{widgetPlans.tex} in the \em{doc} subdirectory of widgetTools and
+documantations regarding Model-View-Controller, observer, and mediator
+patterns should be available in most designe pattern books. \em{Design
+  Patterns} by Gamma et. al. (1997) would be one of them.
+
+\section{Builde a widget}
+
+The first step in building a widget is to crate a pWidget object,
+which contains methods and variables described below:
+
+\begin{verbatim}
+
+             |-----------------------|
+             |        pWidget        |
+             |-----------------------|
+             | attach(view, observer)|
+             | detach(view, observer)|
+             | update(value)         |
+             |                       |
+             | name: string          |
+             | parent: string        |
+             | type: string          |
+             | test: string          |
+             | variable: string      |
+             | width: integer        |
+             | height: integer       |
+             | vSCroll: boolean      |
+             | hscroll: boolean      |
+             | observer: vector      | 
+             | preFun: function      |
+             | postFun: function     |
+             |-----------------------|
+
+\end{verbaeim}
+
+Where 
+
+\begin{itermize}
+
+\item name - the name associated with a given pWidget;
+\item type - type of a tk widget (e. g. "text" for text box, "list"
+  for list box, ...;
+\item parent - the window or frame ... where a given pWidget resides;
+\item text - the text feature of a pWidget whose role varies depending
+  on the type of widget. If pWidget is a text box, text will be shown
+  in the text box rendered. If pWidget is a button, text will be the
+  letters that appear on the rendered clikable button ...; 
+\item variable - a variable that will be associated with the given
+  pWidget. Most useable for radio buttons or select boxes; 
+\item width - the physical width of the pWidget to be
+  rendered. Applicable to certain pWidgets;
+\item height - the physical height of the pWidget to be rendered;
+\item vSCroll - set to be TRUE if the pWidget will have a vertical
+  scroll bar;
+\item hScroll - set to be TRUE if the pWidget will habe a horizontal
+  scroll bar; 
+\item funs - functions that will be associated with the given pWidget
+  and invoked when a given operation to the pWidget takes place
+  (e. g. clicked, get focused ...);  
+\item preFun - the function defining the operations to be performed on
+  the text of the pWidget before rendering the text;
+\item postFun - the function defining the operations to be performed
+  on the text of the pWdiget upon existing;
+
+\end{itemize}
+
+The following code create a label (testLabel), an entry (testRntry), a
+button (testButton), and a list box (testList) objects of pWidget and
+defines testEntry as the observer of testButton, meaning that the
+former will be notified when the latter is clicked.
+   
+<<>>=
+library(widgetTools)
+aLabel <- pWidget("testLabel", "text", "aFrame", "AAA")
+anEntry <- pWidget("testEntry", "entry", "aFRame", "")
+aButton <- pWidget("testButton", "button", "aFRame", "Press me", "")
+aList <- pWidget("testList", "list", "bFrame", "")
+@
+
+Each object has default functions including the get and set
+functions for each variable. The following code shows how the
+functions are used:
+
+<<>> = 
+getName(aLabel)
+setName(aLabel, "I am changed")
+setName(aLabel, "testLabel")
+@
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
