@@ -404,11 +404,6 @@
                       if(PWType == "text"){
                           updateText(widgetids[[PWName]], value)
                       }
-#                      else{
-#                          if(PWType == "entry"){
-#                              updateEntry(widgetids[[PWName]], value)
-#                          }
-#                      }
                   }
               }, where = where)
     if(!isGeneric("killWin")){
@@ -442,11 +437,17 @@
                 for(i in 1:length(optText(pWidget))){
                     fun <- function() {}
                     body <- list(as.name("{"),
-                                 substitute(eval(as.call(list(
-                                 updateRadio(theWidget(tkWidget),
-                                 name(pWidget), optText(pWidget)[z]))),
-                                 env = ENV), list(z = i)))
+                                 substitute(eval(updateRadio(
+                                            theWidget(tkWidget),
+                                            name(pWidget),
+                                            optText(pWidget)[z]),
+                                            env = ENV),
+                                            list(z = i)))
 
+#                                 substitute(eval(as.call(list(
+#                                 updateRadio(theWidget(tkWidget),
+#                                 name(pWidget), optText(pWidget)[z]))),
+#                                 env = ENV), list(z = i)))
                     body(fun) <- as.call(body)
                     assign(paste("cmd", optText(pWidget)[i],sep=""), fun)
                     temp <- .getWidget(pWidget, tempFrame, i, var)

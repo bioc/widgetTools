@@ -149,7 +149,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # environment
     .put2Env(localPWs, widgetView)
 
-#    winWait(widgetView)
+    winWait(widgetView)
     # Execute the function to be run at the end
     postFun()
     # Act accordingly based on either the Cancel or Finish botton was
