@@ -1,20 +1,20 @@
 \name{basicPW-class}
 \docType{class}
 \alias{basicPW-class}
-\alias{height<-}
-\alias{height}
-\alias{notify<-}
-\alias{notify}
-\alias{type<-}
-\alias{type}
-\alias{value<-}
-\alias{value}
-\alias{postFun<-}
-\alias{preFun<-}
-\alias{view<-}
-\alias{view}
-\alias{width<-}
-\alias{width}
+\alias{wHeight<-}
+\alias{wHeight}
+\alias{wNotify<-}
+\alias{wNotify}
+\alias{wType<-}
+\alias{wType}
+\alias{wValue<-}
+\alias{wValue}
+\alias{wPostFun<-}
+\alias{wPreFun<-}
+\alias{wView<-}
+\alias{wView}
+\alias{wWidth<-}
+\alias{wWidth}
 \title{Class "basicPW", a basic class for primary widgets}
 \description{This class defines the behavior shared by primary widget
   object used to build a GUI type interface}
@@ -25,77 +25,77 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
 }
 \section{Slots}{
   \describe{
-    \item{\code{name}:}{Object of class \code{"character"} - a string
+    \item{\code{wName}:}{Object of class \code{"character"} - a string
       for the name of the object}
-    \item{\code{type}:}{Object of class \code{"character"} - a string
+    \item{\code{wType}:}{Object of class \code{"character"} - a string
       defining the type of the primary widget. (e.g. button)}
-    \item{\code{value}:}{Object of class \code{"ANY"} - the initial
+    \item{\code{wValue}:}{Object of class \code{"ANY"} - the initial
       value to be associated with the object}
-    \item{\code{width}:}{Object of class \code{"numeric"} - an integer
+    \item{\code{wWidth}:}{Object of class \code{"numeric"} - an integer
       for the width of the object to be rendered (if applicable)}
-    \item{\code{height}:}{Object of class \code{"numeric"} - an integer
+    \item{\code{wHeight}:}{Object of class \code{"numeric"} - an integer
       for the height of the object to be rendered (if applicable)}
-    \item{\code{funs}:}{Object of class \code{"list"} - a list of R
+    \item{\code{wFuns}:}{Object of class \code{"list"} - a list of R
       functions to be executed befer the widget is activated}
-    \item{\code{preFun}:}{Object of class \code{"function"} - a list of
+    \item{\code{wPreFun}:}{Object of class \code{"function"} - a list of
       functions to be executed before the value of the widget to be updated}
-    \item{\code{postFun}:}{Object of class \code{"function"} - a list of
+    \item{\code{wPostFun}:}{Object of class \code{"function"} - a list of
       functions to be executed before the value of the widget to be retrieved}
-    \item{\code{notify}:}{Object of class \code{"list"} - a list of
+    \item{\code{wNotify}:}{Object of class \code{"list"} - a list of
       functions to be executed each time when the value of the widget changes}
-    \item{\code{env}:}{Object of class \code{"environment"} - an R
+    \item{\code{wEnv}:}{Object of class \code{"environment"} - an R
       environment object within which the value of the object is stored}
-    \item{\code{view}:}{Object of class \code{"widgetView"} - a object
+    \item{\code{wView}:}{Object of class \code{"widgetView"} - a object
       of the class widgetView to which the widget is rendered}
   }
 }
 
 \section{Methods}{
   \describe{
-    \item{env<-}{\code{signature(object = "basicPW")}: Set the value for
-      env slot}
-    \item{env}{\code{signature(object = "basicPW")}: Get the value for
-      env slot }
-    \item{funs<-}{\code{signature(object = "basicPW")}: Set the value
-      for funs slot}
-    \item{funs}{\code{signature(object = "basicPW")}: Get the value for
-      funs slot}
-    \item{height<-}{\code{signature(object = "basicPW")}: Set the value
-      for height slot}
-    \item{height}{\code{signature(object = "basicPW")}: Get the value
-      for height slot}
-    \item{name<-}{\code{signature(object = "basicPW")}: Set the value
-      for name slot}
-    \item{name}{\code{signature(object = "basicPW")}: Get the value for
-      name slot}
-    \item{notify<-}{\code{signature(object = "basicPW")}: Set the value
-      for notify slot}
-    \item{notify}{\code{signature(object = "basicPW")}: Get the value
-      for notify slot}
-    \item{postFun<-}{\code{signature(object = "basicPW")}: Set the value
-      for postFun slot} 
-    \item{postFun}{\code{signature(object = "basicPW")}: Get the vlaue
-      for postFun slot}
-    \item{preFun<-}{\code{signature(object = "basicPW")}: Set the value
-      for preFun slot}
-    \item{preFun}{\code{signature(object = "basicPW")}: Get the vlaue
-      for preFun slot}
-    \item{type<-}{\code{signature(object = "basicPW")}: Set the value
-      for type slot}
-    \item{type}{\code{signature(object = "basicPW")}: Get the value for
-      type slot}
-    \item{value<-}{\code{signature(object = "basicPW")}: Set the value
-      for value slot}
-    \item{value}{\code{signature(object = "basicPW")}: Get the value for
-      value slot} 
-    \item{view<-}{\code{signature(object = "basicPW")}: Set the value
-      for view slot }
+    \item{wEnv<-}{\code{signature(object = "basicPW")}: Set the value for
+      wEnv slot}
+    \item{wEnv}{\code{signature(object = "basicPW")}: Get the value for
+      wEnv slot }
+    \item{wFuns<-}{\code{signature(object = "basicPW")}: Set the value
+      for wFuns slot}
+    \item{wRuns}{\code{signature(object = "basicPW")}: Get the value for
+      wFuns slot}
+    \item{wHeight<-}{\code{signature(object = "basicPW")}: Set the value
+      for wHeight slot}
+    \item{wHeight}{\code{signature(object = "basicPW")}: Get the value
+      for wHeight slot}
+    \item{wName<-}{\code{signature(object = "basicPW")}: Set the value
+      for wName slot}
+    \item{wName}{\code{signature(object = "basicPW")}: Get the value for
+      wName slot}
+    \item{wNotify<-}{\code{signature(object = "basicPW")}: Set the value
+      for wNotify slot}
+    \item{wNotify}{\code{signature(object = "basicPW")}: Get the value
+      for wNotify slot}
+    \item{wPostFun<-}{\code{signature(object = "basicPW")}: Set the value
+      for wPostFun slot} 
+    \item{wPostFun}{\code{signature(object = "basicPW")}: Get the vlaue
+      for wPostFun slot}
+    \item{wPreFun<-}{\code{signature(object = "basicPW")}: Set the value
+      for wPreFun slot}
+    \item{wPreFun}{\code{signature(object = "basicPW")}: Get the vlaue
+      for wPreFun slot}
+    \item{wType<-}{\code{signature(object = "basicPW")}: Set the value
+      for wType slot}
+    \item{wType}{\code{signature(object = "basicPW")}: Get the value for
+      wType slot}
+    \item{wValue<-}{\code{signature(object = "basicPW")}: Set the value
+      for wValue slot}
+    \item{wValue}{\code{signature(object = "basicPW")}: Get the value for
+      wValue slot} 
+    \item{wView<-}{\code{signature(object = "basicPW")}: Set the value
+      for wView slot }
     \item{view}{\code{signature(object = "basicPW")}: Get the value for
-      view slot }
-    \item{width<-}{\code{signature(object = "basicPW")}: Set the value
-      for width slot }
-    \item{width}{\code{signature(object = "basicPW")}: Get the value for
-      width slot}
+      wView slot }
+    \item{wWidth<-}{\code{signature(object = "basicPW")}: Set the value
+      for wWidth slot }
+    \item{wWidth}{\code{signature(object = "basicPW")}: Get the value for
+      wWidth slot}
   }
 }
 \references{Programming with data }
@@ -110,10 +110,10 @@ Objects can be created by calls of the form \code{new("basicPW", ...)}.
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 
 # Create a label
-label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
+label1 <- label(wName = "label1", wValue = "File Name: ", wEnv = PWEnv)
 
 # Create an entry box with "Feed me using brows" as the default value
-entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
-                   env = PWEnv)
+entry1 <- entryBox(wName = "entry1", wValue = "Feed me using browse",
+                   wEnv = PWEnv)
 }
 \keyword{classes}

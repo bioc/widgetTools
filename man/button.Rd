@@ -16,53 +16,58 @@
   primary widgets.  
 }
 \usage{
-button(name, env, value = "", width = 12, height = 0, funs = list(),
-notify = list(), preFun = function(x) x, postFun = function(x) x,
-view = new("widgetView") )
-entryBox(name, env, value = "", width = 50, height = 0, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
-textBox(name, env, value = "", width = 25, height = 12, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
-listBox(name, env, value = "", width = 25, height = 10, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
-checkButton(name, env, value, width = 50, funs = list(), notify =
-list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
-radioButton(name, env, value, width = 50, funs = list(), notify =
-list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
-label(name, env, value = "", width = 0, height = 0, funs = list(),
-notify = list(), preFun = function (x) x, postFun = function(x) x,
-view = new("widgetView"))
+button(wName, wEnv, wValue = "", wWidth = 12, wHeight = 0, wFuns = list(),
+wNotify = list(), wPreFun = function(x) x, wPostFun = function(x) x,
+wView = new("widgetView") )
+entryBox(wName, wEnv, wValue = "", wWidth = 50, wHeight = 0, wFuns = list(),
+wNotify = list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
+textBox(wName, wEnv, wValue = "", wWidth = 25, wHeight = 12, wFuns = list(),
+wNotify = list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
+listBox(wName, wEnv, wValue = "", wWidth = 25, wHeight = 10, wFuns = list(),
+wNotify = list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
+checkButton(wName, wEnv, wValue, wWidth = 50, wFuns = list(), wNotify =
+list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
+radioButton(wName, wEnv, wValue, wWidth = 50, wFuns = list(), wNotify =
+list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
+label(wName, wEnv, wValue = "", wWidth = 0, wHeight = 0, wFuns = list(),
+wNotify = list(), wPreFun = function (x) x, wPostFun = function(x) x,
+wView = new("widgetView"))
 widget(wTitle, pWidgets, funs = list(), preFun = function()
 print("Hello"), postFun = function() print("Bye"), env)
-widgetView(WVTitle, name, widgetids = list(), theWidget = new("widget"),
+widgetView(WVTitle, vName, widgetids = list(), theWidget = new("widget"),
 winid)
 }
 \arguments{
-  \item{name}{\code{name} a character string for the name to be
+  \item{wName}{\code{wName} a character string for the name to be
     associated with a given primary widget}
-  \item{env}{\code{env} an R enviornment object within which the
+  \item{vName}{\code{vName} same as wName but for a widget object}
+  \item{wEnv}{\code{wEnv} an R enviornment object within which the
     original values for each primary widget will be stored and updating
     and reterival of the values will take place}
-  \item{value}{\code{value} the initial values to be associated with a
+  \item{env}{\code{env} same as wEnv but for a widget object}
+  \item{wValue}{\code{wValue} the initial values to be associated with a
     given primary widget}
-  \item{width}{\code{width} an integer for the width of the primary widget (if
-    applicable)} 
-  \item{height}{\code{height} an integer for the height of the primary
+  \item{wWidth}{\code{wWidth} an integer for the width of the primary
+    widget (if applicable)} 
+  \item{wHeight}{\code{wHeight} an integer for the height of the primary
     widget (if applicable)}
-  \item{funs}{\code{funs} a list of R functions that will be associated with a
-    pimary widget and invoked when an operation (e.g. click, get focuse,
-    ...) is applied to the primary widget}
-  \item{notify}{\code{notify} a list of functions defning the actions to
+  \item{wFuns}{\code{wFuns} a list of R functions that will be
+    associated with a pimary widget and invoked when an operation
+    (e.g. click, get focuse, ...) is applied to the primary widget}
+  \item{funs}{\code{funs} same as wFuns but for a widget object}
+  \item{wNotify}{\code{wNotify} a list of functions defning the actions to
     be performed when the value of the primary widget changes}
-  \item{preFun}{\code{preFun} an R function that should be applied when
+  \item{wPreFun}{\code{wPreFun} an R function that should be applied when
     the widget is activated}
-  \item{postFun}{\code{postFun} an R function that will be applied when
+  \item{preFun}{\code{preFun} same as wPreFun but for a view}
+  \item{wPostFun}{\code{wPostFun} an R function that will be applied when
     the widget is inactivited}
+  \item{postFun}{\code{postFun} same as wPostFun but for a view}
   \item{wTitle}{\code{wTitle} a character string for the title to be
     displyed when the widget is rendered}
   \item{pWidgets}{\code{pWidget} a list of primary widgets (e.g. button,
@@ -72,7 +77,7 @@ winid)
     widgets to be rendered}
   \item{theWidget}{\code{theWidget} a \code{\link{widget}} object to
     render the primary widgets}
-  \item{view}{\code{view} an object of class widgetView}
+  \item{wView}{\code{wView} an object of class widgetView}
   \item{winid}{\code{winid} an object of class winid}
 }
 \details{
@@ -121,42 +126,43 @@ winid)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 
 # Create a label
-label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
+label1 <- label(wName = "label1", wValue = "File Name: ", wEnv = PWEnv)
 
 # Create an entry box with "Feed me using brows" as the default value
-entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
-                   env = PWEnv)
+entry1 <- entryBox(wName = "entry1", wValue = "Feed me using browse",
+                   wEnv = PWEnv)
 
 # Create a button that will call the function browse2Entry1 when
 # pressed.
 browse2Entry1 <- function(){
     tempValue <- fileBrowser()
-    temp <- get(name(entry1), env = PWEnv)
-    value(temp) <- paste(tempValue, sep = "", collapse = ";")
-    assign(name(entry1), temp, env = PWEnv)
+    temp <- get(wName(entry1), wEnv = PWEnv)
+    wValue(temp) <- paste(tempValue, sep = "", collapse = ";")
+    assign(wName(entry1), temp, wEnv = PWEnv)
 }
-button1 <- button(name = "button1", value = "Browse",
-                     funs = list(command = browse2Entry1), env = PWEnv)
+button1 <- button(wName = "button1", wValue = "Browse",
+                     wFuns = list(command = browse2Entry1), wEnv = PWEnv)
 
 # Create a list box with "Option1", "Option2", and "Option3" as the
 # content and "Option1" selected
-list1 <- listBox(name = "list1", value = c(Option1 = TRUE, Option2 = FALSE,
-                                 Option3 = FALSE), env = PWEnv)
+list1 <- listBox(wName = "list1", wValue = c(Option1 = TRUE, Option2 = FALSE,
+                                 Option3 = FALSE), wEnv = PWEnv)
 
 # Create a text box with "Feed me something" displayed
-text1 <- textBox(name = "text1", value = "Feed me something",
-                 env = PWEnv)
+text1 <- textBox(wName = "text1", wValue = "Feed me something",
+                 wEnv = PWEnv)
 
 # Create a set of radio buttons with "radio1" as the default
-label2 <- label(name = "label2", value = "Select one:  ", env = PWEnv)
-radios1 <- radioButton(name = "radios1", value = c(radio1 = TRUE,
-                       radio2 = FALSE, radio3 = FALSE), env = PWEnv)
+label2 <- label(wName = "label2", wValue = "Select one:  ", wEnv = PWEnv)
+radios1 <- radioButton(wName = "radios1", wValue = c(radio1 = TRUE,
+                       radio2 = FALSE, radio3 = FALSE), wEnv = PWEnv)
 
 # Create a set of check boxes with "check1" selected and "check2" and
 # "check3" not selected
-label3 <- label(name = "label3", value = "Select one to many: ", env = PWEnv)
-checks1 <- checkButton(name = "checks1", value = c(check1 = TRUE,
-                       check22 = FALSE, check3 = FALSE), env = PWEnv)
+label3 <- label(wName = "label3", wValue = "Select one to many: ",
+wEnv = PWEnv)
+checks1 <- checkButton(wName = "checks1", wValue = c(check1 = TRUE,
+                       check22 = FALSE, check3 = FALSE), wEnv = PWEnv)
 
 # Please not that the name of the primary widget object (e.g. checks1)
 # should be the same as the value of the name slot of the object

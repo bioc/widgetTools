@@ -2,8 +2,8 @@
 \docType{class}
 \alias{widgetView-class}
 \alias{killWin}
-\alias{name<-}
-\alias{name}
+\alias{vName<-}
+\alias{vName}
 \alias{renderWidgets}
 \alias{renewView}
 \alias{theWidget<-}
@@ -30,8 +30,8 @@
     \item{\code{WVTitle}:}{Object of class \code{"character"} - a
       character string that will be desplayed as the title of the widget
       to be created}
-    \item{\code{name}:}{Object of class \code{"character"} - a character
-      string for the name of the widget}
+    \item{\code{vName}:}{Object of class \code{"character"} - a character
+      string for the vName of the widget}
     \item{\code{winid}:}{Object of class \code{"tkwin"} - a tkwin object
       for the id of the top window for the widget}
     \item{\code{widgetids}:}{Object of class \code{"list"} - a list of
@@ -45,10 +45,10 @@
   \describe{
     \item{killWin}{\code{signature(tkWidget = "widgetView")}: destroies
       the window representing the widgetView}
-    \item{name<-}{\code{signature(object = "widgetView")}: set the value
-      for name}
-    \item{name}{\code{signature(object = "widgetView")}: get the value
-      for name}
+    \item{vName<-}{\code{signature(object = "widgetView")}: set the value
+      for vName}
+    \item{vName}{\code{signature(object = "widgetView")}: get the value
+      for vName}
     \item{renderWidgets}{\code{signature(widgetView = "widgetView",
 	pWidgets = "list")}: takes a list of "basicPW" objects
       (pWidgets) and  renders them accordingly} 
@@ -82,7 +82,7 @@
 \seealso{\code{\link{widget-class}},\code{\link{basicPW-class}} }
 \examples{
 if(interactive()){
-	widgetView <- widgetView(WVTitle = "demo", name = "widget1")
+	widgetView <- widgetView(WVTitle = "demo", vName = "widget1")
 }
 }
 \keyword{classes}

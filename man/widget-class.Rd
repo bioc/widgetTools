@@ -87,27 +87,28 @@ Objects can be created by calls of the form \code{new("widget", ...)}.
 \examples{
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 
-label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
-entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
-                   env = PWEnv)
+label1 <- label(wName = "label1", wValue = "File Name: ", wEnv = PWEnv)
+entry1 <- entryBox(wName = "entry1", wValue = "Feed me using browse",
+                   wEnv = PWEnv)
 browse2Entry1 <- function(){
     tempValue <- fileBrowser()
-    temp <- get(name(entry1), env = PWEnv)
-    value(temp) <- paste(tempValue, sep = "", collapse = ";")
-    assign(name(entry1), temp, env = PWEnv)
+    temp <- get(wName(entry1), wEnv = PWEnv)
+    wValue(temp) <- paste(tempValue, sep = "", collapse = ";")
+    assign(wName(entry1), temp, env = PWEnv)
 }
-button1 <- button(name = "button1", value = "Browse",
-                     funs = list(command = browse2Entry1), env = PWEnv)
-list1 <- listBox(name = "list1", value = c(Option1 = TRUE, Option2 = FALSE,
-                                 Option3 = FALSE), env = PWEnv)
-text1 <- textBox(name = "text1", value = "Feed me something",
-                 env = PWEnv)
-label2 <- label(name = "label2", value = "Select one:  ", env = PWEnv)
-radios1 <- radioButton(name = "radios1", value = c(radio1 = TRUE,
-                       radio2 = FALSE, radio3 = FALSE), env = PWEnv)
-label3 <- label(name = "label3", value = "Select one to many: ", env = PWEnv)
-checks1 <- checkButton(name = "checks1", value = c(check1 = TRUE,
-                       check22 = FALSE, check3 = FALSE), env = PWEnv)
+button1 <- button(wName = "button1", wValue = "Browse",
+                     wFuns = list(command = browse2Entry1), wEnv = PWEnv)
+list1 <- listBox(wName = "list1", wValue = c(Option1 = TRUE, Option2 = FALSE,
+                                 Option3 = FALSE), wEnv = PWEnv)
+text1 <- textBox(wName = "text1", wValue = "Feed me something",
+                 wEnv = PWEnv)
+label2 <- label(wName = "label2", wValue = "Select one:  ", wEnv = PWEnv)
+radios1 <- radioButton(wName = "radios1", wValue = c(radio1 = TRUE,
+                       radio2 = FALSE, radio3 = FALSE), wEnv = PWEnv)
+label3 <- label(wName = "label3", wValue = "Select one to many: ",
+wEnv = PWEnv)
+checks1 <- checkButton(wName = "checks1", wValue = c(check1 = TRUE,
+                       check22 = FALSE, check3 = FALSE), wEnv = PWEnv)
 pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                  button1 = button1), textRow = list(list1 = list1,
                  text1 = text1), radGroup = list(label2 = label2,

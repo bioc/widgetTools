@@ -20,7 +20,7 @@ writeList <- function(widget, value, clear = TRUE){
 
 getListValue <- function(which){
     listValue <- NULL
-    index <- unlist(strsplit(tkcurselection(which), " "))
+    index <- as.numeric(tkcurselection(which))
     for(i in index){
         listValue <- c(listValue, as.character(tkget(which, i)))
     }
