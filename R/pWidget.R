@@ -107,7 +107,10 @@ widget <- function(wTitle, pWidgets, funs = list(),
     localPWs <- pWidgets
     # Construct a widgetView object
     widgetView <- widgetView(WVTitle = wTitle, name = "widget1")
-        # A Clear, Cancel, and Finish are the default buttons
+    # Construct a widget object and assign it to widgetView
+    temp <- new("widget", wTitle = wTitle, env = env)
+    theWidget(widgetView) <- temp
+    # A Clear, Cancel, and Finish are the default buttons
     cancelBut <- function(){
         END <<-  FALSE
         killWin(widgetView)
@@ -142,9 +145,8 @@ widget <- function(wTitle, pWidgets, funs = list(),
     # Render the widgets using the local copy
     widgetids(widgetView) <-
         renderWidgets(widgetView, localPWs)
-    # Construct a widget object
-    temp <- new("widget", wTitle = wTitle, env = env)
-    theWidget(widgetView) <- temp
+    # Bind all the text widgets with default behavior
+#    bindTextPW(widgetView, env)
     # Keep a copy of pWidgets and the widgetView in a specified
     # environment
     .put2Env(localPWs, widgetView)

@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.14 2002/12/17 14:54:35 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.15 2002/12/17 21:00:57 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -132,7 +132,7 @@ The following code creates several \em{pWidget} objects of different types:
 library(widgetTools)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
-entry1 <- entryBox(name = "entry1", value = "Put me in the first row",
+entry1 <- entryBox(name = "entry1", value = "Feed me using browse",
 env = PWEnv)
 browse2Entry1 <- function(){
     temp <- get(name(entry1), env = PWEnv)
@@ -142,7 +142,7 @@ browse2Entry1 <- function(){
 }
 button1 <- button(name = "button1", butText = "Browse",
                           command = browse2Entry1, env = PWEnv)
-list1 <- listBox(name = "aList", value = c(Option1 = TRUE, Option2 = FALSE,
+list1 <- listBox(name = "list1", value = c(Option1 = TRUE, Option2 = FALSE,
                                  Option3 = FALSE), env = PWEnv)
 radios1 <- radioButton(name = "radios1", value = c(radio1 = TRUE,
                        radio2 = FALSE, radio3 = FALSE), env = PWEnv)
@@ -235,6 +235,7 @@ finish button, the values for \em{entry1} and \em{radios1} now become:
 <<>>=
 value(pWidgets(aWidget)[["topRow"]][["entry1"]])
 value(pWidgets(aWidget)[["radios1"]])
+value(pWidgets(aWidget)[["list1"]])
 @
 
 \end{document}

@@ -362,6 +362,14 @@
               function(widgetView, pWidgets)
               return(.doWidgets(widgetView, pWidgets)),
               where = where)
+    if(!isGeneric("bindTextPW")){
+        setGeneric("bindTextPW",
+                   function(widgetView, env)
+                   standardGeneric("bindTextPW"), where = where)
+    }
+    setMethod("bindTextPW", c("widgetView", "environment"),
+              function(widgetView, env)
+                  bindDefault(widgetView, env), where = where)
     if(!isGeneric("updateDisplay")){
         setGeneric("updateDisplay",
                    function(widgetView, PWName, PWType, value)
@@ -370,7 +378,7 @@
     setMethod("updateDisplay", "widgetView",
               function(widgetView, PWName, PWType, value){
                   widgetids <- widgetids(widgetView)
-                  if(any(PWType == c("list", "entry"))){
+                  if(PWType == "entry"){
                       updateList(widgetids[[PWName]], value)
                   }else{
                       if(PWType == "text"){
@@ -433,13 +441,14 @@
             }
             tkpack(tempFrame)
         }else{
-            if(any(type(pWidget) == c("list", "text"))){
-                temp <- .getWidget(pWidget, parent)
-#                   if(type(pWidget) == "list"){
-#                       tkbind(temp, "<B1-ButtonRelease>",
-#                              .getListCmd(tkWidget, name(pWidget), temp))
-#                   }
-                widgetids[[name(pWidget)]] <<- temp
+            temp <- .getWidget(pWidget, parent, 1)
+            widgetids[[name(pWidget)]] <<- temp
+            if(type(pWidget) == "list"){
+                fun <- function(){
+                    getListCmd(tkWidget, name(pWidget), temp)
+                }
+                assign(paste("cmd", name(pWidget), sep = ""), fun)
+                tkbind(temp, "<B1-ButtonRelease>", fun)
             }else{
                 temp <- .getWidget(pWidget, parent, 1)
                 tkpack(temp, side = "left")
@@ -525,9 +534,38 @@
     return(temp)
 }
 
-.getListCmd <- function(widgetView, PWName, widget){
+.bindDefault <- function(widgetView, env){
+    ENV <- parent.frame(1)
+    bindOne <- function(PWName){
+        options(show.error.messages = FALSE)
+        temp <- try(get(PWName, env = env))
+        options(show.error.messages = TRUE)
+        if(!inherits(temp, "try-error")){
+            if(type(temp) == "list"){
+                fun <- function(){
+                    getListCmd(widgetView, PWName, winids[[PWName]])
+                }
+#                fun <- function() {}
+#                body <- list(as.name("{"),
+#                             eval(getListCmd(widgetView, PWName,
+#                                                    winids[[PWName]]),
+#                                  env = ENV))
+#                body(fun) <- as.call(body)
+                assign(paste("cmd", PWName, sep = ""), fun)
+                tkbind(winids[[PWName]], "<B1-ButtonRelease>", fun)
+            }else if(type(temp) == "text"){
+            }else if(type(temp) == "entry"){
+            }
+        }
+    }
+    winids <- widgetids(widgetView)
+    PWNames <- names(winids)
+    lapply(PWNames, bindOne)
+}
+
+getListCmd <- function(widgetView, PWName, widget){
     tempValue <- getListValue(widget)
-    updateValue(widgetView, PWName, tempValue)
+    updateRadio(theWidget(widgetView), PWName, tempValue)
 }
 
 # This function initilizes the widget class and the associsted
@@ -630,22 +668,23 @@
               function(object, PWName, bName) {
                   tempPW <- get(PWName, env = env(object))
                   tempValue <- value(tempPW)
-                  tempValue[names(tempValue) == bName] <- TRUE
+                  tempValue[bName] <- TRUE
                   tempValue[names(tempValue) != bName] <- FALSE
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
               }, where = where)
-    if(!isGeneric("updateValue")){
-        setGeneric("updateValue",
-                   function(object, PWName, value)
-                   standardGeneric("updateValue"), where = where)
-    }
-    setMethod("updateValue", "widget",
-              function(object, PWName, value) {
-                  tempPW <- get(PWName, env = env(object))
-                  value(tempPW) <- value
-                  assign(name(tempPW), tempPW, env = env(tempPW))
-              }, where = where)
+#    if(!isGeneric("updateList")){
+#        setGeneric("updateList",
+#                   function(object, PWName, value)
+#                   standardGeneric("updateList"), where = where)
+#    }
+#    setMethod("updateList", "widget",
+#              function(object, PWName, value) {
+#                  tempPW <- get(PWName, env = env(object))
+#                  tempValue <- value(tempPW)
+#                  tempValue[[
+#                  assign(name(tempPW), tempPW, env = env(tempPW))
+#              }, where = where)
 
     return("Class widget initialized")
 }
