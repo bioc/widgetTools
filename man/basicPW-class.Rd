@@ -1,102 +1,64 @@
 \name{basicPW-class}
 \docType{class}
 \alias{basicPW-class}
-\title{Class "basicPW" is for primary widget objects}
-\description{A primary widget is defined as a single or set of tcltk
-  widgets such as list, button, or a set of radio buttons or check buttons}
+\title{Class "basicPW" ~~~ }
+\description{  ~~ A concise (1-5 lines) description of what the class is.  ~~}
 \section{Objects from the Class}{
-  Objects can be created by calls of the form \code{new("basicPW",
-    ...)}. A name and type is required for creating an object
+Objects can be created by calls of the form \code{new("basicPW", ...)}.
+    ~~ describe objects here ~~ 
 }
 \section{Slots}{
   \describe{
-    \item{\code{name}:}{\code{"character"}a vector of character
-      string(s) for the names of the tk widget elements corresponding to
-      the pWidgets to be created. The name is required and assumed to be
-      unique and will be used as the identifier for the pWidget. The
-      length of name should be one except for select boxes and radio
-      buttons where more than one names can be given}  
-    \item{\code{type}:}{\code{"character"} a character string for the
-      type (e. g. button, list, ...) of the pWidget. This slot will be
-      populated automatically by the system}
-    \item{\code{value}:}{\code{"ANY"} an optional character string for
-      the value associated with the pWidget. If the pWidget is an entry
-      box, a list box, or a text box, the value will also be displayed
-      inside the tk widget element corresponding to the pWidget}
-    \item{\code{width}:}{\code{"numeric"} an optional integer for the
-      width of the tk widget element corresponding to the pWidget to be
-      created} 
-    \item{\code{height}:}{\code{"numeric"} an optional integer for the
-      height of the tk widget element corresponding to the pWidget to be
-      created}
-    \item{\code{funs}:}{\code{"list"} an optional list of functions that
-      are to be executed when a given action is performed on the tk
-      widget element corresponding to the pWidget. The name for the
-      element in the list defines the type of action. Currently, only
-      sClick(a single click), dClick(a double click), and kPress(a key
-      strick) are the valid action types} 
-    \item{\code{preFun}:}{\code{"function"} an optional function that is
-      to be executed to format the string that will be used to set the
-      value of the pWidget gets updated} 
-    \item{\code{postFun}:}{\code{"function"}an optional function that is
-      to be executed to format the string stored as the value of the
-      pWidget when it is reterived by any operation }
-    \item{\code{notify}:}{\code{"list"} an optional list of functions
-      that will be executed each time the value of the pWidget gets updated}
-    \item{\code{env}:}{\code{"environment"} a required R environment
-      where objects of this class work within}
-    \item{\code{view}:}{\code{"widgetView"} a required widgetView object
-      that holds the widget} 
+    \item{\code{name}:}{Object of class \code{"character"} ~~ }
+    \item{\code{type}:}{Object of class \code{"character"} ~~ }
+    \item{\code{value}:}{Object of class \code{"ANY"} ~~ }
+    \item{\code{width}:}{Object of class \code{"numeric"} ~~ }
+    \item{\code{height}:}{Object of class \code{"numeric"} ~~ }
+    \item{\code{funs}:}{Object of class \code{"list"} ~~ }
+    \item{\code{preFun}:}{Object of class \code{"function"} ~~ }
+    \item{\code{postFun}:}{Object of class \code{"function"} ~~ }
+    \item{\code{notify}:}{Object of class \code{"list"} ~~ }
+    \item{\code{env}:}{Object of class \code{"environment"} ~~ }
+    \item{\code{view}:}{Object of class \code{"widgetView"} ~~ }
   }
 }
 
 \section{Methods}{
   \describe{
-    \item{env<-}{\code{signature(object = "basicPW")}: assign values to env }
-    \item{env}{\code{signature(object = "basicPW")}: get the value of env}
-    \item{funs<-}{\code{signature(object = "basicPW")}: assign values to
-      funs}
-    \item{funs}{\code{signature(object = "basicPW")}: get the value of funs}
-    \item{height<-}{\code{signature(object = "basicPW")}: assign values
-      to height}
-    \item{height}{\code{signature(object = "basicPW")}: get the value of
-      height}
-    \item{name<-}{\code{signature(object = "basicPW")}: assign values to
-      name}
-    \item{name}{\code{signature(object = "basicPW")}: get the value of name}
-    \item{notify<-}{\code{signature(object = "basicPW")}: assign values
-      to notify}
-    \item{notify}{\code{signature(object = "basicPW")}: get the value of
-      notify}
-    \item{postFun<-}{\code{signature(object = "basicPW")}: assign values
-      to postFun}
-    \item{postFun}{\code{signature(object = "basicPW")}: get the value
-      of postFun}
-    \item{preFun<-}{\code{signature(object = "basicPW")}: assign values
-      to preFun}
-    \item{preFun}{\code{signature(object = "basicPW")}: get the value of
-      preFun}
-    \item{type<-}{\code{signature(object = "basicPW")}: assign values to
-      type}
-    \item{type}{\code{signature(object = "basicPW")}: get the value of type}
-    \item{value<-}{\code{signature(object = "basicPW")}: assign values
-      to value}
-    \item{value}{\code{signature(object = "basicPW")}: get the value of value}
-    \item{view<-}{\code{signature(object = "basicPW")}: assign values to
-      view}
-    \item{view}{\code{signature(object = "basicPW")}: get the value of view}
-    \item{width<-}{\code{signature(object = "basicPW")}: assign values
-      to width}
-    \item{width}{\code{signature(object = "basicPW")}: get the value of width}
+    \item{env<-}{\code{signature(object = "basicPW")}: ... }
+    \item{env}{\code{signature(object = "basicPW")}: ... }
+    \item{funs<-}{\code{signature(object = "basicPW")}: ... }
+    \item{funs}{\code{signature(object = "basicPW")}: ... }
+    \item{height<-}{\code{signature(object = "basicPW")}: ... }
+    \item{height}{\code{signature(object = "basicPW")}: ... }
+    \item{name<-}{\code{signature(object = "basicPW")}: ... }
+    \item{name}{\code{signature(object = "basicPW")}: ... }
+    \item{notify<-}{\code{signature(object = "basicPW")}: ... }
+    \item{notify}{\code{signature(object = "basicPW")}: ... }
+    \item{postFun<-}{\code{signature(object = "basicPW")}: ... }
+    \item{postFun}{\code{signature(object = "basicPW")}: ... }
+    \item{preFun<-}{\code{signature(object = "basicPW")}: ... }
+    \item{preFun}{\code{signature(object = "basicPW")}: ... }
+    \item{type<-}{\code{signature(object = "basicPW")}: ... }
+    \item{type}{\code{signature(object = "basicPW")}: ... }
+    \item{value<-}{\code{signature(object = "basicPW")}: ... }
+    \item{value}{\code{signature(object = "basicPW")}: ... }
+    \item{view<-}{\code{signature(object = "basicPW")}: ... }
+    \item{view}{\code{signature(object = "basicPW")}: ... }
+    \item{width<-}{\code{signature(object = "basicPW")}: ... }
+    \item{width}{\code{signature(object = "basicPW")}: ... }
   }
 }
-\author{Jianhua Zhang}
-\note{This class is par of the Bioconductor project at Dana-Farber
-  Cancer Institute to provide Bioinfomatics functionalities through R}
+\references{ ~put references to the literature/web site here ~ }
+\author{ ~~who you are~~ }
+\note{ ~~further notes~~ }
 
-\seealso{\code{\link{widgetView-class}}, \code{\link{widget}}}
+ ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{ ~~objects to See Also as \code{\link{~~fun~~}}, ~~~
+ or\code{\link{CLASSNAME-class}} for links to other classes }
 
 \examples{
-new("basicPW", name = "aaa", type = "text", env = new.env(TRUE, NULL))
+##---- Should be DIRECTLY executable !! ----
 }
 \keyword{classes}
