@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.15 2002/12/17 21:00:57 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.16 2002/12/17 22:00:30 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -229,13 +229,15 @@ aWidget <- widget(wTitle = "A test widget", pWidgets, funs = list(),
 Now, we can change the values of the pWidgets we have created through
 the interface. Let us click the browse button, selecte a file through
 the interface, and then click finish, the values of the entry box gets
-updated by the returned value. Let us click radio2 and then click the
-finish button, the values for \em{entry1} and \em{radios1} now become:
+updated by the returned value. Let us also select an item from the
+lsit box and the radio button and then click the finish button, the
+values for \em{entry1}, \em{list1}, and \em{radios1} now become:
 
 <<>>=
 value(pWidgets(aWidget)[["topRow"]][["entry1"]])
-value(pWidgets(aWidget)[["radios1"]])
 value(pWidgets(aWidget)[["list1"]])
+value(pWidgets(aWidget)[["radios1"]])
+value(pWidgets(aWidget)[["checks1"]])
 @
 
 \end{document}

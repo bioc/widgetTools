@@ -412,32 +412,30 @@
     doOne <- function(pWidget, parent){
         if(any(type(pWidget) == c("radio", "check"))){
             tempFrame <- tkframe(parent)
-            if(type(pWidget) == "radio"){
-                var <- tclVar(match(TRUE, value(pWidget)))
-                for(i in 1:length(value(pWidget))){
-                    fun <- function() {}
+            var <- tclVar(match(TRUE, value(pWidget)))
+            for(i in 1:length(value(pWidget))){
+                fun <- function() {}
+                if(type(pWidget) == "radio"){
                     body <- list(as.name("{"),
-                                 substitute(eval(updateRadio(
-                                            theWidget(tkWidget),
-                                            name(pWidget),
-                                            names(value(pWidget)[z])),
-                                            env = ENV),
-                                            list(z = i)))
-                    body(fun) <- as.call(body)
-                    assign(paste("cmd", value(pWidget)[i],sep=""), fun)
-                    temp <- .getWidget(pWidget, tempFrame, i, var)
-                    tkconfigure(temp,
-                       command = get(paste("cmd",
-                                        value(pWidget)[i],sep="")))
-                    tkpack(temp, side = "left")
-                    widgetids[[names(value(pWidget)[i])]] <<- temp
+                             substitute(eval(updateRadio(
+                                    theWidget(tkWidget), name(pWidget),
+                                    names(value(pWidget)[z])),
+                                    env = ENV), list(z = i)))
+                }else{
+                    body <- list(as.name("{"),
+                             substitute(eval(updateCheck(
+                                    theWidget(tkWidget), name(pWidget),
+                                    names(value(pWidget)[z])),
+                                    env = ENV), list(z = i)))
                 }
-            }else{
-                for(i in 1:length(value(pWidget))){
-                    temp <- .getWidget(pWidget, tempFrame, i, i)
-                    tkpack(temp, side = "left")
-                    widgetids[[names(value(pWidget)[i])]] <<- temp
-                }
+                body(fun) <- as.call(body)
+                assign(paste("cmd", value(pWidget)[i],sep=""), fun)
+                temp <- .getWidget(pWidget, tempFrame, i, var)
+                tkconfigure(temp,
+                            command = get(paste("cmd",
+                       value(pWidget)[i],sep="")))
+                tkpack(temp, side = "left")
+                widgetids[[names(value(pWidget)[i])]] <<- temp
             }
             tkpack(tempFrame)
         }else{
@@ -673,18 +671,23 @@ getListCmd <- function(widgetView, PWName, widget){
                   value(tempPW) <- tempValue
                   assign(name(tempPW), tempPW, env = env(tempPW))
               }, where = where)
-#    if(!isGeneric("updateList")){
-#        setGeneric("updateList",
-#                   function(object, PWName, value)
-#                   standardGeneric("updateList"), where = where)
-#    }
-#    setMethod("updateList", "widget",
-#              function(object, PWName, value) {
-#                  tempPW <- get(PWName, env = env(object))
-#                  tempValue <- value(tempPW)
-#                  tempValue[[
-#                  assign(name(tempPW), tempPW, env = env(tempPW))
-#              }, where = where)
+    if(!isGeneric("updateCheck")){
+        setGeneric("updateCheck",
+                   function(object, PWName, bName)
+                   standardGeneric("updateCheck"), where = where)
+    }
+    setMethod("updateCheck", "widget",
+              function(object, PWName, bName) {
+                  tempPW <- get(PWName, env = env(object))
+                  tempValue <- value(tempPW)
+                  if(tempValue[bName]){
+                      tempValue[bName] <- FALSE
+                  }else{
+                      tempValue[bName] <- TRUE
+                  }
+                  value(tempPW) <- tempValue
+                  assign(name(tempPW), tempPW, env = env(tempPW))
+              }, where = where)
 
     return("Class widget initialized")
 }
