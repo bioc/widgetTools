@@ -121,6 +121,9 @@ widget <- function(wTitle, pWidgets, funs = list(),
     }
     finishBut <- function(){
         END <<-  TRUE
+        # Pause to allow for focus change and the associsted functions
+        # to execute before killing the window.
+        Sys.sleep(0.1)
         killWin(widgetView)
     }
     clearBut <- function(){
