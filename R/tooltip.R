@@ -1,8 +1,9 @@
 # A function to mimic a tooltip using tcltk only
 # text - the content of the tool tip
 # targetWidget - the widget to which the tooltip is going to be associated
+# width - the width of the tooltip measured as pisels.
 
-tooltip <- function(text, targetWidget){
+tooltip <- function(text, targetWidget, width = 350){
 
     end <- function(){
         tkdestroy(base)
@@ -18,7 +19,7 @@ tooltip <- function(text, targetWidget){
     # Put the TW in the right place
     tkwm.geometry(base, paste("+", tipX, "+", tipY, sep = ""))
     tip <- tklabel(base, text = text, background = "white",
-                   wraplength = 350)
+                   wraplength = width)
     tkpack(tip)
 
     tkbind(targetWidget, "<Leave>", end)
