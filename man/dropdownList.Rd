@@ -55,11 +55,10 @@ getListOption(targetWidget, options)
 if(interactive()){
     base <- tktoplevel()
     selection <- tclVar()
-    dl <- dropdownList(base, c("Option 1", "Option 2", "Option 3"),
+    dropdownList(base, c("Option 1", "Option 2", "Option 3"),
           selection, 15, "Option 2")
-    tkpack(dl)
-    tclvalue(selection)
     tkdestroy(base)
+    tclvalue(selection)
 }
 }
 \keyword{misc}

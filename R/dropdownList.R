@@ -24,16 +24,17 @@ dropdownList <- function(base, options, textvariable, width = 10,
     }else{
         tclvalue(textvariable) <- options[1]
     }
-#    dropFrame <- tkframe(base, borderwidth = 2, relief = "sunken")
-    entry <- tkentry(base, width = width, textvariable = textvariable,
+    dropFrame <- tkframe(base, borderwidth = 2, relief = "sunken")
+    entry <- tkentry(dropFrame, width = width, textvariable = textvariable,
                      borderwidth = 1)
     if(!editable){
         tkconfigure(entry, state = "disabled")
     }
     tkpack(entry, side = "left", expand = TRUE, fill = "both")
-    dropBut <- tkbutton(base, width = 1, text = "v", font = "bold",
+    dropBut <- tkbutton(dropFrame, width = 1, text = "v", font = "bold",
                         command = upDateEntry)
     tkpack(dropBut, side = "left", expand = FALSE, fill = "both")
+    tkpack(dropFrame)
 
     return(invisible())
 }
