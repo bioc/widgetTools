@@ -12,6 +12,8 @@ writeList <- function(widget, value, clear = TRUE){
     if(clear){
         tkdelete(widget, 0, "end")
     }
+    # This does not work
+    # do.call("tkinsert", c(list(widget, "insert", "end"), as.list(value))
     insertOne <- function(insertMe){
         tkinsert(widget, "end", insertMe)
     }
