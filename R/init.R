@@ -371,9 +371,11 @@ if(!isGeneric("wType")){
         if(length(aRow) > 1){
             tempFrame <- tkframe(winid(tkWidget))
             lapply(aRow, doOne, tempFrame)
-            tkpack(tempFrame, padx = 2, pady = 1)
+            tkpack(tempFrame, padx = 5, pady = 5)
         }else{
-            doOne(aRow,winid(tkWidget))
+            tempFrame <- tkframe(winid(tkWidget))
+            doOne(aRow[[1]], tempFrame)
+            tkpack(tempFrame, padx = 5, pady = 5)
         }
     }
 

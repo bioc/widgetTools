@@ -6,12 +6,14 @@
   included. The function tooltip is implemented as an alternative. 
 }
 \usage{
-tooltip(text, targetWidget)
+tooltip(text, targetWidget, width = 500)
 }
 \arguments{
   \item{text}{\code{text} a character string for the content of the tooltip}
   \item{targetWidget}{\code{targetWidget} a tkwin object for the target
     tclck widget to which a tool tip will be associated}
+  \item{width}{\code{width} an integer for the width (in pixels) of the
+    tooltip} 
 }
 \details{
   Given a target tcltk widget, a tooltip will be associated with the

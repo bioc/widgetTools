@@ -7,7 +7,8 @@
   extension is included. The function dropdownList provide an alternative.
 }
 \usage{
-dropdownList(base, options, textvariable, width = 10, default)
+dropdownList(base, options, textvariable, width = 10, default, editable
+= FALSE)
 getListOption(targetWidget, options)
 }
 \arguments{
@@ -25,6 +26,8 @@ getListOption(targetWidget, options)
   \item{targetWidget}{\code{targetWidget} a tkwin object for an entry
     box to which a button will be associated to make the look of a
     drowdown list}
+  \item{editable}{\code{editable} a boolean indicating whether the
+    dropdown list will be editable or not}
 }
 \details{
   \code{base} can be a top window or a frame.

@@ -157,8 +157,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
     }
     localPWs[["default"]] <- defaultFuns
     # Render the widgets using the local copy
-    widgetids(widgetView) <-
-        renderWidgets(widgetView, localPWs)
+    widgetids(widgetView) <- renderWidgets(widgetView, localPWs)
     # Keep a copy of pWidgets and the widgetView in a specified
     # environment
     .putPW2Env(localPWs, widgetView)
