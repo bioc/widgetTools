@@ -122,11 +122,13 @@ widget <- function(wTitle, pWidgets, funs = list(),
     localPWs <- pWidgets
     # Construct a widgetView object
     widgetView <- widgetView(WVTitle = wTitle, vName = "widget1")
+    tkgrab.set(winid(widgetView))
     # Construct a widget object and assign it to widgetView
     temp <- new("widget", wTitle = wTitle, env = env)
     theWidget(widgetView) <- temp
     # A Clear, Cancel, and Finish are the default buttons
     cancelBut <- function(){
+        tkgrab.release(winid(widgetView))
         killWin(widgetView)
     }
     finishBut <- function(){
