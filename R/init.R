@@ -435,6 +435,10 @@
         }else{
             if(any(type(pWidget) == c("list", "text"))){
                 temp <- .getWidget(pWidget, parent)
+#                   if(type(pWidget) == "list"){
+#                       tkbind(temp, "<B1-ButtonRelease>",
+#                              .getListCmd(tkWidget, name(pWidget), temp))
+#                   }
                 widgetids[[name(pWidget)]] <<- temp
             }else{
                 temp <- .getWidget(pWidget, parent, 1)
@@ -484,7 +488,12 @@
 
 .renderViewer <- function(pWidget, parent){
     tempFrame <- tkframe(parent)
-    temp <- makeViewer(tempFrame, text = value(pWidget),
+    if(type(pWidget) == "list"){
+        toShow <- names(value(pWidget))
+    }else{
+        toShow <- value(pWidget)
+    }
+    temp <- makeViewer(tempFrame, text = toShow,
                     vWidth = width(pWidget), vHeight = height(pWidget),
                     hScroll = TRUE, vScroll = TRUE, what = type(pWidget))
     tkpack(tempFrame)
@@ -514,6 +523,11 @@
 .renderCheck <- function(pWidget, parent, index){
     temp <- tkcheckbutton(parent, text = names(value(pWidget)[index]))
     return(temp)
+}
+
+.getListCmd <- function(widgetView, PWName, widget){
+    tempValue <- getListValue(widget)
+    updateValue(widgetView, PWName, tempValue)
 }
 
 # This function initilizes the widget class and the associsted
@@ -619,6 +633,17 @@
                   tempValue[names(tempValue) == bName] <- TRUE
                   tempValue[names(tempValue) != bName] <- FALSE
                   value(tempPW) <- tempValue
+                  assign(name(tempPW), tempPW, env = env(tempPW))
+              }, where = where)
+    if(!isGeneric("updateValue")){
+        setGeneric("updateValue",
+                   function(object, PWName, value)
+                   standardGeneric("updateValue"), where = where)
+    }
+    setMethod("updateValue", "widget",
+              function(object, PWName, value) {
+                  tempPW <- get(PWName, env = env(object))
+                  value(tempPW) <- value
                   assign(name(tempPW), tempPW, env = env(tempPW))
               }, where = where)
 

@@ -15,7 +15,7 @@ updateList <- function(widget, value, clear = TRUE){
     tkinsert(widget, "end", value)
 }
 
-getOptionValue <- function(winid){
-    return(as.character(tkget(winid,(tkcurselection(winid)))))
+getListValue <- function(which){
+    return(as.character(tkget(which,(tkcurselection(which)))))
 }
 
