@@ -16,8 +16,8 @@ oneVScrList <- function (base, data){
     for (i in 1:length(colNames)) {
         tempFrame <- tkframe(base)
         tkpack(tkbutton(tempFrame, text = colNames[i],
-                        width = nchar(colNames[i])), expand = FALSE, fill = "x")
-        lists[[colNames[i]]] <- tklistbox(tempFrame,
+                  width = nchar(colNames[i])), expand = FALSE, fill = "x")
+        lists[[colNames[i]]] <- tklistbox(tempFrame, exportselection = FALSE,
                                      width = max(sapply(data[,i], nchar)))
         writeList(lists[[colNames[i]]], data[,i])
         tkpack(lists[[colNames[i]]], expand = TRUE, fill = "both")
