@@ -1,6 +1,12 @@
-basicPW-class           Class "basicPW" ~~~ 
+basicPW-class           Class "basicPW", a basic class for primary
+                        widgets
+button                  Functions to construct objects of primary
+                        widgets and render them
 makeViewer              Put a Scrollable List Box into a tkWidget.
 widget-class            Class "widget" creates a widget with primary
-                        widgets contained in the list pWidgets rendered
+                        widgets contained in the list pWidgets
+                        rendered
 widgetView-class        Class "widgetView", a class for a GUI type
                         widget holding widget elements
+writeText               Functions that read from and write to tcltk
+                        widgets

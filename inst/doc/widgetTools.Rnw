@@ -10,6 +10,9 @@
 \evensidemargin=.1in
 \headheight=-.3in
 
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
 
 \begin{document}
 \author{Jianhua Zhang}
@@ -21,28 +24,28 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.25 2003/05/06 17:25:34 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.26 2003/05/20 19:17:08 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
 
 \section{Introduction}
 
-The purpose of widgetTools is to provide a simple interface for users
+The purpose of \Rpackage{widgetTools} is to provide a simple interface for users
 to build interactive widgets. Although the underlying implementation
-of any widget built using widgetTools is through the R tcltk package,
+of any widget built using \Rpackage{widgetTools} is through the R tcltk package,
 users of widgetTools do not have to know any tcltk command.
 
 The design of widgetTools follows the Model-View-Controller pattern
-with {\texttt{pWidget}} (model) objects being the application data, each of
+with \Robject{pWidget} (model) objects being the application data, each of
 which contains definitions for a widget element that is going to be
-rendered, a {\texttt{widget}} object (controller) that contains a list of
-{\texttt{pWidgets}} that will be rendered, and a {\texttt{widgetView}}
+rendered, a \Robject{widget} object (controller) that contains a list of
+\Robject{pWidgets} that will be rendered, and a \Robject{widgetView}
 (view) that provides the interface to actually render widget elements.
 
 The system is designed in such a way that users only have to deal with
-{\texttt{pWidget}} and {\texttt{widget}} objects. {\texttt{widgetView}}
-will be managed by {\texttt{widget}}.
+\Robject{pWidget} and \Robject{widget} objects. \Robject{widgetView}
+will be managed by \Robject{widget}.
 
 \section{Build a widget}
 
@@ -56,7 +59,7 @@ library(tkWidgets)
 PWEnv <- new.env(hash = TRUE, parent = parent.frame(1))
 @
 
-Then, we can create the {\texttt{pWidgets}} that define the widget elements
+Then, we can create the \Robject{pWidgets} that define the widget elements
 that are going to be rendered. A pWidget is an object of basicPW class
 defined below:
 
@@ -106,7 +109,7 @@ Where
   when the value of the pWidget changes.
 \end{itemize}
 
-The following code creates several {\texttt{pWidget}} objects of different types:
+The following code creates several \Robject{pWidget} objects of different types:
 
 <<>>=
 label1 <- label(name = "label1", value = "File Name: ", env = PWEnv)
@@ -132,14 +135,14 @@ checks1 <- checkButton(name = "checks1", value = c(check1 = TRUE,
                        check22 = FALSE, check3 = FALSE), env = PWEnv)
 @
 
-Notice that the functions defines the behavior of {\texttt{button1}} by
-reading a file name using function {\texttt{fileBrowser}} and then assigning
-the read in file name to the value of {\texttt{entry1}}. All the data
+Notice that the functions defines the behavior of \Robject{button1} by
+reading a file name using function \Robject{fileBrowser} and then assigning
+the read in file name to the value of \Robject{entry1}. All the data
 manipulations will be do within the environment previously defined. At
 this time the environment does not contain the pWidgets. The pWidgets
 will be assigned to the environment by the system later. It is
 important that the name for each widget element be the same as the
-name of the corresponding {\texttt{pWidget}} and to be unique. Values for
+name of the corresponding \Robject{pWidget} and to be unique. Values for
 {\texttt{list1}}, {\texttt{radios1}}, and {\texttt{checks1}} are named vectors. Names of
 the values will be displayed either as elements (lists) or text
 descriptions (radio and check buttons) of the corresponding widget
@@ -160,7 +163,7 @@ Radio buttons and check buttons are defined as groups with the name
 and value of individual radio button or check button defined by the
 vector for value (see radios1 and checks1).
 
-{\texttt{pWidget}} objects have set and get functions to  access and modify
+\Robject{pWidget} objects have set and get functions to  access and modify
 the variables. For example, we can get and set the value for the type
 of a pWidget:
 
@@ -172,17 +175,17 @@ name(label1) <- "label1"
 @
 
 The pWidgets need to be put in a list of lists in such a way that the
-appreance of each {\texttt{pWidget}} in the list will determine the layout of the
+appreance of each \Robject{pWidget} in the list will determine the layout of the
 corresponding widget element on the interface. Each element in the
 first level list will be treated as a unit and rendered one after
 another vertically and each element in the nested list will be treated
 as a unit and rendered one after another horizontally. For example, if
-we want to have the first three {\texttt{pWidget}}s namely {\texttt{label1}},
+we want to have the first three \Robject{pWidget}s namely {\texttt{label1}},
 {\texttt{entry1}}, and {\texttt{button1}} to appear in one row on top of the
 screen, {\texttt{list1}} and {\texttt{text1}} in one row below, {\texttt{label2}} and
 {\texttt{radios1}} in another row, and {\texttt{label3}} and {\texttt{checks1}} in yet
-another row, we will need to put the {\texttt{pWidgets}} in a list like the
-following. Naming of the lists for {\texttt{pWidget}} groups is arbitrary.
+another row, we will need to put the \Robject{pWidgets} in a list like the
+following. Naming of the lists for \Robject{pWidget} groups is arbitrary.
 
 <<>>=
 pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
@@ -192,9 +195,9 @@ pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
                                      checks1 = checks1))
 @
 
-When we have the list of {\texttt{pWidget}}s ready, we can proceed to create
-a {\texttt{widget}} object that will construct a {\texttt{widgetView}} object to
-render the widget elements. A {\texttt{widget}} object is defined as following:
+When we have the list of \Robject{pWidget}s ready, we can proceed to create
+a \Robject{widget} object that will construct a \Robject{widgetView} object to
+render the widget elements. A \Robject{widget} object is defined as following:
 
 \begin{verbatim}
 
@@ -239,8 +242,8 @@ the interface. Let us click the browse button to selecte a file through
 the interface and then click finish, the values of the entry box gets
 updated by the returned value. Let us also select an item from the
 lsit box, the radio button, and the check buttons, type in a few
-words in the text box, and then click the finish button, a {\texttt{widget}}
-object will be constructed. The {\texttt{widget}} object contains pWidgets
+words in the text box, and then click the finish button, a \Robject{widget}
+object will be constructed. The \Robject{widget} object contains pWidgets
 the vlaue of whose elements will be modified depending what has been
 performaed on the interface we just played wit. The values for
 {\texttt{entry1}}, {\texttt{list1}}, {\texttt{text1}}, {\texttt{radios1}}, and {checks1} now become:
