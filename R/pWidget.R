@@ -120,7 +120,6 @@ widget <- function(wTitle, pWidgets, funs = list(),
     theWidget(widgetView) <- temp
     # A Clear, Cancel, and Finish are the default buttons
     cancelBut <- function(){
-        END <<-  FALSE
         killWin(widgetView)
     }
     finishBut <- function(){
@@ -128,7 +127,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
         killWin(widgetView)
     }
     clearBut <- function(){
-        putPW2Env(localPWs, widgetView)
+        .putPW2Env(localPWs, widgetView)
         renewView(widgetView, pWidgets)
     }
     tkcmd("tk_focusFollowsMouse")
