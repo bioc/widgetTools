@@ -58,7 +58,7 @@ makeViewer <- function (target, vWidth = NULL, vHeight = NULL,
 
 .doList <- function(target, text){
     temp <- tklistbox(target, font = "courier 11")
-    tkinsert(temp, "end", text)
+    trash <- sapply(text, writeList, widget = temp, clear = FALSE)
     return(temp)
 }
 
