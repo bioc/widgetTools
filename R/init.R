@@ -191,17 +191,17 @@
 # button to be created.
 #
 .initButton <- function(where){
-    setClass("button", representation(text = "character",
+    setClass("button", representation(butText = "character",
                                       command = "function"),
              contains = "basicPW", where = where)
     # Set the get methods
-    if(!isGeneric("text")){
-        setGeneric("text",
-                   function(object) standardGeneric("text"),
+    if(!isGeneric("butText")){
+        setGeneric("butText",
+                   function(object) standardGeneric("butText"),
                    where = where)
     }
-    setMethod("text", "button",
-              function(object) object@text, where = where)
+    setMethod("butText", "button",
+              function(object) object@butText, where = where)
     if(!isGeneric("command")){
         setGeneric("command",
                    function(object) standardGeneric("command"),
@@ -209,12 +209,12 @@
     }
     setMethod("command", "button",
               function(object) object@command, where = where)
-    if(!isGeneric("text<-")){
-        setGeneric("text<-", function(object, value)
-                   standardGeneric("text<-"), where = where)
+    if(!isGeneric("butText<-")){
+        setGeneric("butText<-", function(object, value)
+                   standardGeneric("butText<-"), where = where)
     }
-    setReplaceMethod("text", "button", function(object, value){
-                  object@text <- value; object}, where = where)
+    setReplaceMethod("butText", "button", function(object, value){
+                  object@butText <- value; object}, where = where)
     if(!isGeneric("command<-")){
         setGeneric("command<-", function(object, value)
                    standardGeneric("command<-"), where = where)
@@ -233,18 +233,18 @@
 # box or radio button) that is going to be the default.
 #
 .initSelect <- function(where){
-    setClass("selectBox", representation(text = "character",
+    setClass("selectBox", representation(optText = "character",
                                          default = "character",
                                          command = "function"),
              contains = "basicPW", where = where)
     # Set the get methods
-    if(!isGeneric("text")){
-        setGeneric("text",
-                   function(object) standardGeneric("text"),
+    if(!isGeneric("optText")){
+        setGeneric("optText",
+                   function(object) standardGeneric("optText"),
                    where = where)
     }
-    setMethod("text", "selectBox",
-              function(object) object@text, where = where)
+    setMethod("optText", "selectBox",
+              function(object) object@optText, where = where)
     if(!isGeneric("default")){
         setGeneric("default",
                    function(object) standardGeneric("default"),
@@ -259,12 +259,12 @@
     }
     setMethod("command", "selectBox",
               function(object) object@command, where = where)
-    if(!isGeneric("text<-")){
-        setGeneric("text<-", function(object, value)
-                   standardGeneric("text<-"), where = where)
+    if(!isGeneric("optText<-")){
+        setGeneric("optText<-", function(object, value)
+                   standardGeneric("optText<-"), where = where)
     }
-    setReplaceMethod("text", "selectBox", function(object, value){
-                  object@text <- value; object}, where = where)
+    setReplaceMethod("optText", "selectBox", function(object, value){
+                  object@optText <- value; object}, where = where)
     if(!isGeneric("default<-")){
         setGeneric("default<-", function(object, value)
                    standardGeneric("default<-"), where = where)
@@ -316,11 +316,11 @@
 # widget elements to be created.
 #
 .initWidgetView <- function(where){
-    setClass("widgetView", representation(title = "character",
+    setClass("widgetView", representation(WVTitle = "character",
                                    name = "character",
                                    winid = "tkwin",
                                    widgetids = "list",
-                                   widget = "widget"), where = where)
+                                   theWidget = "widget"), where = where)
     # Set the get methods
     if(!isGeneric("name")){
         setGeneric("name",
@@ -336,13 +336,13 @@
     }
     setMethod("winid", "widgetView",
               function(object) object@winid, where = where)
-    if(!isGeneric("title")){
-        setGeneric("title",
-                   function(object) standardGeneric("title"),
+    if(!isGeneric("WVTitle")){
+        setGeneric("WVTitle",
+                   function(object) standardGeneric("WVTitle"),
                    where = where)
     }
-    setMethod("title", "widgetView",
-              function(object) object@title, where = where)
+    setMethod("WVTitle", "widgetView",
+              function(object) object@WVTitle, where = where)
     if(!isGeneric("widgetids")){
         setGeneric("widgetids",
                    function(object) standardGeneric("widgetids"),
@@ -350,13 +350,13 @@
     }
     setMethod("widgetids", "widgetView",
               function(object) object@widgetids, where = where)
-    if(!isGeneric("widget")){
-        setGeneric("widget",
-                   function(object) standardGeneric("widget"),
+    if(!isGeneric("theWidget")){
+        setGeneric("theWidget",
+                   function(object) standardGeneric("theWidget"),
                    where = where)
     }
-    setMethod("widget", "widgetView",
-              function(object) object@widget, where = where)
+    setMethod("theWidget", "widgetView",
+              function(object) object@theWidget, where = where)
     if(!isGeneric("name<-")){
         setGeneric("name<-", function(object, value)
                    standardGeneric("name<-"), where = where)
@@ -375,12 +375,12 @@
     }
     setReplaceMethod("widgetids", "widgetView", function(object, value){
                   object@widgetids <- value; object}, where = where)
-    if(!isGeneric("widget<-")){
-        setGeneric("widget<-", function(object, value)
-                   standardGeneric("widget<-"), where = where)
+    if(!isGeneric("theWidget<-")){
+        setGeneric("theWidget<-", function(object, value)
+                   standardGeneric("theWidget<-"), where = where)
     }
-    setReplaceMethod("widget", "widgetView", function(object, value){
-                  object@widget <- value; object}, where = where)
+    setReplaceMethod("theWidget", "widgetView", function(object, value){
+                  object@theWidget <- value; object}, where = where)
     if(!isGeneric("renderWidgets")){
         setGeneric("renderWidgets",
                    function(widgetView, pWidgets)
@@ -403,11 +403,12 @@
                   }else{
                       if(PWType == "text"){
                           updateText(widgetids[[PWName]], value)
-                      }else{
-                          if(PWType == "entry"){
-                              updateEntry(widgetids[[PWName]], value)
-                          }
                       }
+#                      else{
+#                          if(PWType == "entry"){
+#                              updateEntry(widgetids[[PWName]], value)
+#                          }
+#                      }
                   }
               }, where = where)
     if(!isGeneric("killWin")){
@@ -437,28 +438,29 @@
         if(any(type(pWidget) == c("radio", "check"))){
             tempFrame <- tkframe(parent)
             if(type(pWidget) == "radio"){
-                var <- tclVar(match(default(pWidget), text(pWidget)))
-                for(i in 1:length(text(pWidget))){
+                var <- tclVar(match(default(pWidget), optText(pWidget)))
+                for(i in 1:length(optText(pWidget))){
                     fun <- function() {}
                     body <- list(as.name("{"),
                                  substitute(eval(as.call(list(
-                                 updateRadio(widget(tkWidget),
-                                 name(pWidget), text(pWidget)[z]))),
+                                 updateRadio(theWidget(tkWidget),
+                                 name(pWidget), optText(pWidget)[z]))),
                                  env = ENV), list(z = i)))
 
                     body(fun) <- as.call(body)
-                    assign(paste("cmd", text(pWidget)[i],sep=""), fun)
+                    assign(paste("cmd", optText(pWidget)[i],sep=""), fun)
                     temp <- .getWidget(pWidget, tempFrame, i, var)
                     tkconfigure(temp,
-                       command = get(paste("cmd", text(pWidget)[i],sep="")))
+                       command = get(paste("cmd",
+                                        optText(pWidget)[i],sep="")))
                     tkpack(temp, side = "left")
-                    widgetids[[i]] <<- temp
+                    widgetids[[optText(pWidget)[i]]] <<- temp
                 }
             }else{
-                for(i in 1:length(text(pWidget))){
+                for(i in 1:length(optText(pWidget))){
                     temp <- .getWidget(pWidget, tempFrame, i, i)
                     tkpack(temp, side = "left")
-                    widgetids[[name(pWidget)[i]]] <<- temp
+                    widgetids[[optText(pWidget)[i]]] <<- temp
                 }
             }
             tkpack(tempFrame)
@@ -522,7 +524,7 @@
 }
 
 .renderRadio <- function(pWidget, parent, index, var){
-    temp <- tkradiobutton(parent, text = text(pWidget)[index],
+    temp <- tkradiobutton(parent, text = optText(pWidget)[index],
                           value = name, variable = var)
     return(temp)
 }
@@ -535,14 +537,14 @@
 
 .renderButton <- function(pWidget, parent){
      fun <- function() {}
-     temp <- tkbutton(parent, text = text(pWidget),
+     temp <- tkbutton(parent, text = butText(pWidget),
                       width = width(pWidget),
                       command = command(pWidget))
      return(temp)
  }
 
 .renderCheck <- function(pWidget, parent, index, var){
-    temp <- tkcheckbutton(parent, text = text(pWidget)[index],
+    temp <- tkcheckbutton(parent, text = optText(pWidget)[index],
                           variable = var)
     return(temp)
 }
@@ -550,7 +552,7 @@
 # This function initilizes the widget class and the associsted
 # functions.
 .initWidget <- function(where){
-    setClass("widget", representation(title = "character",
+    setClass("widget", representation(wTitle = "character",
                                       pWidgets = "list",
                                       env = "environment",
                                       funs = "list",
@@ -558,13 +560,13 @@
                                       postFun = "function"),
              where = where)
     # Set the get methods
-    if(!isGeneric("title")){
-        setGeneric("title",
-                   function(object) standardGeneric("title"),
+    if(!isGeneric("wTitle")){
+        setGeneric("wTitle",
+                   function(object) standardGeneric("wTitle"),
                    where = where)
     }
-    setMethod("title", "widget",
-              function(object) object@title, where = where)
+    setMethod("wTitle", "widget",
+              function(object) object@wTitle, where = where)
     if(!isGeneric("pWidgets")){
         setGeneric("pWidgets",
                    function(object) standardGeneric("pWidgets"),
@@ -600,12 +602,12 @@
     }
     setMethod("postFun", "widget",
               function(object) object@postFun, where = where)
-    if(!isGeneric("title<-")){
-        setGeneric("title<-", function(object, value)
-                   standardGeneric("title<-"), where = where)
+    if(!isGeneric("wTitle<-")){
+        setGeneric("wTitle<-", function(object, value)
+                   standardGeneric("wTitle<-"), where = where)
     }
-    setReplaceMethod("title", "widget", function(object, value){
-                  object@title <- value; object}, where = where)
+    setReplaceMethod("wTitle", "widget", function(object, value){
+                  object@wTitle <- value; object}, where = where)
     if(!isGeneric("pWidgets<-")){
         setGeneric("pWidgets<-", function(object, value)
                    standardGeneric("pWidgets<-"), where = where)
@@ -645,7 +647,7 @@
     }
     setMethod("updateRadio", "widget",
               function(object, PWName, bName) {
-                  temp <- get(PWNname, env = env(object))
+                  temp <- get(PWName, env = env(object))
                   value(temp) <- bName
                   assign(name(temp), temp, env = env(temp))
               }, where = where)
