@@ -1,2 +1,7 @@
-basicPW-class           Class "basicPW" is for primary widget objects
+basicPW-class           Class "basicPW" ~~~
 makeViewer              Put a Scrollable List Box into a tkWidget.
+widget-class            Class "widget" creates a widget with primary
+                        widgets contained in the list pWidgets
+                        rendered
+widgetView-class        Class "widgetView", a class for a GUI type
+                        widget holding widget elements
