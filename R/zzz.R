@@ -3,6 +3,7 @@
 .First.lib <- function(libname, pkgname, where) {
     require(methods, quietly=TRUE)
     require(tcltk, quietly = TRUE)
+    require(tkWidgets, quietly = TRUE)
 
     where <- match(paste("package:", pkgname, sep=""), search())
     .initPWidget(where)

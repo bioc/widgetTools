@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.1 2002/11/25 22:01:41 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.2 2002/11/27 15:47:13 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -72,14 +72,14 @@ which contains methods and variables described below:
              | height: integer       |
              | vSCroll: boolean      |
              | hscroll: boolean      |
-             | observer: vector      | 
+             | observer: vector      |
              | preFun: function      |
              | postFun: function     |
              |-----------------------|
 
 \end{verbaeim}
 
-Where 
+Where
 
 \begin{itermize}
 
@@ -90,19 +90,19 @@ Where
 \item text - the text feature of a pWidget whose role varies depending
   on the type of widget. If pWidget is a text box, text will be shown
   in the text box rendered. If pWidget is a button, text will be the
-  letters that appear on the rendered clikable button ...; 
+  letters that appear on the rendered clikable button ...;
 \item variable - a variable that will be associated with the given
-  pWidget. Most useable for radio buttons or select boxes; 
+  pWidget. Most useable for radio buttons or select boxes;
 \item width - the physical width of the pWidget to be
   rendered. Applicable to certain pWidgets;
 \item height - the physical height of the pWidget to be rendered;
 \item vSCroll - set to be TRUE if the pWidget will have a vertical
   scroll bar;
 \item hScroll - set to be TRUE if the pWidget will habe a horizontal
-  scroll bar; 
+  scroll bar;
 \item funs - functions that will be associated with the given pWidget
   and invoked when a given operation to the pWidget takes place
-  (e. g. clicked, get focused ...);  
+  (e. g. clicked, get focused ...);
 \item preFun - the function defining the operations to be performed on
   the text of the pWidget before rendering the text;
 \item postFun - the function defining the operations to be performed
@@ -114,23 +114,62 @@ The following code create a label (testLabel), an entry (testRntry), a
 button (testButton), and a list box (testList) objects of pWidget and
 defines testEntry as the observer of testButton, meaning that the
 former will be notified when the latter is clicked.
-   
+
 <<>>=
 library(widgetTools)
-aLabel <- pWidget("testLabel", "text", "aFrame", "AAA")
-anEntry <- pWidget("testEntry", "entry", "aFRame", "")
-aButton <- pWidget("testButton", "button", "aFRame", "Press me", "")
-aList <- pWidget("testList", "list", "bFrame", "")
+aLabel <- pWidget(type = "label", parent = "aFrame",
+text = "File Name: ")
+anEntry <- pWidget(type = "entry", parent = "aFRame", text = "")
+aButton <- pWidget(type = "button", parent = "aFRame", text =
+                   "Browse", width = 12)
+aList <- pWidget(type = "list", parent = "bFrame", text = "I am a list",
+                 width = 20, height = 10, vScroll = TRUE, hScroll = TRUE)
 @
 
 Each object has default functions including the get and set
 functions for each variable. The following code shows how the
 functions are used:
 
-<<>> = 
-getName(aLabel)
-setName(aLabel, "I am changed")
-setName(aLabel, "testLabel")
+<<>> =
+getType(aLabel)
+aLabel <- setType(aLabel, "entry")
+getType(aLabel)
+aLabel <- setType(aLabel, "label")
+@
+
+Now, let us try to create a widget containing the above pWidgets. First
+we need to create tkWidget object, which is a tk window object to hold
+the pWidgets we are going to put on (note that a checking was put in to
+avoid running the code other than an active consol.
+
+<<>>=
+if(interactive()){
+    aWidget <- tkWidget(title = "A Test Widget")
+}
+@
+
+The name of the tkWidget is a "tkwin" object that will be the parent
+of the frames and/or widgets to be created. Suppose we want to arrange
+the abover four pWidgets in such a way so that \em{aLabel}, \em{anEntry},
+and \em{aButton} will be arranged in a row in order and \em{aList}
+will be arranged below them. To do that, we have to have a frame whoes
+parent is the toplevel \em{tkwin} object to haode the three
+pWidget. The three pWidgets will be packed into the frame side by
+side. The frame and \em{aList} then will be packed into the toplevel
+\em{tkwin} object one on top the other.
+
+<<>>=
+aFrame <- createFrame(aWidget)
+aLabel <- createPWidget(aLabel, aFrame)
+anEntry <- createPWidget(anEntry, aFrame)
+aButton <- createPWidget(aButton, aFrame)
+doPack(aLabel, "left")
+doPack(anEntry, "left")
+doPack(aButton, "left")
+doPack(aFrame)
+
+aList <- createPWidget(aWidget, bFrame)
+doPack(bFrame)
 @
 
 \end{document}

@@ -401,7 +401,9 @@
     setMethod("doPack", "pWidget",
               function(what, side = "left")
               tkpack(getName(what), side = side), where = where)
-
+    setMethod("doPack", "ANY",
+              function(what, side = "left")
+              tkpack(what, side = side), where = where)
     return("Class tkWidget initialized")
 }
 
@@ -420,7 +422,7 @@
            "label" = temp <- tklabel(parent, text = getText(pWidget),
                              width = getWidth(pWidget)),
            stop("Invalid pWidget type"))
-    setName(pWidget) <- temp
+    pWidget <- setName(pWidget, temp)
 
     return(pWidget)
 }
