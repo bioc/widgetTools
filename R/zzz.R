@@ -23,7 +23,7 @@
         }
     }
 
-    if(.Platform$OS.type == "windows" && require(Biobase) && intractive()){
+    if(.Platform$OS.type == "windows" && require(Biobase) && interactive()){
         addPDF2Vig("widgetTools")
     }
 
