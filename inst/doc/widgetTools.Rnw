@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.3 2002/12/02 14:15:24 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.4 2002/12/05 14:07:04 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -54,12 +54,17 @@ patterns should be available in most designe pattern books. \em{Design
 The first step in building a widget is to crate a tcltk window object
 (of tkWidget class) to hold the widget elements (of pWidget class) we
 are going to put on (note that a checking was put in to avoid running
-the code other than an active consol).
+the code other than an active consol), a notifier object (of notifer
+class) that will be acting as a mediator to manage updating values
+displyed in the tcltk window, and an updater object (of updater class)
+that will be acting as a controller.
 
 <<>>=
 library(widgetTools)
 if(interactive()){
     aWidget <- tkWidget(title = "A Test Widget")
+    notifier <- notifier()
+    updater <- updater()
 }
 @
 
@@ -89,7 +94,7 @@ methods and variables described below:
              | postFun: function     |
              |-----------------------|
 
-\end{verbaeim}
+\end{verbatim}
 
 Where
 
@@ -140,25 +145,37 @@ the three widget elements in the first row.
 
 <<>>=
 frame1 <- createFrame(aWidget)
-aLabel <- pWidget(type = "label", parent = "frame1",
-text = "File Name: ")
-anEntry <- pWidget(type = "entry", parent = "frame2", width = 30, text = "")
-aButton <- pWidget(type = "button", parent = "frame3", text =
-                   "Browse", width = 12)
+aLabel <- pWidget(name = "aLabel", type = "label", parent = "frame1",
+text = "File Name: ", width = 0)
+anEntry <- pWidget(name = "anEntry", type = "entry", parent =
+                   "frame1", width = 50, text = "")
+aButton <- pWidget(name = "aButton", type = "button", parent =
+                   "frame1", text = "Browse", width = 12,  funs =
+                   list(sclick = function(){temp <- fileBrowser();
+                                   updatePWidget(updater, getName(aButton),
+                                   temp)}))
 @
 
-tkWidget objects have set and get functions to access and modify the
-variables. For example, we can get and set the value for the type of a
-pWidget:
+The \em{name} variable of each pWidget object should always been
+assinged the same character string as the name of the pWidget object
+(e.g. "aButton" for pWidget object \em{aButton}). Variable funs of
+each pWidget should be a list of functions defining what to do when
+the event associated with the function occurs. For example, the
+function for variable funs of \em{aButton} defines that when a single
+click on \em{aButton} occurs, function fileBrowser will be called and
+returned value will be passed to updatePWidget to update the value of
+pWidget \em{aButton}. pWidget objects have set and get functions to
+access and modify the variables. For example, we can get and set the
+value for the type of a pWidget:
 
 <<>> =
-getType(aLabel)
-aLabel <- setType(aLabel, "entry")
-getType(aLabel)
-aLabel <- setType(aLabel, "label")
+getName(aLabel)
+aLabel <- setName(aLabel, "YYY")
+getName(aLabel)
+aLabel <- setName(aLabel, "aLabel")
 @
 
-Now we have three object of the class pWidget with instructions on how
+Now we have three objects of the class pWidget with instructions on how
 the corresponding tcltk widget element should be constructed. The
 follow convert the three objects into tcltk widget elements based on
 the definations and then put the tcltk elements in the frame they belong to.
@@ -168,23 +185,53 @@ if(interactive()){
     aLabel <- createPWidget(aLabel, frame1)
     anEntry <- createPWidget(anEntry, frame1)
     aButton <- createPWidget(aButton, frame1)
-    doPack(getName(aLabel), "left")
-    doPack(getName(anEntry), "left")
-    doPack(getName(aButton), "left")
+    doPack(getWinid(aLabel), "left")
+    doPack(getWinid(anEntry), "left")
+    doPack(getWinid(aButton), "left")
     doPack(frame1, "top")
 }
 @
 
 When a pWidget is created and the corresponding tcltk widget element
 is put in place, a "tkwin" object representing the tcltk widget
-element is stored as the name of the pWidget.
+element is stored as the winid of the pWidget. Variable winid can be
+used later to access the tcltk widget object on the interface.
+
+Now we have a simple interface that does something. If we click the
+browse button and select a file name from the browser, the value of
+\em{aButton} will be assigned the full path to the file we just
+selected as instructed by the function we put as the funs variable of
+\em{aButton}.
+
+<<>>=
+getValue(aButton)
+@
+
+However, what we really want is also to have the file name shown in
+the entry box for file name on the interface. To do so, we need to
+register \em{anEntry} as an observer of \em{aBuuton} so that each time
+when the value of \em{aButton} changes the entry box corresponding to
+\em{anEntry} will be notified to make the corresponding changes.
+
+<<>>=
+notifier <- register(notifier, getName(aButton), anEntry)
+getSubNObse(notifier)
+@
+
+Now, when we click the browse button and select a file again, the selected
+file will be shown in the entry box and the value of the pWidget
+corresponding to the entry box will be updated as well.
+
+<<>>=
+getValue(anEntry)
+@
 
 Now, we continue to build the list box we want and put it below the
 first we just built.
 
 <<>> =
 frame2 <- createFrame(aWidget)
-aList <- pWidget(type = "list", parent = "frame2",
+aList <- pWidget(name = "aList", type = "list", parent = "frame2",
 text = "I am in the second row", width = 50, height = 20, vScroll = TRUE,
 hScroll = TRUE)
 aList <- createPWidget(aList, frame2)
@@ -200,14 +247,14 @@ is the defult (value = 1).
 <<>>=
 frame3 <- createFrame(aWidget)
 radVar <- tclVar(1)
-radio1 <- pWidget(type = "radio", parent = "frame3", text = "Selecte Me",
+radio1 <- pWidget(name = "radio1", type = "radio", parent = "frame3", text = "Selecte Me",
 value = 1, variable = radVar)
-radio2 <- pWidget(type = "radio", parent = "frame3", text = "How ABout Me",
+radio2 <- pWidget(name = "radio2", type = "radio", parent = "frame3", text = "How ABout Me",
 value = 2, variable = radVar)
 radio1 <- createPWidget(radio1, frame3)
 radio2 <- createPWidget(radio2, frame3)
-doPack(getName(radio1), "left")
-doPack(getName(radio2), "left")
+doPack(getWinid(radio1), "left")
+doPack(getWinid(radio2), "left")
 doPack(frame3, "top")
 @
 

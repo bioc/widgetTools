@@ -5,7 +5,8 @@
 #
 # The first cuntion initilizes a pWidget class with default methods.
 # parent - the window or frame ... where a given pWidget resides;
-# name - a tcltk widget of class "tkwin" corresponding to the pWidget.
+# name - a character string for the name of the pWidget;
+# winid - a tcltk widget of class "tkwin" corresponding to the pWidget.
 # type - type of a tk widget (e. g. "text" for text box, "list" for
 # list box, ...;
 # parent - the window or frame ... where a given pWidget resides;
@@ -30,7 +31,8 @@
 #
 
 .initPWidget <- function(where){
-    setClass("pWidget", representation(name = "tkwin",
+    setClass("pWidget", representation(name = "character",
+                                       winid = "tkwin",
                                        type = "character",
                                        parent = "character",
                                        text = "character",
@@ -42,7 +44,8 @@
                                        hScroll = "logical",
                                        funs = "list",
                                        preFun = "function",
-                                       postFun = "function"),
+                                       postFun = "function",
+                                       env = "environment"),
                                        where = where)
     # Set the get methods
     if(!isGeneric("getName")){
@@ -52,6 +55,13 @@
     }
     setMethod("getName", "pWidget",
               function(object) object@name, where = where)
+    if(!isGeneric("getWinid")){
+        setGeneric("getWinid",
+                   function(object) standardGeneric("getWinid"),
+                   where = where)
+    }
+    setMethod("getWinid", "pWidget",
+              function(object) object@winid, where = where)
     if(!isGeneric("getType")){
         setGeneric("getType",
                    function(object) standardGeneric("getType"),
@@ -138,140 +148,121 @@
     }
     setMethod("getPostFun", "pWidget",
               function(object) object@postFun, where = where)
-
-    # Set the set functions
-    if(!isGeneric("setName")){
-        setGeneric("setName",
-                   function(object, value) standardGeneric("setName"),
+    if(!isGeneric("where")){
+        setGeneric("where",
+                   function(object) standardGeneric("where"),
                    where = where)
     }
-    setMethod("setName", "pWidget",
-              function(object, value){object@name <- value; return(object)},
-              where = where)
-    if(!isGeneric("setType")){
-        setGeneric("setType",
-                   function(object, value) standardGeneric("setType"),
-                   where = where)
+    setMethod("where", "pWidget",
+              function(object) object@env, where = where)
+    # Define the replace methods
+    if(!isGeneric("name<-")){
+        setGeneric("name<-", function(object, value)
+                   standardGeneric("name<-"), where = where)
     }
-    setMethod("setType", "pWidget",
-              function(object, value){object@type <- value; return(object)},
-              where = where)
-    if(!isGeneric("setParent")){
-        setGeneric("setParent",
-                   function(object, value) standardGeneric("setParent"),
-                   where = where)
+    setReplaceMethod("name", "pWidget", function(object, value){
+                  object@name <- value; object}, where = where)
+     if(!isGeneric("winid<-")){
+        setGeneric("winid<-", function(object, value)
+                   standardGeneric("winid<-"), where = where)
     }
-    setMethod("setParent", "pWidget",
-              function(object, value){object@parent <- value; return(object)},
-              where = where)
-    if(!isGeneric("setText")){
-        setGeneric("setText",
-                   function(object, value) standardGeneric("setText"),
-                   where = where)
+    setReplaceMethod("winid", "pWidget", function(object, value){
+                  object@winid <- value; object}, where = where)
+    if(!isGeneric("type<-")){
+        setGeneric("type<-", function(object, value)
+                   standardGeneric("type<-"), where = where)
     }
-    setMethod("setText", "pWidget",
-              function(object, value){object@text <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setValue")){
-        setGeneric("setValue",
-                   function(object, value) standardGeneric("setValue"),
-                   where = where)
+    setReplaceMethod("type", "pWidget", function(object, value){
+                  object@name <- value; object}, where = where)
+    if(!isGeneric("text<-")){
+        setGeneric("text<-", function(object, value)
+                   standardGeneric("text<-"), where = where)
     }
-    setMethod("setValue", "pWidget",
-              function(object, value){object@Value <- getPreFun(object)(value);
-                                      return(object)}, where = where)
-    if(!isGeneric("setVariable")){
-        setGeneric("setVariable",
-                   function(object, value) standardGeneric("setVariable"),
-                   where = where)
+    setReplaceMethod("text", "pWidget", function(object, value){
+                  object@text <- value; object}, where = where)
+    if(!isGeneric("value<-")){
+        setGeneric("value<-", function(object, value)
+                   standardGeneric("value<-"), where = where)
     }
-    setMethod("setVariable", "pWidget",
-              function(object, value){object@variable <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setWidth")){
-        setGeneric("setWidth",
-                   function(object, value) standardGeneric("setWidth"),
-                   where = where)
+    setReplaceMethod("value", "pWidget", function(object, value){
+                  object@value <- getPreFun(object)(value);
+                  notify(notifier, getName(object), value);
+                  object}, where = where)
+    if(!isGeneric("variable<-")){
+        setGeneric("variable<-", function(object, value)
+                   standardGeneric("variable<-"), where = where)
     }
-    setMethod("setWidth", "pWidget",
-              function(object, value){object@width <- value; return(object)},
-              where = where)
-    if(!isGeneric("setHeight")){
-        setGeneric("setHeight",
-                   function(object, value) standardGeneric("setHeight"),
-                   where = where)
+    setReplaceMethod("variable", "pWidget", function(object, value){
+                  object@variable <- value; object}, where = where)
+    if(!isGeneric("width<-")){
+        setGeneric("width<-", function(object, value)
+                   standardGeneric("width<-"), where = where)
     }
-    setMethod("setHeight", "pWidget",
-              function(object, value){object@height <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setVScroll")){
-        setGeneric("setVScroll",
-                   function(object, value) standardGeneric("setVScroll"),
-                   where = where)
+    setReplaceMethod("width", "pWidget", function(object, value){
+                  object@width <- value; object}, where = where)
+    if(!isGeneric("height<-")){
+        setGeneric("height<-", function(object, value)
+                   standardGeneric("height<-"), where = where)
     }
-    setMethod("setVScroll", "pWidget",
-              function(object, value){object@vScroll <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setHScroll")){
-        setGeneric("setHScroll",
-                   function(object, value) standardGeneric("setHScroll"),
-                   where = where)
+    setReplaceMethod("height", "pWidget", function(object, value){
+                  object@height <- value; object}, where = where)
+    if(!isGeneric("vScroll<-")){
+        setGeneric("vScroll<-", function(object, value)
+                   standardGeneric("vScroll<-"), where = where)
     }
-    setMethod("setHScroll", "pWidget",
-              function(object, value){object@hScroll <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setFuns")){
-        setGeneric("setFuns",
-                   function(object, value) standardGeneric("setFuns"),
-                   where = where)
+    setReplaceMethod("vScroll", "pWidget", function(object, value){
+                  object@vScroll <- value; object}, where = where)
+    if(!isGeneric("hScroll<-")){
+        setGeneric("hScroll<-", function(object, value)
+                   standardGeneric("hScroll<-"), where = where)
     }
-    setMethod("setFuns", "pWidget",
-              function(object, value){object@funs <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setPreFun")){
-        setGeneric("setPreFun",
-                   function(object, value) standardGeneric("setPreFun"),
-                   where = where)
+    setReplaceMethod("hScroll", "pWidget", function(object, value){
+                  object@hScroll <- value; object}, where = where)
+    if(!isGeneric("funs<-")){
+        setGeneric("funs<-", function(object, value)
+                   standardGeneric("funs<-"), where = where)
     }
-    setMethod("setPreFun", "pWidget",
-              function(object, value){object@preFun <- value;
-                                      return(object)}, where = where)
-    if(!isGeneric("setPostFun")){
-        setGeneric("setPostFun",
-                   function(object, value) standardGeneric("setPostFun"),
-                   where = where)
+    setReplaceMethod("funs", "pWidget", function(object, value){
+                  object@fun <- value; object}, where = where)
+    if(!isGeneric("preFun<-")){
+        setGeneric("preFun<-", function(object, value)
+                   standardGeneric("preFun<-"), where = where)
     }
-    setMethod("setPostFun", "pWidget",
-              function(object, value){object@postFun <- value;
-                                      return(object)}, where = where)
-
-    # Set the three function that interface with notifier
-    if(!isGeneric("attach")){
-        setGeneric("attach",
-                   function(view, subject, observer)
-                   standardGeneric("attach"), where = where)
+    setReplaceMethod("preFun", "pWidget", function(object, value){
+                  object@preFun <- value; object}, where = where)
+    if(!isGeneric("postFun<-")){
+        setGeneric("postFun<-", function(object, value)
+                   standardGeneric("postFun<-"), where = where)
     }
-    setMethod("attach", "pWidget",
-              function(view, subject, observer)
-              notifier@register(view, subject, observer),
-              where = where)
-    if(!isGeneric("detach")){
-        setGeneric("detach",
-                   function(view, subject, observer)
-                   standardGeneric("detach"), where = where)
-    }
-    setMethod("attach", "pWidget",
-              function(view, subject, observer)
-              notifier@unRegister(view, subject, observer),
-              where = where)
-    if(!isGeneric("update")){
-        setGeneric("update",
-                   function(object, value)
-                   standardGeneric("update"), where = where)
-    }
-    setMethod("update", "pWidget",
-             function(object, value) notifyView(object, value),
-              where = where)
+    setReplaceMethod("postFun", "pWidget", function(object, value){
+                  object@postFun <- value; object}, where = where)
+    # Set the update function
+#    if(!isGeneric("attach")){
+#        setGeneric("attach",
+#                   function(view, subject, observer)
+#                   standardGeneric("attach"), where = where)
+#    }
+#    setMethod("attach", "notifier",
+#              function(notifier, view, subject, observer)
+#              notifier@register(view, subject, observer),
+#              where = where)
+#    if(!isGeneric("detach")){
+#        setGeneric("detach",
+#                   function(view, subject, observer)
+#                   standardGeneric("detach"), where = where)
+#    }
+#    setMethod("attach", "pWidget",
+#              function(view, subject, observer)
+#              notifier@unRegister(view, subject, observer),
+#              where = where)
+#    if(!isGeneric("update")){
+#        setGeneric("update",
+#                   function(object, value)
+#                   standardGeneric("update"), where = where)
+#   }
+#    setMethod("update", "pWidget",
+#             function(object, value) notifyView(object, value),
+#              where = where)
 
     return("Class pWidget initialized")
 }
@@ -297,91 +288,96 @@
               function(object) object@subNObse, where = where)
 
     # Set the set method
-    if(!isGeneric("setSubNObse")){
-        setGeneric("setSubNObse",
-                   function(object, value) standardGeneric("setSubNObse"),
-                   where = where)
+    if(!isGeneric("subNObse<-")){
+        setGeneric("subNObse<-", function(object, value)
+                   standardGeneric("subNObse<-"), where = where)
     }
-    setMethod("setSubNObse", "notifier",
-              function(object, value){object@subNObse <- value;
-                                      return(object)}, where = where)
+    setReplaceMethod("subNObse", "notifier", function(object, value){
+                  object@subNObse <- value; object}, where = where)
 
     # Set the interface functions
-    if(!isGeneric("registerView")){
-        setGeneric("registerView",
-                   function(view, subject, observer)
-                   standardGeneric("registerView"), where = where)
+    if(!isGeneric("register")){
+        setGeneric("register",
+                   function(notifier, subject, observer)
+                   standardGeneric("register"), where = where)
     }
-    setMethod("registerView", "notifier",
-              function(view, subject, observer)
-                  notifier@subNObse <- .writeSubNObse(notifier, view,
-                                                      subject, observer),
-                  where = where)
-    if(!isGeneric("unRegisterView")){
-        setGeneric("unRegisterView",
-                   function(view, subject, observer)
-                   standardGeneric("unRegisterView"), where = where)
+    setMethod("register", c("notifier", "character", "pWidget"),
+              function(notifier, subject, observer) {
+                  notifier@subNObse <- .writeSubNObse(notifier@subNObse,
+                                       subject, observer);
+                                       return(notifier)}, where = where)
+    if(!isGeneric("unRegister")){
+        setGeneric("unRegister",
+                   function(notifier, subject, observer)
+                   standardGeneric("unRegister"), where = where)
     }
-    setMethod("unRegisterView", "notifier",
-              function(view, subject, observer)
-                  notifier@subNObse <- .modSubNObse(notifier, view,
-                                                      subject, observer),
-                  where = where)
-
-
-
+    setMethod("unRegister", c("notifier", "character", "pWidget"),
+              function(notifier, subject, observer){
+                  notifier@subNObse <- .modSubNObse(notifier@subNObse,
+                                       subject, observer);
+                                       return(notifier)}, where = where)
+    if(!isGeneric("notify")){
+        setGeneric("notify",
+                   function(notifier, subject, value)
+                   standardGeneric("notify"), where = where)
+    }
+    setMethod("notify", c("notifier", "character", "character"),
+              function(notifier, subject, value){
+                  if(!is.null(getSubNObse(notifier)[[subject]]))
+                         .writeView(getSubNObse(notifier)[[subject]],
+                                    value)}, where = where)
     return("Class notifier initialized")
+}
+
+.writeView <- function(observers, value){
+    writeWidget <- function(widget, type, value){
+        switch(tolower(type),
+               "text" = updateText(widget, value),
+               "entry" = ,
+               "list" = updateList(widget, value),
+               stop("Unknow widget type!"))
+    }
+    for(i in names(observers)){
+        writeWidget(getWinid(observers[[i]]), getType(observers[[i]]),
+                    value)
+        updatePWidget(updater, getName(observers[[i]]), value)
+    }
 }
 
 # Called by register of .initNotifier to register views, subjects, and
 # observers
-.writeSubNObse <- function(notifier, view, subject, observer){
-    if(!is.null(notifier@subNObse[[view]])){
-        if(!is.null(notifier@subNObse[[view]][[subject]])){
-            notifier@subNObse[[view]][[subject]] <-
-                c(notifier@subNObse[[view]][[subject]], observer)
-        }else{
-            notifier@subNObse[[view]][[subject]]<- observer
-        }
+.writeSubNObse <- function(subNObse, subject, observer){
+    if(is.null(subNObse[[subject]])){
+        subNObse[[subject]][[getName(observer)]] <- observer
     }else{
-        tempList <- list()
-        tempList[[subject]] <- observer
-        notifier@subNObse[[view]] <- tempList
+        isNew <- TRUE
+        for(i in names(subNObse[[subject]])){
+            if(i == getName(observer)){
+                isNew <- FALSE
+            }
+        }
+        if(isNew){
+            subNObse[[subject]][[getName(observer)]] <- observer
+        }
     }
-    return(notifier@subNObse)
+    return(subNObse)
 }
 
 # Called by unRegister of .initNotifier to unregister views, subjects, and
 # observers
-.modSubNObse <- function(notifier, view, subject, observer){
-    removeView <- function(){
-        notifier@subNObse <-
-            notifier@subNObse[setdiff(names(notifier@subNObse), view)]
-        return(notifier@subNObse)
-    }
-    # Remove the view if subject is null
-    if(is.null(subject)){
-        return(removeView())
-    }
-    if(!is.null(notifier@subNObse[[view]][[subject]])){
-        temp <- setdiff(notifier@subNObse[[view]][[subject]], observer)
-        # Remove the subject if empty
-        if(length(temp) == 0){
-            temp <- setdiff(names(notifier@subNObse[[view]]), subject)
-            if(length(temp) == 0){
-                # Remove the view if empty
-                return(removeView())
-            }else{
-                notifier@subNObse[[view]] <-
-                    notifier@subNObse[[view]][setdiff(
-                              names(notifier@subNObse[[view]]), subject)]
+.modSubNObse <- function(subNObse, subject, observer){
+    if(!is.null(subNObse[[subject]])){
+        for(i in names(subNObse[[subject]])){
+            if(i == getName(observer)){
+                subNObse[[subject]] <-
+                  subNObse[[subject]][names(subNObse[[subject]]) != i]
             }
-        }else{
-            notifier@subNObse[[view]][[subject]] <- temp
-            return(notifier@subNObse)
+        }
+        if(length(subNObse[[subject]]) < 1){
+            subNObse <- subNObse[names(subNObse) != subject]
         }
     }
-    return(notifier@subNObse)
+    return(subNObse)
 }
 
 # This function initilizes tkWidget class with default functions
@@ -462,11 +458,62 @@
                              variable = getVariable(pWidget)),
            stop("Invalid pWidget type"))
 
-    for(i in getFuns(pWidget)){
-        tkconfigure(getName(pWidget), command = i)
+    funs <- getFuns(pWidget)
+
+    for(i in names(funs)){
+        switch(tolower(i),
+                       "sclick" = act <- "<B1-ButtonRelease>",
+                       "dclick" = act <- "<Double-Button-1>",
+                       "type" = act <- "<KeyPress>",
+                       stop("Unknow action"))
+
+        tkbind(temp, act, funs[[i]])
     }
 
-    pWidget <- setName(pWidget, temp)
+    winid(pWidget) <-  temp
     return(pWidget)
 }
 
+# This function initializes the updater class
+.initUpdater <- function(where){
+
+    setClass("updater", representation(name = "character"), where = where)
+    # Set the new methods
+    if(!isGeneric("ended")){
+        setGeneric("ended",
+                   function(object) standardGeneric("ended"),
+                   where = where)
+    }
+    setMethod("ended", "updater",
+              function(object) {print("will be working")},
+              where = where)
+    if(!isGeneric("cancelled")){
+        setGeneric("cancelled",
+                   function(object) standardGeneric("cancelled"),
+                   where = where)
+    }
+    setMethod("cancelled", "updater",
+              function(object) {print("will be working")},
+              where = where)
+    if(!isGeneric("clear")){
+        setGeneric("clear",
+                   function(object) standardGeneric("clear"),
+                   where = where)
+    }
+    setMethod("clear", "updater",
+              function(object) {print("will be working")},
+              where = where)
+    if(!isGeneric("updatePWidget")){
+        setGeneric("updatePWidget",
+                   function(updater, PWName, value)
+                   standardGeneric("updatePWidget"), where = where)
+    }
+    setMethod("updatePWidget", "updater",
+              function(updater, PWName, value) {
+                  pWidget <- get(PWName);
+                  value(pWidget) <- value;
+                  assign(PWName, pWidget, env = where(pWidget))},
+              where = where)
+
+    return("Class updater initialized")
+}

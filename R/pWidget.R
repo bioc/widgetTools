@@ -37,17 +37,18 @@
 # the text of the pWdiget upon existing;
 #
 #
-pWidget <- function(type, parent, text, value = "", variable = tclVar(),
-                    width = 20, height = 10, vScroll = FALSE,
-                    hScroll = FALSE, funs = list(), preFun = function (x) x,
-                    postFun = function(x) x){
+pWidget <- function(name, type, parent, text, value = "",
+                    variable = tclVar(), width = 20, height = 10,
+                    vScroll = FALSE, hScroll = FALSE, funs = list(),
+                    preFun = function (x) x, postFun = function(x) x){
 
+    WHERE <- parent.frame(1)
     .checkArgs(type, parent, text, variable)
 
-    new("pWidget", type = type, parent = parent,
+    new("pWidget", name = name, type = type, parent = parent,
         text = text, variable = variable, width = width,
         height = height, vScroll = vScroll, hScroll = hScroll,
-        preFun = preFun, postFun = postFun)
+        funs = funs, preFun = preFun, postFun = postFun, env = WHERE)
 }
 
 .checkArgs <- function(type, parent, text, variable = NULL){
@@ -88,4 +89,10 @@ tkWidget <- function(title){
     tktitle(base) <- title
     temp@name <- base
     return(temp)
+}
+
+# This function constructs an updater objects. An updater object only
+# contains mathods.
+updater <- function(name = "updater"){
+    new("updater", name = name)
 }
