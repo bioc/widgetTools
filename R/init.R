@@ -309,7 +309,7 @@ setMethod("winWait", "widgetView",
             tempFrame <- tkframe(parent)
             var <- tclVar(match(TRUE, wValue(pWidget)))
             for(i in 1:length(wValue(pWidget))){
-                temp <- .getWidget(pWidget, tempFrame, i, var)
+                temp <- .getWidget(pWidget, tempFrame, i, tempVar)
                 fun <- function() {}
                 if(wType(pWidget) == "radio"){
                     body <- list(as.name("{"),
@@ -447,7 +447,9 @@ setMethod("winWait", "widgetView",
  }
 
 .renderCheck <- function(pWidget, parent, index){
-    temp <- tkcheckbutton(parent, text = names(wValue(pWidget)[index]))
+    tempVar <- basename(tempfile("var"))
+    temp <- tkcheckbutton(parent, variable = tempVar,
+                          text = names(wValue(pWidget)[index]))
     if(wValue(pWidget)[index]){
         tkselect(temp)
     }
