@@ -21,7 +21,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.18 2002/12/18 20:43:00 jhnzhang Exp $
+$Id: widgetTools.Rnw,v 1.19 2002/12/18 20:48:28 jhnzhang Exp $
 \end{verbatim}
 
 \tableofcontents
@@ -179,9 +179,10 @@ another vertically and each element in the nested list will be treated
 as a unit and rendered one after another horizontally. For example, if
 we want to have the first three \em{pWidget}s namely \em{label1},
 \em{entry1}, and \em{button1} to appear in one row on top of the
-screen, \em{list1} and \em{text1} in one row below, and each of the
-radio button and check button groups in a separate row further below,
-we will need to put them in a list like this:
+screen, \em{list1} and \em{text1} in one row below, \em{label2} and
+\em{radios1} in another row, and \em{label3} and \em{checks1} in yet
+another row, we will need to put the \em{pWidgets} in a list like the
+following. Naming of the lists for \em{pWidget} groups is arbitrary.
 
 <<>>=
 pWidgets <- list(topRow = list(label1 = label1, entry1 = entry1,
