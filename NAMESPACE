@@ -5,4 +5,6 @@ textBox, tooltip, widget, writeList, writeText, vName, "vName<-",
 wEnv, "wEnv<-", wFuns, "wFuns<-", wHeight, "wHeight<-", wName,
 "wName<-", wNotify, "wNotify<-", wPostFun, "wPostFun<-", wPreFun,
 "wPreFun<-", wTitle, "wTitle<-", wType, "wType<-", wValue, "wValue<-",
-wView, "wView<-", safeFileOpen)
+wView, "wView<-", safeFileOpen, widgetView, getListValue, getTextValue, 
+getEntryValue)
+exportClass(basicPW, widget, widgetView)
