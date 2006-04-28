@@ -150,7 +150,7 @@
 #
 setClass("widgetView", representation(WVTitle = "character",
                                       vName = "character",
-                                      winid = "tkwin",
+                                      winid = "ANY",
                                       widgetids = "list",
                                       theWidget = "widget"))
 ## Set the get methods

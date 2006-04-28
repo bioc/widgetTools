@@ -139,7 +139,7 @@ widget <- function(wTitle, pWidgets, funs = list(),
 #        .putPW2Env(localPWs, widgetView)
 #        renewView(widgetView, pWidgets)
 #    }
-    tkcmd("tk_focusFollowsMouse")
+    tcl("tk_focusFollowsMouse")
     finish <- button(wName = "finish", wValue = defaultNames[1], wWidth = 8,
                      wFuns = list(command = finishBut), wEnv = new.env())
     cancel <- button(wName = "cancel", wValue = defaultNames[2], wWidth = 8,
