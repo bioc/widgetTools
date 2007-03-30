@@ -1,13 +1,13 @@
 Package: widgetTools
 Title: Creates an interactive tcltk widget
-Version: 1.11.1
+Version: 1.11.2
 Date: 2007-03-28
 Author: Jianhua Zhang
 Description: This packages contains tools to support the construction
         of tcltk widgets
 Depends: R (>= 1.8.1), methods, utils
 Depends.Windows: Biobase
-Suggests: tcltk
+Suggests: tcltk, Biobase
 biocViews: Infrastructure
 LazyLoad: yes
 Maintainer: Jianhua Zhang <jzhang@jimmy.harvard.edu>
