@@ -1,3 +1,5 @@
+import("methods")
+
 export(button, checkButton, dropdownList, entryBox, "env<-", funs,
 "funs<-", label, listBox, makeViewer, oneVScrList, pWidgets, getListOption,
 "pWidgets<-", postFun, "postFuns<-", preFun, "preFuns<-", radioButton,
