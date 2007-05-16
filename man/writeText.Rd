@@ -25,7 +25,7 @@ getEntryValue(which)
     a tcltk widget}
   \item{clear}{\code{clear} a boolean to indicate whether a value will
     append to the existing one (FALSE)}
-  \item{which}{\code{which}} a tkwin object for the tcltk widget whose
+  \item{which}{\code{which} a tkwin object for the tcltk widget whose
   value will be retrieved}
 }
 \details{
