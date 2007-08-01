@@ -91,8 +91,6 @@
 }
 \references{Programming with data}
 \author{Jianhua Zhang}
-\note{This class is part of the Bioconductor project at Dana-Farber
-  Cancer Institute to provide Bioinformatics functionalities through R}
 \seealso{\code{\link{widget-class}},\code{\link{basicPW-class}} }
 \examples{
 \dontrun{

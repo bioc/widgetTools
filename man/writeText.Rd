@@ -51,9 +51,6 @@ getEntryValue(which)
 }
 \references{R tcltk}
 \author{Jianhua Zhang}
-\note{The functions are part of the Bioconductor project at
-  Dana-Farber Cancer Institute to provide Bioinformatics
-  functionalities through R}
 
 \seealso{\code{\link{basicPW-class}}, \code{\link{widget-class}}}
 \examples{

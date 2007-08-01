@@ -52,8 +52,6 @@ getListOption(targetWidget, options, height, vScroll = FALSE)
 }
 \references{tcltk}
 \author{Jianhua Zhang}
-\note{The functions are part of the Bioconductor project at Dana-Farber
-  Cancer Institute to provide Bioinformatics functionalities through R}
 
 \seealso{\code{\link{tooltip}}}
 \examples{

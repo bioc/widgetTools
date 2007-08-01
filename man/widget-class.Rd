@@ -94,8 +94,6 @@ Objects can be created by calls of the form \code{new("widget", ...)}.
 }
 \references{Programming with data}
 \author{Jianhua Zhang}
-\note{This class is part of the Bioconductor project at Dana-Farber
-  Cancer Institute to provide Bioinformatics functionalities through R}
 
 \seealso{\code{\link{basicPW-class}}, \code{\link{widgetView-class}} }
 
