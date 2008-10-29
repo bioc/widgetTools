@@ -313,8 +313,8 @@ setGeneric("wPostFun",
 setMethod("wPostFun", "basicPW",
           function(object) object@wPostFun)
 
-setGeneric("wEnv",
-           function(object) standardGeneric("wEnv"))
+#setGeneric("wEnv",
+#           function(object) standardGeneric("wEnv"))
 setMethod("wEnv", "basicPW",
           function(object) object@wEnv)
 
