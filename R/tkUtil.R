@@ -18,7 +18,7 @@ writeList <- function(widget, value, clear = TRUE){
     if(clear){
         tkdelete(widget, 0, "end")
     }
-    do.call("tkinsert", c(list(widget, "end"), as.list(value)))
+    do.call(tkinsert, c(list(widget, "end"), as.list(value)))
 }
 
 getListValue <- function(which){
