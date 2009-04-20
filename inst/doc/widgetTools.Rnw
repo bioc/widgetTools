@@ -24,7 +24,7 @@
 \copyright{2002 Bioconductor}
 
 \begin{verbatim}
-$Id: widgetTools.Rnw,v 1.29 2003/10/23 13:26:14 jhnzhang Exp $
+$Id$
 \end{verbatim}
 
 \tableofcontents
