@@ -33,7 +33,8 @@ vScroll = TRUE, what = "list", side = "left", text = "")
 }
 \author{Jianhua (John) Zhang}
 
-\seealso{\code{\link[tcltk]{tklistbox}} (from the \file{tcltk} package).
+\seealso{\code{\link[tcltk:TkWidgets]{tklistbox}} (from the \file{tcltk}
+  package). 
 }
 \examples{
 \dontrun{
